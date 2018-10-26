@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The brand color-->
+    <color name="colorPrimary">#3e6ea5</color>
+    <!-- The color of the status bar -->
+    <color name="colorPrimaryDark">#aaaaaa</color>
+    <!-- -->
+    <color name="colorSecondary">#fcd86b</color>
+    <!-- Used for components in “activated” state -->
+    <color name="colorAccent">#f57c67</color>
+
+    <color name="colorBackground"></color>
+
+    <!-- Status bar background color -->
+    <color name="colorStatusBarBackground">#E7EAED</color>
+    <color name="text_color_primary">#fdfdfd</color>
+    <color name="background_material_light">#c8c7c7</color>
+
+</resources>

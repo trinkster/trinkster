@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link tab2.OnFragmentInteractionListener} interface
+ * {@link Tab2.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link tab2#newInstance} factory method to
+ * Use the {@link Tab2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class tab2 extends Fragment {
+public class Tab2 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,7 +29,7 @@ public class tab2 extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public tab2() {
+    public Tab2() {
         // Required empty public constructor
     }
 
@@ -42,8 +42,8 @@ public class tab2 extends Fragment {
      * @return A new instance of fragment tab2.
      */
     // TODO: Rename and change types and number of parameters
-    public static tab2 newInstance(String param1, String param2) {
-        tab2 fragment = new tab2();
+    public static Tab2 newInstance(String param1, String param2) {
+        Tab2 fragment = new Tab2();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
