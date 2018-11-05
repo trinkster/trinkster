@@ -8,6 +8,7 @@
     <color name="colorSecondary">#fcd86b</color>
     <!-- Used for components in “activated” state -->
     <color name="colorAccent">#f57c67</color>
+    <color name="colorWhite">#ffffff</color>
 
     <color name="colorBackground"></color>
 

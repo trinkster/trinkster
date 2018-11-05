@@ -31,7 +31,11 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorSecondary">
+            android:background="@color/colorSecondary"
+            app:tabSelectedTextColor="@color/colorPrimaryDark"
+            app:tabTextColor="@color/colorWhite"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
+            >
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabHistory"
