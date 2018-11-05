@@ -1,7 +1,13 @@
 package ch.bfh.btx8108.trinkster;
 
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
@@ -9,14 +15,17 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
-public class Statistic extends AppCompatActivity {
+public class Statistic extends Fragment {
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistic);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_statistic, container, false);
 
-        PieChart pieChart = (PieChart) findViewById(R.id.piechart);
+        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+        textView.setText( "STATISTIC-SCREEN" );
+
+        PieChart pieChart = (PieChart) rootView.findViewById(R.id.piechart);
         pieChart.setUsePercentValues(true);
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
@@ -31,7 +40,6 @@ public class Statistic extends AppCompatActivity {
         yvalues.add(new Entry(17f, 5));
 
         PieDataSet dataSet = new PieDataSet(yvalues, "Election Results");
-
         ArrayList<String> xVals = new ArrayList<String>();
 
         xVals.add("January");
@@ -49,5 +57,8 @@ public class Statistic extends AppCompatActivity {
         //data.setValueFormatter(new DefaultValueFormatter(0));
 
         pieChart.setData(data);
+        pieChart.invalidate(); // refresh
+
+        return rootView;
     }
 }
