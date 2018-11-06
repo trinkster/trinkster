@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 
 public class Statistic extends Fragment {
 
@@ -32,22 +36,18 @@ public class Statistic extends Fragment {
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         ArrayList<Entry> yvalues = new ArrayList<Entry>();
-        yvalues.add(new Entry(8f, 0));
-        yvalues.add(new Entry(15f, 1));
-        yvalues.add(new Entry(12f, 2));
-        yvalues.add(new Entry(25f, 3));
-        yvalues.add(new Entry(23f, 4));
-        yvalues.add(new Entry(17f, 5));
+        yvalues.add(new Entry(20f, 0));
+        yvalues.add(new Entry(5f, 1));
+        yvalues.add(new Entry(2f, 2));
+        yvalues.add(new Entry(3f, 3));
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "Election Results");
+        PieDataSet dataSet = new PieDataSet(yvalues, "Getränkehaushalt");
         ArrayList<String> xVals = new ArrayList<String>();
 
-        xVals.add("January");
-        xVals.add("February");
-        xVals.add("March");
-        xVals.add("April");
-        xVals.add("May");
-        xVals.add("June");
+        xVals.add("Ungesüsste Getränke");
+        xVals.add("Sonstige Getränke");
+        xVals.add("Koffeinhaltige Getränke");
+        xVals.add("Alkoholhaltie Getränke");
 
         PieData data = new PieData(xVals, dataSet);
 
@@ -56,7 +56,28 @@ public class Statistic extends Fragment {
         // Default value
         //data.setValueFormatter(new DefaultValueFormatter(0));
 
+        //set Data
         pieChart.setData(data);
+
+        //set Colors
+        int [] color={ Color.rgb(50,205,50), Color.rgb(255,160,122), Color.rgb(238,174,238),
+                Color.rgb(150,205,205)
+        };
+        dataSet.setColors(color);
+
+        //Disable Hole in the Pie Chart
+        pieChart.setDrawHoleEnabled(false);
+
+        //Text Size and Text Color
+        data.setValueTextSize(13f);
+        data.setValueTextColor(Color.DKGRAY);
+
+        //legend
+        Legend l = pieChart.getLegend();
+        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setXEntrySpace(7);
+        l.setYEntrySpace(5);
+
         pieChart.invalidate(); // refresh
 
         return rootView;

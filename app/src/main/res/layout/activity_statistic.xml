@@ -20,6 +20,37 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#c8c7c7"
+        app:tabTextColor="#000000"
+        >
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tabHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_today_black_24dp"
+            android:text="Kalender" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tabItem2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_navigate_before_black_24dp"
+            android:text="Heute"/>
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tabItem3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_timeline_black_24dp"
+            android:text="Zeitspanne" />
+
+    </android.support.design.widget.TabLayout>
+
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/piechart"
         android:layout_width="match_parent"
