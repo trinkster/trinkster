@@ -10,11 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+    private int NR_OF_FRAGMENTS = 3;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    private History fragment_history;
+    private Statistic fragment_statistic;
+    private GuessBAC fragment_guessbac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        fragment_history = new History();
+        fragment_statistic = new Statistic();
+        fragment_guessbac = new GuessBAC();
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -35,22 +45,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.overflowmenu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here. The action bar will automatically handle clicks on
+        // the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            // User chose the "Settings" item, show the app settings UI...
-            System.out.println("Settings");
+            System.out.println("Settings");  // User chose the "Settings" item, show the app settings UI...
             return true;
         }
 
@@ -58,11 +64,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -71,21 +75,45 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new History();
+                    return fragment_history;
                 case 1:
-                    return new Statistic();
+                    return fragment_statistic;
                 case 2:
-                    return new GuessBAC();
+                    return fragment_guessbac;
                 default:
                     return null;
             }
         }
 
         @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
+        public int getCount() { return NR_OF_FRAGMENTS; }
+    }
 
+    public void connectNearestClicked(View v){
+        fragment_guessbac.connectNearestClicked(v);
+    }
+
+    public void disconnectClicked(View v){
+        fragment_guessbac.disconnectClicked(v);
+    }
+
+    public void getFirmwareVersionClicked(View v){
+        fragment_guessbac.getFirmwareVersionClicked(v);
+    }
+
+    public void getSerialNumberClicked(View v){
+        fragment_guessbac.getSerialNumberClicked(v);
+    }
+
+    public void requestUseCountClicked(View v){
+        fragment_guessbac.requestUseCountClicked(v);
+    }
+
+    public void requestBatteryVoltageClicked(View v){
+        fragment_guessbac.requestBatteryVoltageClicked(v);
+    }
+
+    public void startBlowProcessClicked(View v) {
+        fragment_guessbac.startBlowProcessClicked(v);
     }
 }

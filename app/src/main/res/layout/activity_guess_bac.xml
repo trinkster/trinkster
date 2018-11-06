@@ -1,23 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/constraintLayout"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".GuessBAC">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".GuessBAC">
 
-<TextView
-    android:id="@+id/section_label"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="16dp"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-    tools:layout_constraintLeft_creator="1"
-    tools:layout_constraintTop_creator="1" />
+    <!--<TextView-->
+        <!--android:id="@+id/section_label"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/constraintLayout"-->
+        <!--tools:layout_constraintLeft_creator="1"-->
+        <!--tools:layout_constraintTop_creator="1" />-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/title_text_view_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BACtrack Demo"
+            android:textSize="19sp"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/connect_nearest_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="connectNearestClicked"
+            android:text="Connect to Nearest BACtrack" />
+
+        <Button
+            android:id="@+id/disconnect_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="disconnectClicked"
+            android:text="Disconnect from Connected Device" />
+
+        <Button
+            android:id="@+id/get_firmware_version_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="getFirmwareVersionClicked"
+            android:text="Get Firmware Version" />
+
+        <Button
+            android:id="@+id/get_serial_number_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="getSerialNumberClicked"
+            android:text="Get Serial Number"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/get_use_count_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="requestUseCountClicked"
+            android:text="Get Use Count"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/request_battery_voltage_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="requestBatteryVoltageClicked"
+            android:text="Get Battery Level" />
+
+        <Button
+            android:id="@+id/start_blow_process_button_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startBlowProcessClicked"
+            android:text="Start Blow Process" />
+
+        <TextView
+            android:id="@+id/status_message_text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Status: STATUS_MSG"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/battery_level_text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+
+    <!--<SeekBar-->
+        <!--android:id="@+id/seekBar"-->
+        <!--android:layout_width="300dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="232dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:progress="50"-->
+        <!--android:progressDrawable="@drawable/seekbar_style"-->
+        <!--android:thumb="@drawable/custom_thumb"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
 </android.support.constraint.ConstraintLayout>
