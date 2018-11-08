@@ -89,6 +89,18 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() { return NR_OF_FRAGMENTS; }
     }
 
+    /*
+    Nachfolgend sind Weiterleitungen fuer Events (aktuell: onClick-Events) aufgefuehrt.
+
+    Vorgehen:
+    - Im Layout beim Button-Tag ein android:onClick="myMethodName"-Attribut definieren
+    - In dieser Klasse (MainActivity) eine Methode mit dem selben Methodennamen erstellen
+      - Wichtig: Als Argument immer eine View übergeben!
+    - In der entsprechenden Methode jeweils von der Fragment-Instanz die notwendige Methode aufrufen.
+
+    Nachfolgend ein paar Beispiele:
+     */
+
     public void connectNearestClicked(View v){
         fragment_guessbac.connectNearestClicked(v);
     }
@@ -116,4 +128,5 @@ public class MainActivity extends AppCompatActivity {
     public void startBlowProcessClicked(View v) {
         fragment_guessbac.startBlowProcessClicked(v);
     }
+
 }
