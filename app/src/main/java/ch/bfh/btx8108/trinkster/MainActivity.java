@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private int NR_OF_FRAGMENTS = 3;
@@ -100,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
     Nachfolgend ein paar Beispiele:
      */
+
+    public void changeDateOneDayAfter(View v) {fragment_statistic.changeDateOneDayAfter(v); }
+
+    public void changeDateOneDayBefore(View v) {fragment_statistic.changeDateOneDayBefore(v); }
 
     public void connectNearestClicked(View v){
         fragment_guessbac.connectNearestClicked(v);

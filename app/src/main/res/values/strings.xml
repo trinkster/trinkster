@@ -13,6 +13,9 @@
     <string name="tab_text_2">Statistik</string>
     <string name="tab_text_3">Promillenschätzer</string>
 
+    <!-- Statistic-Strings -->
+    <string name="TEXT_NAVIGATE_NEXT">Day After</string>
+
     <!-- BACTrack-Strings -->
     <string name="TEXT_DISCONNECTED">Disconnected</string>
     <string name="TEXT_CONNECTING">Connecting...</string>

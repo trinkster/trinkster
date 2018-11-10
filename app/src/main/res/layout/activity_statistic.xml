@@ -11,24 +11,42 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorGrey">
+        android:background="@color/colorGrey"
+        tools:context=".MainActivity">
 
-    <ImageButton
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
+
+        <ImageButton
         android:id="@+id/calendar"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:src="@drawable/ic_today_black_24dp"/>
 
+    </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+            <!--android:orientation="horizontal"
+            android:padding="16dp"-->
+
     <ImageButton
         android:id="@+id/dayBefore"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:onClick="changeDateOneDayBefore"
         android:src="@drawable/ic_navigate_before_black_24dp" />
 
     <TextView
         android:id="@+id/dateView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -39,17 +57,36 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
-        <ImageButton
+        <Button
             android:id="@+id/dayAfter"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_navigate_next_black_24dp" />
+            android:onClick="changeDateOneDayAfter"
+            android:contextClickable="true"
+            android:contentDescription="@string/TEXT_NAVIGATE_NEXT"
+            android:text="@drawable/ic_navigate_next_black_24dp"/>
+            <!--android:onClick="changeDateOneDayAfter"
+            android:layout_x="312dp"
+            android:layout_y="10dp"
+            android:clickable="true"-->
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
         <ImageButton
             android:id="@+id/timeline"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_timeline_black_24dp" />
+            android:src="@drawable/ic_timeline_black_24dp"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
 
     </LinearLayout>
 

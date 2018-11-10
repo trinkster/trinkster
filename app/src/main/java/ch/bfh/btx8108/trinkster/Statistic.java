@@ -44,17 +44,26 @@ public class Statistic extends Fragment {
 
     Calendar myCalendar = Calendar.getInstance();
     String date;
+    Date dateCalendar;
     String actualDay;
+    Date actualDayCalendar;
+    TextView textViewDate;
+    Button buttonAfter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_statistic, container, false);
 
-        final TextView textViewDate = (TextView) rootView.findViewById(R.id.dateView);
+        //super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_statistic);
+        //setContentView(R.layout.activity_statistic);
+
+        this.textViewDate = (TextView) rootView.findViewById(R.id.dateView);
         setDate(textViewDate);
 
-        final ImageButton buttonCalendar = rootView.findViewById(R.id.calendar);
+        ImageButton buttonCalendar = rootView.findViewById(R.id.calendar);
+        rootView.findViewById(R.id.calendar).setBackgroundColor(Color.TRANSPARENT);
         buttonCalendar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
@@ -64,22 +73,28 @@ public class Statistic extends Fragment {
         });
 
         final ImageButton buttonBefore = rootView.findViewById(R.id.dayBefore);
+        rootView.findViewById(R.id.dayBefore).setBackgroundColor(Color.TRANSPARENT);
         buttonBefore.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-
+                changeDateOneDayBefore(textViewDate);
             }
         });
 
-        final ImageButton buttonAfter = rootView.findViewById(R.id.dayAfter);
+        //this.buttonAfter = rootView.findViewById(R.id.dayAfter);
+        this.buttonAfter =(Button)rootView.findViewById(R.id.dayAfter);
+       // this.buttonAfter = (ImageButton) rootView.findViewById(R.id.dayAfter);
+       // buttonAfter.setOnClickListener(this);
+        //rootView.findViewById(R.id.dayAfter).setBackgroundColor(Color.TRANSPARENT);
         buttonAfter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-
+                changeDateOneDayAfter(v);
             }
         });
 
         final ImageButton buttonTimeline = rootView.findViewById(R.id.timeline);
+        rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
         buttonTimeline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
@@ -104,11 +119,37 @@ public class Statistic extends Fragment {
         item.setText(date);
     }
 
+    public void changeDateOneDayBefore(View v) {
+        TextView item = textViewDate;
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(dateCalendar);
+        calendar.roll(Calendar.DAY_OF_MONTH, 1);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
+        date = formatter.format(calendar);
+        dateCalendar = calendar.getTime();
+        item.setText(date);
+    }
+
+    public void changeDateOneDayAfter(View v) {
+        if(v.getId() == R.id.dayAfter) {
+            TextView item = textViewDate;
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(dateCalendar);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
+            date = formatter.format(calendar);
+            dateCalendar = calendar.getTime();
+            item.setText(date);
+        }
+    }
+
     public void setDate (TextView item){
         Date today = Calendar.getInstance().getTime();//getting date
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
         date = formatter.format(today);
+        dateCalendar = today;
         actualDay = formatter.format(today);
+        actualDayCalendar = today;
         item.setText(date);
     }
 
