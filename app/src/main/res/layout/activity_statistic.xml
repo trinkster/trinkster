@@ -7,53 +7,62 @@
     android:layout_height="match_parent"
     tools:context=".Statistic">
 
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorGrey">
+
+    <ImageButton
+        android:id="@+id/calendar"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_today_black_24dp"/>
+
+    <ImageButton
+        android:id="@+id/dayBefore"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_navigate_before_black_24dp" />
+
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/dateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Heute"
+        app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
+        <ImageButton
+            android:id="@+id/dayAfter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_navigate_next_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/timeline"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_timeline_black_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#c8c7c7"
-        app:tabTextColor="#000000"
-        >
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tabHistory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_today_black_24dp"
-            android:text="Kalender" />
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tabItem2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_navigate_before_black_24dp"
-            android:text="Heute"/>
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tabItem3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_timeline_black_24dp"
-            android:text="Zeitspanne" />
-
-    </android.support.design.widget.TabLayout>
+        android:layout_height="match_parent">
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/piechart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
