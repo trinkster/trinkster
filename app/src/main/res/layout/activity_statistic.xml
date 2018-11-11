@@ -63,6 +63,8 @@
             android:layout_width="wrap_content"
             android:onClick="changeDateOneDayAfter"
             android:contextClickable="true"
+            android:clickable="true"
+            android:focusable="true"
             android:contentDescription="@string/TEXT_NAVIGATE_NEXT"
             android:text="@drawable/ic_navigate_next_black_24dp"/>
             <!--android:onClick="changeDateOneDayAfter"
@@ -84,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:src="@drawable/ic_timeline_black_24dp"
-            android:layout_gravity="right"/>
+            android:onClick="changeTimeline" />
 
     </LinearLayout>
 

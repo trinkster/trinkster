@@ -25,8 +25,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.app.Dialog;
 import android.app.DatePickerDialog;
 import android.view.View.OnClickListener;
@@ -49,6 +49,7 @@ public class Statistic extends Fragment {
     Date actualDayCalendar;
     TextView textViewDate;
     Button buttonAfter;
+    Dialog myDialog;
 
     @Nullable
     @Override
@@ -93,12 +94,14 @@ public class Statistic extends Fragment {
             }
         });
 
+        //myDialog = new Dialog(this);
+
         final ImageButton buttonTimeline = rootView.findViewById(R.id.timeline);
         rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
         buttonTimeline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-
+                changeTimeline(v);
             }
         });
 
@@ -151,6 +154,27 @@ public class Statistic extends Fragment {
         actualDay = formatter.format(today);
         actualDayCalendar = today;
         item.setText(date);
+    }
+
+    public void changeTimeline(View v) {
+        TextView txtclose;
+        Button btnFollow;
+        myDialog.setContentView(R.layout.activity_timeline_popup);
+        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+        txtclose.setText("M");
+        btnFollow = (Button) myDialog.findViewById(R.id.ok);
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+    }
+
+    public void onRadioButtonClicked(View v) {
+
     }
 
     public void setPieChart (PieChart pieChart) {

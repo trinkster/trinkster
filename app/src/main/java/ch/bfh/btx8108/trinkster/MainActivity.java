@@ -102,9 +102,17 @@ public class MainActivity extends AppCompatActivity {
     Nachfolgend ein paar Beispiele:
      */
 
+    //Statistic
+
     public void changeDateOneDayAfter(View v) {fragment_statistic.changeDateOneDayAfter(v); }
 
     public void changeDateOneDayBefore(View v) {fragment_statistic.changeDateOneDayBefore(v); }
+
+    public void channgeTimeline(View v) {fragment_statistic.changeTimeline(v); }
+
+    public void onRadioButtonClicked(View v) {fragment_statistic.onRadioButtonClicked(v); }
+
+    //Guess BAC
 
     public void connectNearestClicked(View v){
         fragment_guessbac.connectNearestClicked(v);

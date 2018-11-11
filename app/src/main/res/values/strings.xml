@@ -15,6 +15,11 @@
 
     <!-- Statistic-Strings -->
     <string name="TEXT_NAVIGATE_NEXT">Day After</string>
+    <string name="TEXT_OK">OK</string>
+    <string name="TEXT_DAY">Tag</string>
+    <string name="TEXT_WEEK">Woche</string>
+    <string name="TEXT_MONTH">Monat</string>
+    <string name="TEXT_YEAR">Jahr</string>
 
     <!-- BACTrack-Strings -->
     <string name="TEXT_DISCONNECTED">Disconnected</string>
