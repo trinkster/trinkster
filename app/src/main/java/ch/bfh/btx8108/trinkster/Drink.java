@@ -3,9 +3,9 @@ package ch.bfh.btx8108.trinkster;
 public class Drink {
     private long id;
     private String name;
-    private int quantity;
+    private double quantity;
 
-    public Drink(long id, String name, int quantity) {
+    public Drink(long id, String name, double quantity) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
@@ -27,11 +27,11 @@ public class Drink {
         this.name = name;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 

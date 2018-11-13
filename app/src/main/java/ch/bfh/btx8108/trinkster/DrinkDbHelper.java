@@ -22,7 +22,7 @@ public class DrinkDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_DRINK +
                     "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NAME + " TEXT NOT NULL, " +
-                    COLUMN_QUANTITY + " INTEGER NOT NULL);";
+                    COLUMN_QUANTITY + " REAL NOT NULL);";
 
     public DrinkDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
