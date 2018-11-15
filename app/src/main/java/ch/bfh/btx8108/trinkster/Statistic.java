@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.ImageButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -42,19 +43,22 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 
 public class Statistic extends Fragment {
 
+    View rootView;
     Calendar myCalendar = Calendar.getInstance();
     String date;
     Date dateCalendar;
     String actualDay;
     Date actualDayCalendar;
     TextView textViewDate;
-    Button buttonAfter;
+    ImageButton buttonAfter;
     Dialog myDialog;
+    String timeline;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_statistic, container, false);
+        this.rootView = inflater.inflate(R.layout.activity_statistic, container, false);
 
         //super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_statistic);
@@ -64,7 +68,7 @@ public class Statistic extends Fragment {
         setDate(textViewDate);
 
         ImageButton buttonCalendar = rootView.findViewById(R.id.calendar);
-        rootView.findViewById(R.id.calendar).setBackgroundColor(Color.TRANSPARENT);
+        //rootView.findViewById(R.id.calendar).setBackgroundColor(Color.TRANSPARENT);
         buttonCalendar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
@@ -74,7 +78,7 @@ public class Statistic extends Fragment {
         });
 
         final ImageButton buttonBefore = rootView.findViewById(R.id.dayBefore);
-        rootView.findViewById(R.id.dayBefore).setBackgroundColor(Color.TRANSPARENT);
+        //rootView.findViewById(R.id.dayBefore).setBackgroundColor(Color.TRANSPARENT);
         buttonBefore.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
@@ -83,7 +87,7 @@ public class Statistic extends Fragment {
         });
 
         //this.buttonAfter = rootView.findViewById(R.id.dayAfter);
-        this.buttonAfter =(Button)rootView.findViewById(R.id.dayAfter);
+        this.buttonAfter =(ImageButton)rootView.findViewById(R.id.dayAfter);
        // this.buttonAfter = (ImageButton) rootView.findViewById(R.id.dayAfter);
        // buttonAfter.setOnClickListener(this);
         //rootView.findViewById(R.id.dayAfter).setBackgroundColor(Color.TRANSPARENT);
@@ -94,10 +98,10 @@ public class Statistic extends Fragment {
             }
         });
 
-        //myDialog = new Dialog(this);
+        //this.myDialog = new Dialog(this);
 
         final ImageButton buttonTimeline = rootView.findViewById(R.id.timeline);
-        rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
+        //rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
         buttonTimeline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
@@ -107,9 +111,6 @@ public class Statistic extends Fragment {
 
         PieChart pieChart = (PieChart) rootView.findViewById(R.id.piechart);
         setPieChart(pieChart);
-
-
-
 
         return rootView;
     }
@@ -158,11 +159,11 @@ public class Statistic extends Fragment {
 
     public void changeTimeline(View v) {
         TextView txtclose;
-        Button btnFollow;
+        Button ok;
         myDialog.setContentView(R.layout.activity_timeline_popup);
         txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
         txtclose.setText("M");
-        btnFollow = (Button) myDialog.findViewById(R.id.ok);
+        ok = (Button) myDialog.findViewById(R.id.ok);
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,8 +174,71 @@ public class Statistic extends Fragment {
         myDialog.show();
     }
 
-    public void onRadioButtonClicked(View v) {
+    public void closePopup(View v) {
 
+    }
+
+    public void onRadioButtonClicked(View v) {
+        // Is the button checked?
+        boolean checked = ((RadioButton) v).isChecked();
+
+        // Check which radio button was clicked
+        // Set Sting timeline to the chosen timeline
+        switch(v.getId()) {
+            case R.id.radio_day:
+                if (checked)
+                    this.timeline = "day";
+                    break;
+            case R.id.radio_week:
+                if (checked)
+                    this.timeline = "week";
+                    break;
+            case R.id.radio_month:
+                if (checked)
+                    this.timeline = "month";
+                    break;
+            case R.id.radio_year:
+                if (checked)
+                    this.timeline = "year";
+                    break;
+        }
+    }
+
+    public void confirmPopup(View v) {
+        boolean chosen = timeline.isEmpty();
+        TextView errorMessage = (TextView) rootView.findViewById(R.id.error_message);
+
+        if (chosen!=true) {
+            if (timeline.equals("day")) {
+                changeToDay();
+            } else if (timeline.equals("week")) {
+                changeToWeek();
+            } else if (timeline.equals("month")) {
+                changeToMonth();
+            } else if (timeline.equals("year")) {
+                changeToYear();
+            } else {
+                errorMessage.setText("Fehler bei Speicherung der ausgewählten Zeitspanne. String wurde nicht abgespeichert.");
+            }
+        } else {
+            errorMessage.setText("Es wurde keine Zeitspanne ausgewählt.");
+        }
+    }
+
+    public void changeToDay() {
+        textViewDate.setText("Es wird nun der Tag angezeigt.");
+    }
+
+    public void changeToWeek() {
+        textViewDate.setText("Es wird nun die Woche angezeigt.");
+    }
+
+    public void changeToMonth() {
+        textViewDate.setText("Es wird nun der Monat angezeigt.");
+    }
+
+    public void changeToYear() {
+        textViewDate.setText("Es wird nun das Jahr angezeigt.");
     }
 
     public void setPieChart (PieChart pieChart) {
@@ -189,9 +253,9 @@ public class Statistic extends Fragment {
         yvalues.add(new Entry(2f, 2));
         yvalues.add(new Entry(3f, 3));
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "Getränkehaushalt");
+        PieDataSet dataSet = new PieDataSet(yvalues, "");
+        //PieDataSet dataSet = new PieDataSet(yvalues, "Getränkehaushalt");
         ArrayList<String> xVals = new ArrayList<String>();
-
         xVals.add("Ungesüsste Getränke");
         xVals.add("Sonstige Getränke");
         xVals.add("Koffeinhaltige Getränke");
@@ -223,7 +287,7 @@ public class Statistic extends Fragment {
         //legend
         Legend l = pieChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART_CENTER);
-        l.setXEntrySpace(7);
+        //l.setXEntrySpace(7);
         l.setYEntrySpace(5);
 
         pieChart.invalidate(); // refresh

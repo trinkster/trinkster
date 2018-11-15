@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onRadioButtonClicked(View v) {fragment_statistic.onRadioButtonClicked(v); }
 
+    public void closePopup(View v) {fragment_statistic.closePopup(v); }
+
+    public void confirmPopup(View v) {fragment_statistic.confirmPopup(v); }
+
     //Guess BAC
 
     public void connectNearestClicked(View v){
