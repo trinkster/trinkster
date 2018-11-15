@@ -32,6 +32,7 @@ public class History extends Fragment {
         View rootView = inflater.inflate(R.layout.activity_history, container, false);
 
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+
         textView.setText( "HISTORY-SCREEN" );
 
         // prepare FloatingActionButton
@@ -53,7 +54,7 @@ public class History extends Fragment {
         Log.d(LOG_TAG, "ID: " + drink.getId() + ", Inhalt: " + drink.toString());
 
         Log.d(LOG_TAG, "Folgende Einträge sind in der Datenbank vorhanden:");
-        showAllListEntries();
+        showAllListEntries(rootView);
 
 
         Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
@@ -62,7 +63,7 @@ public class History extends Fragment {
         return rootView;
     }
 
-    private void showAllListEntries () {
+    private void showAllListEntries (View rootView) {
         List<Drink> drinkList = dataSource.getAllDrinks();
 
         ArrayAdapter<Drink> drinkArrayAdapter = new ArrayAdapter<>(
@@ -70,7 +71,9 @@ public class History extends Fragment {
                 android.R.layout.simple_list_item_multiple_choice,
                 drinkList);
 
-        ListView drinkListView = (ListView) getActivity().findViewById(R.id.listview_drinks);
+//        ListView drinkListView = (ListView) getActivity().findViewById(R.id.listview_drinks);
+        ListView drinkListView = (ListView) rootView.findViewById(R.id.listview_drinks);
+
         drinkListView.setBackgroundColor(Color.argb(255, 112, 128, 144));
         drinkListView.setAdapter(drinkArrayAdapter);
     }

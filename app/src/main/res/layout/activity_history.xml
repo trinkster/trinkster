@@ -30,4 +30,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
+
+    <ListView
+        android:id="@+id/listview_drinks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
 </android.support.constraint.ConstraintLayout>
