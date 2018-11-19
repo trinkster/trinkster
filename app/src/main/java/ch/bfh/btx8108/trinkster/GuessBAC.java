@@ -28,6 +28,7 @@ import BACtrackAPI.Exceptions.LocationServicesNotEnabledException;
 import BACtrackAPI.Mobile.Constants.Errors;
 
 public class GuessBAC extends Fragment {
+    private static final String LOG_TAG = GuessBAC.class.getSimpleName();
     private static final byte PERMISSIONS_FOR_SCAN = 100;
 
     private static String TAG = "GuessBAC";

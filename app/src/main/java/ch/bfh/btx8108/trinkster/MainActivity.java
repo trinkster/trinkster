@@ -8,12 +8,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private int NR_OF_FRAGMENTS = 3;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -104,7 +106,11 @@ public class MainActivity extends AppCompatActivity {
 
     //Statistic
 
-    public void changeDateOneDayAfter(View v) {fragment_statistic.changeDateOneDayAfter(v); }
+    public void changeDateOneDayAfter(View v) {
+        Log.d(LOG_TAG, "changeDateOneDayAfter() enter");
+
+        fragment_statistic.changeDateOneDayAfter(v);
+    }
 
     public void changeDateOneDayBefore(View v) {fragment_statistic.changeDateOneDayBefore(v); }
 
@@ -119,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
     //Guess BAC
 
     public void connectNearestClicked(View v){
+        Log.d(LOG_TAG, "connectNearestClicked() enter");
+
         fragment_guessbac.connectNearestClicked(v);
     }
 

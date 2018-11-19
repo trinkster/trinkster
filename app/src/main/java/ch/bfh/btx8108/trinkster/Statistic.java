@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.TabItem;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 
 public class Statistic extends Fragment {
 
+    private static final String LOG_TAG = Statistic.class.getSimpleName();
+
     View rootView;
     Calendar myCalendar = Calendar.getInstance();
     String date;
@@ -58,6 +61,8 @@ public class Statistic extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreateView() enter");
+
         this.rootView = inflater.inflate(R.layout.activity_statistic, container, false);
 
         //super.onCreate(savedInstanceState);
@@ -86,17 +91,18 @@ public class Statistic extends Fragment {
             }
         });
 
+
         //this.buttonAfter = rootView.findViewById(R.id.dayAfter);
-        this.buttonAfter =(ImageButton)rootView.findViewById(R.id.dayAfter);
+//        this.buttonAfter =(ImageButton)rootView.findViewById(R.id.dayAfter);
        // this.buttonAfter = (ImageButton) rootView.findViewById(R.id.dayAfter);
        // buttonAfter.setOnClickListener(this);
         //rootView.findViewById(R.id.dayAfter).setBackgroundColor(Color.TRANSPARENT);
-        buttonAfter.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+//        buttonAfter.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                changeDateOneDayAfter(v);
-            }
-        });
+//                changeDateOneDayAfter(v);
+//            }
+//        });
 
         //this.myDialog = new Dialog(this);
 
@@ -135,16 +141,18 @@ public class Statistic extends Fragment {
     }
 
     public void changeDateOneDayAfter(View v) {
-        if(v.getId() == R.id.dayAfter) {
-            TextView item = textViewDate;
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(dateCalendar);
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-            date = formatter.format(calendar);
-            dateCalendar = calendar.getTime();
-            item.setText(date);
-        }
+        Log.d(LOG_TAG, "changeDateOneDayAfter() enter");
+
+//        if(v.getId() == R.id.dayAfter) {
+//            TextView item = textViewDate;
+//            Calendar calendar = new GregorianCalendar();
+//            calendar.setTime(dateCalendar);
+//            calendar.add(Calendar.DAY_OF_MONTH, 1);
+//            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
+//            date = formatter.format(calendar);
+//            dateCalendar = calendar.getTime();
+//            item.setText(date);
+//        }
     }
 
     public void setDate (TextView item){
