@@ -21,8 +21,8 @@
             android:text="X"
             android:textStyle="bold"
             android:layout_gravity="end"
-            android:gravity="center"
-            android:onClick="closePopup"/>
+            android:gravity="center"/>
+            <!--android:onClick="closePopup"/>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

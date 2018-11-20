@@ -112,15 +112,29 @@ public class MainActivity extends AppCompatActivity {
         fragment_statistic.changeDateOneDayAfter(v);
     }
 
-    public void changeDateOneDayBefore(View v) {fragment_statistic.changeDateOneDayBefore(v); }
+    public void changeDateOneDayBefore(View v) {
+        fragment_statistic.changeDateOneDayBefore(v);
+    }
 
-    public void channgeTimeline(View v) {fragment_statistic.changeTimeline(v); }
+    public void channgeTimeline(View v) {
+        fragment_statistic.changeTimeline(v);
+    }
 
-    public void onRadioButtonClicked(View v) {fragment_statistic.onRadioButtonClicked(v); }
+    public void onRadioButtonClicked(View v) {
+        fragment_statistic.onRadioButtonClicked(v);
+    }
 
-    public void closePopup(View v) {fragment_statistic.closePopup(v); }
+    //public void closePopup(View v) {fragment_statistic.closePopup(v); }
 
-    public void confirmPopup(View v) {fragment_statistic.confirmPopup(v); }
+    public void confirmPopup(View v) {
+        fragment_statistic.confirmPopup(v);
+    }
+
+    //public void showDetails(View v) {fragment_statistic.showDetails(v);}
+
+    public void goBack(View v) {
+        fragment_statistic.goBack(v);
+    }
 
     //Guess BAC
 

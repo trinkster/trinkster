@@ -46,7 +46,7 @@ public class Statistic extends Fragment {
 
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
-    View rootView;
+
     Calendar myCalendar = Calendar.getInstance();
     String date;
     Date dateCalendar;
@@ -56,18 +56,16 @@ public class Statistic extends Fragment {
     ImageButton buttonAfter;
     Dialog myDialog;
     String timeline;
-
+    ImageButton buttonBefore;
+    TextView errorMessage;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formating according to my need
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreateView() enter");
 
-        this.rootView = inflater.inflate(R.layout.activity_statistic, container, false);
-
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_statistic);
-        //setContentView(R.layout.activity_statistic);
+        View rootView = inflater.inflate(R.layout.activity_statistic, container, false);
 
         this.textViewDate = (TextView) rootView.findViewById(R.id.dateView);
         setDate(textViewDate);
@@ -82,41 +80,21 @@ public class Statistic extends Fragment {
             }
         });
 
-        final ImageButton buttonBefore = rootView.findViewById(R.id.dayBefore);
+        this.buttonBefore = rootView.findViewById(R.id.dayBefore);
         //rootView.findViewById(R.id.dayBefore).setBackgroundColor(Color.TRANSPARENT);
-        buttonBefore.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                changeDateOneDayBefore(textViewDate);
-            }
-        });
 
-
-        //this.buttonAfter = rootView.findViewById(R.id.dayAfter);
-//        this.buttonAfter =(ImageButton)rootView.findViewById(R.id.dayAfter);
-       // this.buttonAfter = (ImageButton) rootView.findViewById(R.id.dayAfter);
-       // buttonAfter.setOnClickListener(this);
+        this.buttonAfter =(ImageButton)rootView.findViewById(R.id.dayAfter);
         //rootView.findViewById(R.id.dayAfter).setBackgroundColor(Color.TRANSPARENT);
-//        buttonAfter.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-//                changeDateOneDayAfter(v);
-//            }
-//        });
 
         //this.myDialog = new Dialog(this);
 
         final ImageButton buttonTimeline = rootView.findViewById(R.id.timeline);
         //rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
-        buttonTimeline.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                changeTimeline(v);
-            }
-        });
 
         PieChart pieChart = (PieChart) rootView.findViewById(R.id.piechart);
         setPieChart(pieChart);
+
+        this.errorMessage = (TextView) rootView.findViewById(R.id.error_message);
 
         return rootView;
     }
@@ -130,65 +108,60 @@ public class Statistic extends Fragment {
     }
 
     public void changeDateOneDayBefore(View v) {
-        TextView item = textViewDate;
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(dateCalendar);
-        calendar.roll(Calendar.DAY_OF_MONTH, 1);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-        date = formatter.format(calendar);
-        dateCalendar = calendar.getTime();
-        item.setText(date);
+        Log.d(LOG_TAG, "changeDateOneDayBefore() enter");
+
+//        Calendar calendar = new GregorianCalendar();
+//        calendar.setTime(dateCalendar);
+//        calendar.roll(Calendar.DAY_OF_MONTH, 1);
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
+//        date = formatter.format(calendar);
+//        dateCalendar = calendar.getTime();
+        this.textViewDate.setText("works");
     }
 
     public void changeDateOneDayAfter(View v) {
         Log.d(LOG_TAG, "changeDateOneDayAfter() enter");
 
-//        if(v.getId() == R.id.dayAfter) {
-//            TextView item = textViewDate;
-//            Calendar calendar = new GregorianCalendar();
-//            calendar.setTime(dateCalendar);
-//            calendar.add(Calendar.DAY_OF_MONTH, 1);
-//            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-//            date = formatter.format(calendar);
-//            dateCalendar = calendar.getTime();
-//            item.setText(date);
-//        }
+//        myCalendar.setTime(dateCalendar);
+//        myCalendar.add(Calendar.DAY_OF_MONTH, 1);
+//        date = formatter.format(myCalendar);
+//        dateCalendar = myCalendar.getTime();
+        this.textViewDate.setText(":)");
     }
 
     public void setDate (TextView item){
         Date today = Calendar.getInstance().getTime();//getting date
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-        date = formatter.format(today);
+        date = this.formatter.format(today);
         dateCalendar = today;
-        actualDay = formatter.format(today);
+        actualDay = this.formatter.format(today);
         actualDayCalendar = today;
         item.setText(date);
     }
 
     public void changeTimeline(View v) {
-        TextView txtclose;
-        Button ok;
-        myDialog.setContentView(R.layout.activity_timeline_popup);
-        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
-        txtclose.setText("M");
-        ok = (Button) myDialog.findViewById(R.id.ok);
-        txtclose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
-    }
-
-    public void closePopup(View v) {
+//        TextView txtclose;
+//        Button ok;
+//        myDialog.setContentView(R.layout.activity_timeline_popup);
+//        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+//        txtclose.setText("M");
+//        ok = (Button) myDialog.findViewById(R.id.ok);
+//        txtclose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                myDialog.dismiss();
+//            }
+//        });
+//        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        myDialog.show();
+//    }
+//
+//    public void closePopup(View v) {
 
     }
 
     public void onRadioButtonClicked(View v) {
         // Is the button checked?
-        boolean checked = ((RadioButton) v).isChecked();
+        /*boolean checked = ((RadioButton) v).isChecked();
 
         // Check which radio button was clicked
         // Set Sting timeline to the chosen timeline
@@ -209,12 +182,11 @@ public class Statistic extends Fragment {
                 if (checked)
                     this.timeline = "year";
                     break;
-        }
+        }*/
     }
 
     public void confirmPopup(View v) {
-        boolean chosen = timeline.isEmpty();
-        TextView errorMessage = (TextView) rootView.findViewById(R.id.error_message);
+       /* boolean chosen = timeline.isEmpty();
 
         if (chosen!=true) {
             if (timeline.equals("day")) {
@@ -226,11 +198,11 @@ public class Statistic extends Fragment {
             } else if (timeline.equals("year")) {
                 changeToYear();
             } else {
-                errorMessage.setText("Fehler bei Speicherung der ausgewählten Zeitspanne. String wurde nicht abgespeichert.");
+                this.errorMessage.setText("Fehler bei Speicherung der ausgewählten Zeitspanne. String wurde nicht abgespeichert.");
             }
         } else {
-            errorMessage.setText("Es wurde keine Zeitspanne ausgewählt.");
-        }
+            this.errorMessage.setText("Es wurde keine Zeitspanne ausgewählt.");
+        }*/
     }
 
     public void changeToDay() {
@@ -267,7 +239,7 @@ public class Statistic extends Fragment {
         xVals.add("Ungesüsste Getränke");
         xVals.add("Sonstige Getränke");
         xVals.add("Koffeinhaltige Getränke");
-        xVals.add("Alkoholhaltie Getränke");
+        xVals.add("Alkoholhaltige Getränke");
 
         PieData data = new PieData(xVals, dataSet);
 
@@ -301,6 +273,11 @@ public class Statistic extends Fragment {
         pieChart.invalidate(); // refresh
     }
 
+    public void showDetails(View v) {
+        textViewDate.setText("PieChartDetails");
+    }
 
+    public void goBack(View v) {
 
+    }
 }
