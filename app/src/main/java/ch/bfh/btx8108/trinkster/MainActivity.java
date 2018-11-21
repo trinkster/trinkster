@@ -132,10 +132,6 @@ public class MainActivity extends AppCompatActivity {
         fragment_statistic.confirmPopup(v);
     }
 
-    public void showDetails(View v) {
-        fragment_statistic.showDetails(v);
-    }
-
     //public void createViewDetails(View v) {
    //     fragment_statistic.createViewDetails(v);
     //}

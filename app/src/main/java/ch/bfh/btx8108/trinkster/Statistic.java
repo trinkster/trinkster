@@ -20,6 +20,7 @@ import android.support.design.widget.TabItem;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -41,11 +42,15 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-public class Statistic extends Fragment {
+public class Statistic extends Fragment implements OnChartValueSelectedListener {
 
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
@@ -303,6 +308,9 @@ public class Statistic extends Fragment {
 
     public void setPieChart (PieChart pieChart) {
         pieChart.setUsePercentValues(true);
+        pieChart.setTouchEnabled(true);
+       pieChart.setOnChartValueSelectedListener(this);
+       // pieChart.setOnChartGestureListener(this);
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
@@ -353,7 +361,7 @@ public class Statistic extends Fragment {
         pieChart.invalidate(); // refresh
     }
 
-    public void showDetails(View v) {
+    public void showDetails() {
        /*
         buttonBefore.setVisibility(View.INVISIBLE);
         buttonAfter.setVisibility(View.INVISIBLE);
@@ -400,4 +408,14 @@ public class Statistic extends Fragment {
        // onCreateView(myInflater, myContainer, mySavedInstanceState);
     }
 
+
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+        showDetails();
+    }
+
+    @Override
+    public void onNothingSelected() {
+
+    }
 }

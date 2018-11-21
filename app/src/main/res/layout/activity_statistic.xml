@@ -65,8 +65,7 @@
             android:layout_marginTop="7dp"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
-            android:onClick="showDetails" />
-        <!--android:onClick="changeTimeline"-->
+            android:onClick="changeTimeline" />
 
     </LinearLayout>
 
