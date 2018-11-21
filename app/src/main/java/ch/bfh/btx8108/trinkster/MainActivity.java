@@ -9,9 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -124,13 +126,19 @@ public class MainActivity extends AppCompatActivity {
         fragment_statistic.onRadioButtonClicked(v);
     }
 
-    //public void closePopup(View v) {fragment_statistic.closePopup(v); }
+    public void closePopup(View v) {fragment_statistic.closePopup(v); }
 
     public void confirmPopup(View v) {
         fragment_statistic.confirmPopup(v);
     }
 
-    //public void showDetails(View v) {fragment_statistic.showDetails(v);}
+    public void showDetails(View v) {
+        fragment_statistic.showDetails(v);
+    }
+
+    //public void createViewDetails(View v) {
+   //     fragment_statistic.createViewDetails(v);
+    //}
 
     public void goBack(View v) {
         fragment_statistic.goBack(v);

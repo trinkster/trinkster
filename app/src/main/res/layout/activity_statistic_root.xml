@@ -9,7 +9,6 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/greyBarRoot"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:background="@color/colorGrey"
@@ -67,39 +66,6 @@
             android:layout_marginEnd="10dp"
             android:onClick="showDetails" />
         <!--android:onClick="changeTimeline"-->
-
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/greyBarDetails"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/colorGrey"
-        tools:context=".MainActivity">
-
-        <ImageButton
-            android:id="@+id/back"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:onClick="goBack"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_navigate_before_black_24dp" />
-
-        <TextView
-            android:id="@+id/textBack"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="5dp"
-            android:text="Zurück"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1" />
 
     </LinearLayout>
 

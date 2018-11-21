@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import android.support.annotation.Nullable;
+import android.content.Intent;
 import android.support.design.widget.TabItem;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -21,7 +22,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.ImageButton;
@@ -59,18 +62,44 @@ public class Statistic extends Fragment {
     ImageButton buttonBefore;
     TextView errorMessage;
     SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formating according to my need
+    View rootView;
+    View secondView;
+    View detailView;
+    ImageButton backRootView;
+    TextView drinkCategoryText;
+    String drinkCategoryString = "Hallo";
+    ListView list_drinks;
+    ImageButton buttonTimeline;
+    ImageButton buttonCalendar;
+    PieChart pieChart;
+    TextView textBack;
+    int i;
+    ArrayList<View> views = new ArrayList<>();
+    LayoutInflater myInflater;
+    ViewGroup myContainer;
+    Bundle mySavedInstanceState;
+    LinearLayout greyBarDetailsLayout;
+    LinearLayout greyBarRootLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreateView() enter");
 
-        View rootView = inflater.inflate(R.layout.activity_statistic, container, false);
+        this.myInflater = inflater;
+        this.myContainer = container;
+        this.mySavedInstanceState = savedInstanceState;
+
+        //create rootView: activity_statistic
+        this.rootView = inflater.inflate(R.layout.activity_statistic, container, false);
+        views.add(rootView);
+
+        //this.greyBarRootLayout = (LinearLayout) rootView.findViewById(R.id.greyBarRoot);
 
         this.textViewDate = (TextView) rootView.findViewById(R.id.dateView);
         setDate(textViewDate);
 
-        ImageButton buttonCalendar = rootView.findViewById(R.id.calendar);
+        this.buttonCalendar = rootView.findViewById(R.id.calendar);
         //rootView.findViewById(R.id.calendar).setBackgroundColor(Color.TRANSPARENT);
         buttonCalendar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -88,16 +117,62 @@ public class Statistic extends Fragment {
 
         //this.myDialog = new Dialog(this);
 
-        final ImageButton buttonTimeline = rootView.findViewById(R.id.timeline);
+        this.buttonTimeline = (ImageButton) rootView.findViewById(R.id.timeline);
         //rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
 
-        PieChart pieChart = (PieChart) rootView.findViewById(R.id.piechart);
+        this.pieChart = (PieChart) rootView.findViewById(R.id.piechart);
         setPieChart(pieChart);
 
         this.errorMessage = (TextView) rootView.findViewById(R.id.error_message);
 
+        //create detailView: activity_statistic_details
+        this.detailView = inflater.inflate(R.layout.activity_statistic_details, container, false);
+        views.add(detailView);
+
+       // this greyBarDetailsLayout
+
+        this.greyBarDetailsLayout = (LinearLayout) rootView.findViewById(R.id.greyBarDetails);
+
+        this.backRootView = (ImageButton) rootView.findViewById(R.id.back);
+
+        this.textBack = (TextView) rootView.findViewById(R.id.textBack);
+
+        this.drinkCategoryText = (TextView) detailView.findViewById(R.id.drinkCategory);
+        drinkCategoryText.setText(drinkCategoryString);
+
+        this.list_drinks = (ListView) detailView.findViewById(R.id.listview_drinks);
+
+        //buttonCalendar.setVisibility(View.INVISIBLE);
+
+        //getActualView();
+        //return rootView;
+
+        //show rootView
+        /*buttonCalendar.setVisibility(View.VISIBLE);
+        buttonBefore.setVisibility(View.VISIBLE);
+        buttonAfter.setVisibility(View.VISIBLE);
+        buttonTimeline.setVisibility(View.VISIBLE);
+        pieChart.setVisibility(View.VISIBLE);
+        errorMessage.setVisibility(View.VISIBLE);*/
+
+        greyBarDetailsLayout.setVisibility(View.INVISIBLE);
+        backRootView.setVisibility(View.INVISIBLE);
+        textBack.setVisibility(View.INVISIBLE);
+
+        /*backRootView.setVisibility(View.INVISIBLE);
+        textBack.setVisibility(View.INVISIBLE);
+        drinkCategoryText.setVisibility(View.INVISIBLE);
+        list_drinks.setVisibility(View.INVISIBLE);*/
         return rootView;
+       // return detailView;
     }
+
+    /*public void getActualView() {
+        if
+        rootView.setVisibility(View.INVISIBLE);
+        detailView.setVisibility(View.VISIBLE);
+        this.i = 1;
+    }*/
 
     public void showCalendar() {
 
@@ -153,9 +228,14 @@ public class Statistic extends Fragment {
 //        });
 //        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 //        myDialog.show();
-//    }
-//
-//    public void closePopup(View v) {
+
+
+    }
+
+    public void closePopup(View v) {
+
+        //Intent intent = new Intent(this, activity_statistic_details.class);
+        //startActivity(intent);
 
     }
 
@@ -274,10 +354,50 @@ public class Statistic extends Fragment {
     }
 
     public void showDetails(View v) {
-        textViewDate.setText("PieChartDetails");
+       /*
+        buttonBefore.setVisibility(View.INVISIBLE);
+        buttonAfter.setVisibility(View.INVISIBLE);
+        buttonTimeline.setVisibility(View.INVISIBLE);
+
+        errorMessage.setVisibility(View.INVISIBLE);
+        */
+        //greyBarRootLayout.setVisibility(View.INVISIBLE);
+        //textViewDate.setVisibility(View.INVISIBLE);
+        //buttonCalendar.setVisibility(View.INVISIBLE);
+        //buttonBefore.setVisibility(View.INVISIBLE);
+        //buttonAfter.setVisibility(View.INVISIBLE);
+        //buttonTimeline.setVisibility(View.INVISIBLE);
+
+        //pieChart.setVisibility(View.INVISIBLE);
+        //errorMessage.setVisibility(View.INVISIBLE);
+        greyBarDetailsLayout.setVisibility(View.VISIBLE);
+        backRootView.setVisibility(View.VISIBLE);
+        textBack.setVisibility(View.VISIBLE);
+
+        //return rootView;
+
     }
 
     public void goBack(View v) {
+        greyBarDetailsLayout.setVisibility(View.GONE);
+        backRootView.setVisibility(View.GONE);
+        textBack.setVisibility(View.GONE);
 
+       /* greyBarRootLayout.setVisibility(View.VISIBLE);
+        buttonCalendar.setVisibility(View.VISIBLE);
+        buttonBefore.setVisibility(View.VISIBLE);
+        buttonAfter.setVisibility(View.VISIBLE);
+        buttonTimeline.setVisibility(View.VISIBLE);
+        pieChart.setVisibility(View.VISIBLE);
+        errorMessage.setVisibility(View.VISIBLE);*/
+
+       // backRootView.setVisibility(View.INVISIBLE);
+       // textBack.setVisibility(View.INVISIBLE);
+        /*
+        drinkCategoryText.setVisibility(View.INVISIBLE);
+        list_drinks.setVisibility(View.INVISIBLE);*/
+       // this.i = 0;
+       // onCreateView(myInflater, myContainer, mySavedInstanceState);
     }
+
 }
