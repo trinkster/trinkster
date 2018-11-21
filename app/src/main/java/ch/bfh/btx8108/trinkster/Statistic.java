@@ -29,6 +29,7 @@ import android.widget.ListView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.graphics.Color;
@@ -72,7 +73,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     View detailView;
     ImageButton backRootView;
     TextView drinkCategoryText;
-    String drinkCategoryString = "Hallo";
+    String drinkCategoryString;
     ListView list_drinks;
     ImageButton buttonTimeline;
     ImageButton buttonCalendar;
@@ -85,15 +86,21 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     Bundle mySavedInstanceState;
     LinearLayout greyBarDetailsLayout;
     LinearLayout greyBarRootLayout;
+    LinearLayout detailsLayoutLinear;
+    LinearLayout detailsTotalLayout;
+    ImageView imageDetails;
+    TextView textViewTotal;
+    PieDataSet dataSet;
+    ArrayList<String> xVals;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreateView() enter");
 
-        this.myInflater = inflater;
-        this.myContainer = container;
-        this.mySavedInstanceState = savedInstanceState;
+       // this.myInflater = inflater;
+        //this.myContainer = container;
+        //this.mySavedInstanceState = savedInstanceState;
 
         //create rootView: activity_statistic
         this.rootView = inflater.inflate(R.layout.activity_statistic, container, false);
@@ -134,7 +141,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         this.detailView = inflater.inflate(R.layout.activity_statistic_details, container, false);
         views.add(detailView);
 
-       // this greyBarDetailsLayout
+
 
         this.greyBarDetailsLayout = (LinearLayout) rootView.findViewById(R.id.greyBarDetails);
 
@@ -142,10 +149,18 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
         this.textBack = (TextView) rootView.findViewById(R.id.textBack);
 
-        this.drinkCategoryText = (TextView) detailView.findViewById(R.id.drinkCategory);
+        this.detailsLayoutLinear = (LinearLayout) rootView.findViewById(R.id.detailsLayout);
+
+        this.drinkCategoryText = (TextView) rootView.findViewById(R.id.drinkCategory);
         drinkCategoryText.setText(drinkCategoryString);
 
-        this.list_drinks = (ListView) detailView.findViewById(R.id.listview_drinks);
+        this.list_drinks = (ListView) rootView.findViewById(R.id.listview_drinks);
+
+        this.detailsTotalLayout = (LinearLayout) rootView.findViewById(R.id.detailsTotal);
+
+        this.imageDetails = (ImageView) rootView.findViewById(R.id.image);
+
+        this.textViewTotal = (TextView) rootView.findViewById(R.id.total);
 
         //buttonCalendar.setVisibility(View.INVISIBLE);
 
@@ -163,6 +178,12 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         greyBarDetailsLayout.setVisibility(View.INVISIBLE);
         backRootView.setVisibility(View.INVISIBLE);
         textBack.setVisibility(View.INVISIBLE);
+        detailsLayoutLinear.setVisibility(View.INVISIBLE);
+        drinkCategoryText.setVisibility(View.INVISIBLE);
+        list_drinks.setVisibility(View.INVISIBLE);
+        detailsTotalLayout.setVisibility(View.INVISIBLE);
+        imageDetails.setVisibility(View.INVISIBLE);
+        textViewTotal.setVisibility(View.INVISIBLE);
 
         /*backRootView.setVisibility(View.INVISIBLE);
         textBack.setVisibility(View.INVISIBLE);
@@ -321,15 +342,15 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         yvalues.add(new Entry(2f, 2));
         yvalues.add(new Entry(3f, 3));
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "");
+        this.dataSet = new PieDataSet(yvalues, "");
         //PieDataSet dataSet = new PieDataSet(yvalues, "Getränkehaushalt");
-        ArrayList<String> xVals = new ArrayList<String>();
-        xVals.add("Ungesüsste Getränke");
-        xVals.add("Sonstige Getränke");
-        xVals.add("Koffeinhaltige Getränke");
-        xVals.add("Alkoholhaltige Getränke");
+        this.xVals = new ArrayList<String>();
+        this.xVals.add("Ungesüsste Getränke");
+        this.xVals.add("Sonstige Getränke");
+        this.xVals.add("Koffeinhaltige Getränke");
+        this.xVals.add("Alkoholhaltige Getränke");
 
-        PieData data = new PieData(xVals, dataSet);
+        PieData data = new PieData(this.xVals, this.dataSet);
 
         // In percentage Term
         data.setValueFormatter(new PercentFormatter());
@@ -376,20 +397,31 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         //buttonAfter.setVisibility(View.INVISIBLE);
         //buttonTimeline.setVisibility(View.INVISIBLE);
 
-        //pieChart.setVisibility(View.INVISIBLE);
+        pieChart.setVisibility(View.GONE);
         //errorMessage.setVisibility(View.INVISIBLE);
         greyBarDetailsLayout.setVisibility(View.VISIBLE);
         backRootView.setVisibility(View.VISIBLE);
         textBack.setVisibility(View.VISIBLE);
-
-        //return rootView;
-
+        detailsLayoutLinear.setVisibility(View.VISIBLE);
+        drinkCategoryText.setVisibility(View.VISIBLE);
+        list_drinks.setVisibility(View.VISIBLE);
+        detailsTotalLayout.setVisibility(View.VISIBLE);
+        imageDetails.setVisibility(View.VISIBLE);
+        textViewTotal.setVisibility(View.VISIBLE);
     }
 
     public void goBack(View v) {
         greyBarDetailsLayout.setVisibility(View.GONE);
         backRootView.setVisibility(View.GONE);
         textBack.setVisibility(View.GONE);
+        detailsLayoutLinear.setVisibility(View.GONE);
+        drinkCategoryText.setVisibility(View.GONE);
+        list_drinks.setVisibility(View.GONE);
+        detailsTotalLayout.setVisibility(View.GONE);
+        imageDetails.setVisibility(View.GONE);
+        textViewTotal.setVisibility(View.GONE);
+
+        pieChart.setVisibility(View.VISIBLE);
 
        /* greyBarRootLayout.setVisibility(View.VISIBLE);
         buttonCalendar.setVisibility(View.VISIBLE);
@@ -408,12 +440,23 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
        // onCreateView(myInflater, myContainer, mySavedInstanceState);
     }
 
-
+    /**
+     * Called when a value has been selected inside the chart.
+     *
+     * @param e The selected Entry.
+     * @param h The corresponding highlight object that contains information
+     * about the highlighted position
+     */
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         showDetails();
+        //drinkCategoryString = this.xVals.get(dataSetIndex);
+        drinkCategoryText.setText(this.xVals.get(dataSetIndex));
     }
 
+    /**
+     * Called when nothing has been selected or an "un-select" has been made.
+     */
     @Override
     public void onNothingSelected() {
 
