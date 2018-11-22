@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
      */
 
     //Statistic
+    public void showCalendar(View v) {
+        fragment_statistic.showCalendar(v);
+    }
 
     public void changeDateOneDayAfter(View v) {
         Log.d(LOG_TAG, "changeDateOneDayAfter() enter");
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         fragment_statistic.changeDateOneDayBefore(v);
     }
 
-    public void channgeTimeline(View v) {
+    public void changeTimeline(View v) {
         fragment_statistic.changeTimeline(v);
     }
 

@@ -24,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.Button;
@@ -48,11 +49,10 @@ import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 
 public class Statistic extends Fragment implements OnChartValueSelectedListener {
-
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
 
@@ -79,11 +79,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     ImageButton buttonCalendar;
     PieChart pieChart;
     TextView textBack;
-    int i;
-    ArrayList<View> views = new ArrayList<>();
-    LayoutInflater myInflater;
-    ViewGroup myContainer;
-    Bundle mySavedInstanceState;
     LinearLayout greyBarDetailsLayout;
     LinearLayout greyBarRootLayout;
     LinearLayout detailsLayoutLinear;
@@ -92,89 +87,71 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     TextView textViewTotal;
     PieDataSet dataSet;
     ArrayList<String> xVals;
+    LinearLayout pieChartLinearLayout;
+    LinearLayout layoutPopup;
+    TextView textViewClose;
+    LinearLayout textLinearLayout;
+    TextView textViewChange;
+    LinearLayout radioButtonLinearLayout;
+    RadioGroup radioGroup;
+    RadioButton radioDay;
+    RadioButton radioWeek;
+    RadioButton radioMonth;
+    RadioButton radioYear;
+    Button btnOk;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "onCreateView() enter");
 
-       // this.myInflater = inflater;
-        //this.myContainer = container;
-        //this.mySavedInstanceState = savedInstanceState;
-
         //create rootView: activity_statistic
         this.rootView = inflater.inflate(R.layout.activity_statistic, container, false);
-        views.add(rootView);
 
         //this.greyBarRootLayout = (LinearLayout) rootView.findViewById(R.id.greyBarRoot);
 
         this.textViewDate = (TextView) rootView.findViewById(R.id.dateView);
         setDate(textViewDate);
-
         this.buttonCalendar = rootView.findViewById(R.id.calendar);
         //rootView.findViewById(R.id.calendar).setBackgroundColor(Color.TRANSPARENT);
-        buttonCalendar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                showCalendar();
-                changeDate(textViewDate);
-            }
-        });
-
         this.buttonBefore = rootView.findViewById(R.id.dayBefore);
         //rootView.findViewById(R.id.dayBefore).setBackgroundColor(Color.TRANSPARENT);
-
         this.buttonAfter =(ImageButton)rootView.findViewById(R.id.dayAfter);
         //rootView.findViewById(R.id.dayAfter).setBackgroundColor(Color.TRANSPARENT);
-
-        //this.myDialog = new Dialog(this);
-
         this.buttonTimeline = (ImageButton) rootView.findViewById(R.id.timeline);
         //rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
-
+        this.pieChartLinearLayout = (LinearLayout) rootView.findViewById(R.id.pieChartLayout);
         this.pieChart = (PieChart) rootView.findViewById(R.id.piechart);
         setPieChart(pieChart);
 
         this.errorMessage = (TextView) rootView.findViewById(R.id.error_message);
 
         //create detailView: activity_statistic_details
-        this.detailView = inflater.inflate(R.layout.activity_statistic_details, container, false);
-        views.add(detailView);
-
-
-
         this.greyBarDetailsLayout = (LinearLayout) rootView.findViewById(R.id.greyBarDetails);
-
         this.backRootView = (ImageButton) rootView.findViewById(R.id.back);
-
         this.textBack = (TextView) rootView.findViewById(R.id.textBack);
-
         this.detailsLayoutLinear = (LinearLayout) rootView.findViewById(R.id.detailsLayout);
-
         this.drinkCategoryText = (TextView) rootView.findViewById(R.id.drinkCategory);
         drinkCategoryText.setText(drinkCategoryString);
-
         this.list_drinks = (ListView) rootView.findViewById(R.id.listview_drinks);
-
         this.detailsTotalLayout = (LinearLayout) rootView.findViewById(R.id.detailsTotal);
-
         this.imageDetails = (ImageView) rootView.findViewById(R.id.image);
-
         this.textViewTotal = (TextView) rootView.findViewById(R.id.total);
 
-        //buttonCalendar.setVisibility(View.INVISIBLE);
+        //create Popup: activity_timeline_popup
+        this.layoutPopup = (LinearLayout) rootView.findViewById(R.id.popupLayout);
+        this.textViewClose = (TextView) rootView.findViewById(R.id.txtclose);
+        this.textLinearLayout = (LinearLayout) rootView.findViewById(R.id.textLayout);
+        this.textViewChange = (TextView) rootView.findViewById(R.id.changeTimeline);
+        this.radioButtonLinearLayout = (LinearLayout) rootView.findViewById(R.id.radioButtonsLayout);
+        this.radioGroup = (RadioGroup) rootView.findViewById(R.id.radioButtonGroup);
+        this.radioDay = (RadioButton) rootView.findViewById(R.id.radio_day);
+        this.radioWeek = (RadioButton) rootView.findViewById(R.id.radio_week);
+        this.radioMonth = (RadioButton) rootView.findViewById(R.id.radio_month);
+        this.radioYear = (RadioButton) rootView.findViewById(R.id.radio_year);
+        this.btnOk = (Button) rootView.findViewById(R.id.ok);
 
-        //getActualView();
-        //return rootView;
-
-        //show rootView
-        /*buttonCalendar.setVisibility(View.VISIBLE);
-        buttonBefore.setVisibility(View.VISIBLE);
-        buttonAfter.setVisibility(View.VISIBLE);
-        buttonTimeline.setVisibility(View.VISIBLE);
-        pieChart.setVisibility(View.VISIBLE);
-        errorMessage.setVisibility(View.VISIBLE);*/
-
+        //show only rootView without details or popup
         greyBarDetailsLayout.setVisibility(View.INVISIBLE);
         backRootView.setVisibility(View.INVISIBLE);
         textBack.setVisibility(View.INVISIBLE);
@@ -185,27 +162,28 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         imageDetails.setVisibility(View.INVISIBLE);
         textViewTotal.setVisibility(View.INVISIBLE);
 
-        /*backRootView.setVisibility(View.INVISIBLE);
-        textBack.setVisibility(View.INVISIBLE);
-        drinkCategoryText.setVisibility(View.INVISIBLE);
-        list_drinks.setVisibility(View.INVISIBLE);*/
+        layoutPopup.setVisibility(View.INVISIBLE);
+        textViewClose.setVisibility(View.INVISIBLE);
+        textLinearLayout.setVisibility(View.INVISIBLE);
+        textViewChange.setVisibility(View.INVISIBLE);
+        radioButtonLinearLayout.setVisibility(View.INVISIBLE);
+        radioGroup.setVisibility(View.INVISIBLE);
+        radioDay.setVisibility(View.INVISIBLE);
+        radioWeek.setVisibility(View.INVISIBLE);
+        radioMonth.setVisibility(View.INVISIBLE);
+        radioYear.setVisibility(View.INVISIBLE);
+        btnOk.setVisibility(View.INVISIBLE);
+
+        //returns the view
         return rootView;
-       // return detailView;
     }
 
-    /*public void getActualView() {
-        if
-        rootView.setVisibility(View.INVISIBLE);
-        detailView.setVisibility(View.VISIBLE);
-        this.i = 1;
-    }*/
-
-    public void showCalendar() {
-
-    }
-
-    public void changeDate(TextView item) {
-        item.setText(date);
+    /**
+     * shows the Calendar after the user has clicked the calendar-button
+     * @param v
+     */
+    public void showCalendar(View v) {
+        textViewDate.setText(date);
     }
 
     public void changeDateOneDayBefore(View v) {
@@ -230,6 +208,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         this.textViewDate.setText(":)");
     }
 
+    /**
+     * sets the day when the page is initialized to today
+     * @param item - the text view showing the date
+     */
     public void setDate (TextView item){
         Date today = Calendar.getInstance().getTime();//getting date
         date = this.formatter.format(today);
@@ -239,35 +221,49 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         item.setText(date);
     }
 
+    /**
+     * shows the Popup for changing the timeline after the user has clicked the timline-button
+     * @param v
+     */
     public void changeTimeline(View v) {
-//        TextView txtclose;
-//        Button ok;
-//        myDialog.setContentView(R.layout.activity_timeline_popup);
-//        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
-//        txtclose.setText("M");
-//        ok = (Button) myDialog.findViewById(R.id.ok);
-//        txtclose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                myDialog.dismiss();
-//            }
-//        });
-//        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        myDialog.show();
-
-
+        layoutPopup.setVisibility(View.VISIBLE);
+        textViewClose.setVisibility(View.VISIBLE);
+        textLinearLayout.setVisibility(View.VISIBLE);
+        textViewChange.setVisibility(View.VISIBLE);
+        radioButtonLinearLayout.setVisibility(View.VISIBLE);
+        radioGroup.setVisibility(View.VISIBLE);
+        radioDay.setVisibility(View.VISIBLE);
+        radioWeek.setVisibility(View.VISIBLE);
+        radioMonth.setVisibility(View.VISIBLE);
+        radioYear.setVisibility(View.VISIBLE);
+        btnOk.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * closes the popup if the user doesn't wont to change the timeline or after the click on the ok-button
+     * @param v
+     */
     public void closePopup(View v) {
-
-        //Intent intent = new Intent(this, activity_statistic_details.class);
-        //startActivity(intent);
-
+        layoutPopup.setVisibility(View.GONE);
+        textViewClose.setVisibility(View.GONE);
+        textLinearLayout.setVisibility(View.GONE);
+        textViewChange.setVisibility(View.GONE);
+        radioButtonLinearLayout.setVisibility(View.GONE);
+        radioGroup.setVisibility(View.GONE);
+        radioDay.setVisibility(View.GONE);
+        radioWeek.setVisibility(View.GONE);
+        radioMonth.setVisibility(View.GONE);
+        radioYear.setVisibility(View.GONE);
+        btnOk.setVisibility(View.GONE);
     }
 
+    /**
+     * checks if a radio button is chosen an changes the string timeline to the string of the chosen radio button
+     * @param v
+     */
     public void onRadioButtonClicked(View v) {
         // Is the button checked?
-        /*boolean checked = ((RadioButton) v).isChecked();
+        boolean checked = ((RadioButton) v).isChecked();
 
         // Check which radio button was clicked
         // Set Sting timeline to the chosen timeline
@@ -288,11 +284,15 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
                 if (checked)
                     this.timeline = "year";
                     break;
-        }*/
+        }
     }
 
+    /**
+     * checks if the String timeline has a value and then goes to the method of the chosen radio button and closes the popup
+     * @param v
+     */
     public void confirmPopup(View v) {
-       /* boolean chosen = timeline.isEmpty();
+        boolean chosen = timeline.isEmpty();
 
         if (chosen!=true) {
             if (timeline.equals("day")) {
@@ -308,30 +308,46 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
             }
         } else {
             this.errorMessage.setText("Es wurde keine Zeitspanne ausgewählt.");
-        }*/
+        }
+       closePopup(v);
     }
 
+    /**
+     * change timeline to day
+     */
     public void changeToDay() {
         textViewDate.setText("Es wird nun der Tag angezeigt.");
     }
 
+    /**
+     * change timeline to week
+     */
     public void changeToWeek() {
         textViewDate.setText("Es wird nun die Woche angezeigt.");
     }
 
+    /**
+     * change timeline to month
+     */
     public void changeToMonth() {
         textViewDate.setText("Es wird nun der Monat angezeigt.");
     }
 
+    /**
+     * change timeline to year
+     */
     public void changeToYear() {
         textViewDate.setText("Es wird nun das Jahr angezeigt.");
     }
 
+    /**
+     * sets the pie Chart
+     * @param pieChart
+     */
     public void setPieChart (PieChart pieChart) {
         pieChart.setUsePercentValues(true);
         pieChart.setTouchEnabled(true);
-       pieChart.setOnChartValueSelectedListener(this);
-       // pieChart.setOnChartGestureListener(this);
+        pieChart.setOnChartValueSelectedListener(this);
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
@@ -355,7 +371,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         // In percentage Term
         data.setValueFormatter(new PercentFormatter());
         // Default value
-        //data.setValueFormatter(new DefaultValueFormatter(0));
+        data.setValueFormatter(new DefaultValueFormatter(0));
 
         //set Data
         pieChart.setData(data);
@@ -370,33 +386,25 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         pieChart.setDrawHoleEnabled(false);
 
         //Text Size and Text Color
-        data.setValueTextSize(13f);
+        data.setValueTextSize(17f);
         data.setValueTextColor(Color.DKGRAY);
+       // data.
 
         //legend
         Legend l = pieChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART_CENTER);
+        //l.setFormSize(17f);
         //l.setXEntrySpace(7);
-        l.setYEntrySpace(5);
+        //l.setYEntrySpace(5);
 
         pieChart.invalidate(); // refresh
     }
 
+    /**
+     * closes the root View and shows the detail View
+     */
     public void showDetails() {
-       /*
-        buttonBefore.setVisibility(View.INVISIBLE);
-        buttonAfter.setVisibility(View.INVISIBLE);
-        buttonTimeline.setVisibility(View.INVISIBLE);
-
-        errorMessage.setVisibility(View.INVISIBLE);
-        */
-        //greyBarRootLayout.setVisibility(View.INVISIBLE);
-        //textViewDate.setVisibility(View.INVISIBLE);
-        //buttonCalendar.setVisibility(View.INVISIBLE);
-        //buttonBefore.setVisibility(View.INVISIBLE);
-        //buttonAfter.setVisibility(View.INVISIBLE);
-        //buttonTimeline.setVisibility(View.INVISIBLE);
-
+        pieChartLinearLayout.setVisibility(View.GONE);
         pieChart.setVisibility(View.GONE);
         //errorMessage.setVisibility(View.INVISIBLE);
         greyBarDetailsLayout.setVisibility(View.VISIBLE);
@@ -410,6 +418,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         textViewTotal.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * closes the detail View and shows the root View
+     * @param v
+     */
     public void goBack(View v) {
         greyBarDetailsLayout.setVisibility(View.GONE);
         backRootView.setVisibility(View.GONE);
@@ -421,23 +433,40 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         imageDetails.setVisibility(View.GONE);
         textViewTotal.setVisibility(View.GONE);
 
+        pieChartLinearLayout.setVisibility(View.VISIBLE);
         pieChart.setVisibility(View.VISIBLE);
+    }
 
-       /* greyBarRootLayout.setVisibility(View.VISIBLE);
-        buttonCalendar.setVisibility(View.VISIBLE);
-        buttonBefore.setVisibility(View.VISIBLE);
-        buttonAfter.setVisibility(View.VISIBLE);
-        buttonTimeline.setVisibility(View.VISIBLE);
-        pieChart.setVisibility(View.VISIBLE);
-        errorMessage.setVisibility(View.VISIBLE);*/
+    /**
+     * sets the String of the text in the detail View
+     * @param categoryText
+     */
+    public void totalText(String categoryText) {
+        textViewTotal.setText("Du hast am "
+                + date //day
+                + " insgesamt "
+                + 6 //total
+                + "dl "
+                + categoryText //category
+                + " getrunken.");
+    }
 
-       // backRootView.setVisibility(View.INVISIBLE);
-       // textBack.setVisibility(View.INVISIBLE);
-        /*
-        drinkCategoryText.setVisibility(View.INVISIBLE);
-        list_drinks.setVisibility(View.INVISIBLE);*/
-       // this.i = 0;
-       // onCreateView(myInflater, myContainer, mySavedInstanceState);
+    /**
+     * changes the image in the detail View to the chosen category
+     * @param category
+     */
+    public void changeImage(int category) {
+        if (category == 0) {
+            imageDetails.setImageResource(R.drawable.image_water);
+        } else if (category == 1) {
+            imageDetails.setImageResource(R.drawable.image_soda);
+        } else if (category == 2) {
+            imageDetails.setImageResource(R.drawable.image_coffee);
+        } else if (category == 3) {
+            imageDetails.setImageResource(R.drawable.image_beer);
+        } else {
+            imageDetails.setImageResource(R.drawable.image_water);
+        }
     }
 
     /**
@@ -450,8 +479,12 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         showDetails();
-        //drinkCategoryString = this.xVals.get(dataSetIndex);
-        drinkCategoryText.setText(this.xVals.get(dataSetIndex));
+        int index = h.getXIndex();
+        this.drinkCategoryString = xVals.get(index);
+        drinkCategoryText.setText(this.drinkCategoryString);
+        totalText(this.drinkCategoryString);
+        changeImage(index);
+        //set listView --> data from database
     }
 
     /**

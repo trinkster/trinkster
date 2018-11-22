@@ -20,6 +20,7 @@
     <string name="TEXT_WEEK">Woche</string>
     <string name="TEXT_MONTH">Monat</string>
     <string name="TEXT_YEAR">Jahr</string>
+    <string name="TEXT_CHANGE_TIMELINE">Zeitspanne ändern</string>
 
     <!-- BACTrack-Strings -->
     <string name="TEXT_DISCONNECTED">Disconnected</string>
