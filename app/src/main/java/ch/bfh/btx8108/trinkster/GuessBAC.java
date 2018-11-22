@@ -53,19 +53,22 @@ public class GuessBAC extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_guess_bac, container, false);
 
-//        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//        textView.setText( "GUESS YOUR BAC");
+//        this.statusMessageTextView = (TextView) rootView.findViewById(R.id.status_message_text_view_id);
+//        this.batteryLevelTextView = (TextView) rootView.findViewById(R.id.battery_level_text_view_id);
 
-        this.statusMessageTextView = (TextView) rootView.findViewById(R.id.status_message_text_view_id);
-        this.batteryLevelTextView = (TextView) rootView.findViewById(R.id.battery_level_text_view_id);
+//        this.setStatus(R.string.TEXT_DISCONNECTED);
 
-        this.setStatus(R.string.TEXT_DISCONNECTED);
+//        this.serialNumberButton = (Button) rootView.findViewById(R.id.get_serial_number_button_id);
+//        this.useCountButton = (Button) rootView.findViewById(R.id.get_use_count_button_id);
 
-        this.serialNumberButton = (Button) rootView.findViewById(R.id.get_serial_number_button_id);
-        this.useCountButton = (Button) rootView.findViewById(R.id.get_use_count_button_id);
+        SeekBar simpleSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar); // initiate the Seek bar
 
-//        SeekBar simpleSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar); // initiate the Seek bar
+//        prepareBACTrack();
 
+        return rootView;
+    }
+
+    private void prepareBACTrack(){
         try {
             mAPI = new BACtrackAPI(this.getContext(), mCallbacks, apiKey);
             mContext = this.getContext();
@@ -79,8 +82,6 @@ public class GuessBAC extends Fragment {
             e.printStackTrace();
             this.setStatus(R.string.TEXT_ERR_LOCATIONS_NOT_ENABLED);
         }
-
-        return rootView;
     }
 
     @Override

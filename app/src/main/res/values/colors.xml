@@ -9,9 +9,11 @@
     <!-- Used for components in “activated” state -->
     <color name="colorAccent">#f57c67</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorSliderFill">#666666</color>
+    <color name="colorSliderEmpty">#9e9e9e</color>
 
     <!-- The color for the icon bar-->
-    <color name="colorGrey">#E0E0E0</color>
+    <color name="colorGrey">#e0e0e0</color>
 
     <color name="colorBackground"></color>
 
