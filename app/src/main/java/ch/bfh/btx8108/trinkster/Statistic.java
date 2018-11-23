@@ -55,16 +55,21 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 public class Statistic extends Fragment implements OnChartValueSelectedListener {
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
-
-    Calendar myCalendar = Calendar.getInstance();
     String date;
     Date dateCalendar;
     String actualDay;
     Date actualDayCalendar;
+    String weekDate;
+    Date weekDateCalendar;
+    String monthDate;
+    Date monthDateCalendar;
+    String yearDate;
+    Date yearDateCalendar;
+
     TextView textViewDate;
     ImageButton buttonAfter;
     Dialog myDialog;
-    String timeline;
+    String timeline = "day";
     ImageButton buttonBefore;
     TextView errorMessage;
     SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formating according to my need
@@ -152,6 +157,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         this.btnOk = (Button) rootView.findViewById(R.id.ok);
 
         //show only rootView without details or popup
+        buttonAfter.setVisibility(View.INVISIBLE);
+
         greyBarDetailsLayout.setVisibility(View.INVISIBLE);
         backRootView.setVisibility(View.INVISIBLE);
         textBack.setVisibility(View.INVISIBLE);
@@ -186,26 +193,72 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         textViewDate.setText(date);
     }
 
+    /**
+     * change the Date to one day before the shown date
+     * @param v - the view
+     */
     public void changeDateOneDayBefore(View v) {
         Log.d(LOG_TAG, "changeDateOneDayBefore() enter");
 
-//        Calendar calendar = new GregorianCalendar();
-//        calendar.setTime(dateCalendar);
-//        calendar.roll(Calendar.DAY_OF_MONTH, 1);
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-//        date = formatter.format(calendar);
-//        dateCalendar = calendar.getTime();
-        this.textViewDate.setText("works");
+        Calendar myCalendar = new GregorianCalendar();
+        myCalendar.setTime(this.dateCalendar);
+        myCalendar.add(Calendar.DATE, -1);
+        this.date = this.formatter.format(myCalendar.getTime());
+        this.dateCalendar = myCalendar.getTime();
+
+        //checks if the day, week, month or year is shown
+        if (timeline.equals("day")) {
+            this.textViewDate.setText(this.date);
+        } else if (timeline.equals("week")) {
+            changeToWeek();
+        } else if (timeline.equals("month")) {
+            changeToMonth();
+        } else if (timeline.equals("year")) {
+            changeToYear();
+        } else {
+            this.textViewDate.setText(this.date);
+        }
+
+        //show button after only if its not today
+        if (date.equals(actualDay)) {
+            buttonAfter.setVisibility(View.GONE);
+        } else {
+            buttonAfter.setVisibility(View.VISIBLE);
+        }
     }
 
+    /**
+     * change the Date to one day after the shown date
+     * @param v - the view
+     */
     public void changeDateOneDayAfter(View v) {
         Log.d(LOG_TAG, "changeDateOneDayAfter() enter");
 
-//        myCalendar.setTime(dateCalendar);
-//        myCalendar.add(Calendar.DAY_OF_MONTH, 1);
-//        date = formatter.format(myCalendar);
-//        dateCalendar = myCalendar.getTime();
-        this.textViewDate.setText(":)");
+        Calendar myCalendar = new GregorianCalendar();
+        myCalendar.setTime(this.dateCalendar);
+        myCalendar.add(Calendar.DATE, 1);
+        this.date = this.formatter.format(myCalendar.getTime());
+        this.dateCalendar = myCalendar.getTime();
+
+        //checks if the day, week, month or year is shown
+        if (timeline.equals("day")) {
+            this.textViewDate.setText(this.date);
+        } else if (timeline.equals("week")) {
+            changeToWeek();
+        } else if (timeline.equals("month")) {
+            changeToMonth();
+        } else if (timeline.equals("year")) {
+            changeToYear();
+        } else {
+            this.textViewDate.setText(this.date);
+        }
+
+        //show button after only if its not today
+        if (date.equals(actualDay)) {
+            buttonAfter.setVisibility(View.GONE);
+        } else {
+            buttonAfter.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -214,16 +267,16 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
      */
     public void setDate (TextView item){
         Date today = Calendar.getInstance().getTime();//getting date
-        date = this.formatter.format(today);
-        dateCalendar = today;
-        actualDay = this.formatter.format(today);
-        actualDayCalendar = today;
-        item.setText(date);
+        this.date = this.formatter.format(today);
+        this.dateCalendar = today;
+        this.actualDay = this.formatter.format(today);
+        this.actualDayCalendar = today;
+        item.setText(this.date);
     }
 
     /**
      * shows the Popup for changing the timeline after the user has clicked the timline-button
-     * @param v
+     * @param v - the view
      */
     public void changeTimeline(View v) {
         layoutPopup.setVisibility(View.VISIBLE);
@@ -241,7 +294,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
     /**
      * closes the popup if the user doesn't wont to change the timeline or after the click on the ok-button
-     * @param v
+     * @param v - the view
      */
     public void closePopup(View v) {
         layoutPopup.setVisibility(View.GONE);
@@ -259,7 +312,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
     /**
      * checks if a radio button is chosen an changes the string timeline to the string of the chosen radio button
-     * @param v
+     * @param v - the view
      */
     public void onRadioButtonClicked(View v) {
         // Is the button checked?
@@ -289,7 +342,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
     /**
      * checks if the String timeline has a value and then goes to the method of the chosen radio button and closes the popup
-     * @param v
+     * @param v - the view
      */
     public void confirmPopup(View v) {
         boolean chosen = timeline.isEmpty();
@@ -316,33 +369,54 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
      * change timeline to day
      */
     public void changeToDay() {
-        textViewDate.setText("Es wird nun der Tag angezeigt.");
+        this.textViewDate.setText(this.date);
     }
 
     /**
      * change timeline to week
      */
     public void changeToWeek() {
-        textViewDate.setText("Es wird nun die Woche angezeigt.");
+        Calendar myCalendar = new GregorianCalendar();
+        myCalendar.setTime(this.dateCalendar);
+        myCalendar.add(Calendar.DATE, -7);
+        this.weekDate = this.formatter.format(myCalendar.getTime());
+        this.weekDateCalendar = myCalendar.getTime();
+
+        String s = weekDate + " - " + this.date;
+        this.textViewDate.setText(s);
     }
 
     /**
      * change timeline to month
      */
     public void changeToMonth() {
-        textViewDate.setText("Es wird nun der Monat angezeigt.");
+        Calendar myCalendar = new GregorianCalendar();
+        myCalendar.setTime(this.dateCalendar);
+        myCalendar.add(Calendar.MONTH, -1);
+        this.monthDate = this.formatter.format(myCalendar.getTime());
+        this.monthDateCalendar = myCalendar.getTime();
+
+        String s = monthDate + " - " + this.date;
+        this.textViewDate.setText(s);
     }
 
     /**
      * change timeline to year
      */
     public void changeToYear() {
-        textViewDate.setText("Es wird nun das Jahr angezeigt.");
+        Calendar myCalendar = new GregorianCalendar();
+        myCalendar.setTime(this.dateCalendar);
+        myCalendar.add(Calendar.YEAR,-1);
+        this.yearDate = this.formatter.format(myCalendar.getTime());
+        this.yearDateCalendar = myCalendar.getTime();
+
+        String s = yearDate + " - " + this.date;
+        this.textViewDate.setText(s);
     }
 
     /**
      * sets the pie Chart
-     * @param pieChart
+     * @param pieChart - the generetad pie Chart
      */
     public void setPieChart (PieChart pieChart) {
         pieChart.setUsePercentValues(true);
@@ -370,8 +444,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
         // In percentage Term
         data.setValueFormatter(new PercentFormatter());
-        // Default value
-        data.setValueFormatter(new DefaultValueFormatter(0));
 
         //set Data
         pieChart.setData(data);
@@ -385,14 +457,21 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         //Disable Hole in the Pie Chart
         pieChart.setDrawHoleEnabled(false);
 
+        //Disable Drink category in the Pie Chart
+        pieChart.setDrawSliceText(false);
+
         //Text Size and Text Color
         data.setValueTextSize(17f);
         data.setValueTextColor(Color.DKGRAY);
-       // data.
+        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        //pieChart.isDrawCenterTextEnabled();
+        //pieChart.isUsePercentValuesEnabled();
+        //pieChart.setUsePercentValues(true);
+        //dataSet.
 
         //legend
         Legend l = pieChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART_CENTER);
+        l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
         //l.setFormSize(17f);
         //l.setXEntrySpace(7);
         //l.setYEntrySpace(5);
@@ -420,7 +499,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
     /**
      * closes the detail View and shows the root View
-     * @param v
+     * @param v - the view
      */
     public void goBack(View v) {
         greyBarDetailsLayout.setVisibility(View.GONE);
@@ -439,7 +518,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
     /**
      * sets the String of the text in the detail View
-     * @param categoryText
+     * @param categoryText - the shown text with the total, the drink category and the date
      */
     public void totalText(String categoryText) {
         textViewTotal.setText("Du hast am "
@@ -452,8 +531,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     }
 
     /**
-     * changes the image in the detail View to the chosen category
-     * @param category
+     * changes the image in the detail View to the chosen drink category
+     * @param category - the chosen drink category
      */
     public void changeImage(int category) {
         if (category == 0) {
