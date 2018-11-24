@@ -2,7 +2,6 @@ package ch.bfh.btx8108.trinkster;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,11 +17,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ch.bfh.btx8108.trinkster.database.DbHelper;
+import ch.bfh.btx8108.trinkster.database.dao.CategoryDAO;
+import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
+
 public class History extends Fragment {
 
     private static final String LOG_TAG = History.class.getSimpleName();
 
-    private DrinkDataSource dataSource;
+    private DrinkDAO drinkDAO;
     private Context context;
 
 
@@ -44,34 +47,35 @@ public class History extends Fragment {
             }
         });
 
-        dataSource = new DrinkDataSource(getContext());
+        DbHelper dbHelper = new DbHelper(getContext());
 
-        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
-        dataSource.open();
+        CategoryDAO categoryDAO = new CategoryDAO(dbHelper);
+        Category ungesuesste = categoryDAO.createCategory("Ungesüsste Getränke", "Getränke ohne Zucker oder Süssstoff");
+        Category sonstige = categoryDAO.createCategory("Sonstige Getränke", "Fruchtsäfte, Milch etc.");
+        Category koffeinhaltige = categoryDAO.createCategory("Koffeinhaltige Getränke", "Kaffee, Cola etc.");
+        Category alkoholhaltige = categoryDAO.createCategory("Alkoholhaltige Getränke", "Bier, Wein, Spirituosen etc.");
 
-        Drink drink = dataSource.createDrink("Grüntee", 2.5d);
+        drinkDAO = new DrinkDAO(dbHelper);
+        Drink drink = drinkDAO.createDrink(ungesuesste,"Grüntee", 2.5d);
         Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
         Log.d(LOG_TAG, "ID: " + drink.getId() + ", Inhalt: " + drink.toString());
 
         Log.d(LOG_TAG, "Folgende Einträge sind in der Datenbank vorhanden:");
         showAllListEntries(rootView);
 
-
-        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
-        dataSource.close();
+        dbHelper.close();
 
         return rootView;
     }
 
     private void showAllListEntries (View rootView) {
-        List<Drink> drinkList = dataSource.getAllDrinks();
+        List<Drink> drinkList = drinkDAO.getAllDrinks();
 
         ArrayAdapter<Drink> drinkArrayAdapter = new ArrayAdapter<>(
                 getContext(),
                 android.R.layout.simple_list_item_multiple_choice,
                 drinkList);
 
-//        ListView drinkListView = (ListView) getActivity().findViewById(R.id.listview_drinks);
         ListView drinkListView = (ListView) rootView.findViewById(R.id.listview_drinks);
 
         drinkListView.setBackgroundColor(Color.argb(255, 112, 128, 144));

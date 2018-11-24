@@ -174,5 +174,4 @@ public class MainActivity extends AppCompatActivity {
     public void startBlowProcessClicked(View v) {
         fragment_guessbac.startBlowProcessClicked(v);
     }
-
 }

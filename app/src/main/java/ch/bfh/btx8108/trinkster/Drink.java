@@ -2,11 +2,14 @@ package ch.bfh.btx8108.trinkster;
 
 public class Drink {
     private long id;
+
+    private Category category;
+
     private String name;
     private double quantity;
-
-    public Drink(long id, String name, double quantity) {
+    public Drink(long id, Category category, String name, double quantity) {
         this.id = id;
+        this.category = category;
         this.name = name;
         this.quantity = quantity;
     }
@@ -17,6 +20,14 @@ public class Drink {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getName() {
@@ -37,10 +48,6 @@ public class Drink {
 
     @Override
     public String toString() {
-        return "Drink{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", quantity=" + quantity +
-                '}';
+        return name + ", " + quantity;
     }
 }
