@@ -111,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
         fragment_statistic.showCalendar(v);
     }
 
+    public void confirmCalendar(View v) {
+        fragment_statistic.confirmCalendar(v);
+    }
+
     public void changeDateOneDayAfter(View v) {
         Log.d(LOG_TAG, "changeDateOneDayAfter() enter");
 
@@ -134,10 +138,6 @@ public class MainActivity extends AppCompatActivity {
     public void confirmPopup(View v) {
         fragment_statistic.confirmPopup(v);
     }
-
-    //public void createViewDetails(View v) {
-   //     fragment_statistic.createViewDetails(v);
-    //}
 
     public void goBack(View v) {
         fragment_statistic.goBack(v);

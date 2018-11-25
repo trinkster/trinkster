@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -104,6 +105,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     RadioButton radioMonth;
     RadioButton radioYear;
     Button btnOk;
+    LinearLayout calendarLinearLayout;
+    CalendarView simpleCalendarViewLayout;
+    Button okCalendarBtn;
 
     @Nullable
     @Override
@@ -118,18 +122,19 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         this.textViewDate = (TextView) rootView.findViewById(R.id.dateView);
         setDate(textViewDate);
         this.buttonCalendar = rootView.findViewById(R.id.calendar);
-        //rootView.findViewById(R.id.calendar).setBackgroundColor(Color.TRANSPARENT);
         this.buttonBefore = rootView.findViewById(R.id.dayBefore);
-        //rootView.findViewById(R.id.dayBefore).setBackgroundColor(Color.TRANSPARENT);
         this.buttonAfter =(ImageButton)rootView.findViewById(R.id.dayAfter);
-        //rootView.findViewById(R.id.dayAfter).setBackgroundColor(Color.TRANSPARENT);
         this.buttonTimeline = (ImageButton) rootView.findViewById(R.id.timeline);
-        //rootView.findViewById(R.id.timeline).setBackgroundColor(Color.TRANSPARENT);
         this.pieChartLinearLayout = (LinearLayout) rootView.findViewById(R.id.pieChartLayout);
         this.pieChart = (PieChart) rootView.findViewById(R.id.piechart);
         setPieChart(pieChart);
 
         this.errorMessage = (TextView) rootView.findViewById(R.id.error_message);
+
+        //create calendarView
+        this.calendarLinearLayout = (LinearLayout) rootView.findViewById(R.id.calendarLayout);
+        this.simpleCalendarViewLayout =(CalendarView) rootView.findViewById(R.id.simpleCalendarView);
+        this.okCalendarBtn = (Button) rootView.findViewById(R.id.okCalendar);
 
         //create detailView: activity_statistic_details
         this.greyBarDetailsLayout = (LinearLayout) rootView.findViewById(R.id.greyBarDetails);
@@ -157,29 +162,32 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         this.btnOk = (Button) rootView.findViewById(R.id.ok);
 
         //show only rootView without details or popup
-        buttonAfter.setVisibility(View.INVISIBLE);
+        buttonAfter.setVisibility(View.GONE);
+        calendarLinearLayout.setVisibility(View.GONE);
+        simpleCalendarViewLayout.setVisibility(View.GONE);
+        okCalendarBtn.setVisibility(View.GONE);
 
-        greyBarDetailsLayout.setVisibility(View.INVISIBLE);
-        backRootView.setVisibility(View.INVISIBLE);
-        textBack.setVisibility(View.INVISIBLE);
-        detailsLayoutLinear.setVisibility(View.INVISIBLE);
-        drinkCategoryText.setVisibility(View.INVISIBLE);
-        list_drinks.setVisibility(View.INVISIBLE);
-        detailsTotalLayout.setVisibility(View.INVISIBLE);
-        imageDetails.setVisibility(View.INVISIBLE);
-        textViewTotal.setVisibility(View.INVISIBLE);
+        greyBarDetailsLayout.setVisibility(View.GONE);
+        backRootView.setVisibility(View.GONE);
+        textBack.setVisibility(View.GONE);
+        detailsLayoutLinear.setVisibility(View.GONE);
+        drinkCategoryText.setVisibility(View.GONE);
+        list_drinks.setVisibility(View.GONE);
+        detailsTotalLayout.setVisibility(View.GONE);
+        imageDetails.setVisibility(View.GONE);
+        textViewTotal.setVisibility(View.GONE);
 
-        layoutPopup.setVisibility(View.INVISIBLE);
-        textViewClose.setVisibility(View.INVISIBLE);
-        textLinearLayout.setVisibility(View.INVISIBLE);
-        textViewChange.setVisibility(View.INVISIBLE);
-        radioButtonLinearLayout.setVisibility(View.INVISIBLE);
-        radioGroup.setVisibility(View.INVISIBLE);
-        radioDay.setVisibility(View.INVISIBLE);
-        radioWeek.setVisibility(View.INVISIBLE);
-        radioMonth.setVisibility(View.INVISIBLE);
-        radioYear.setVisibility(View.INVISIBLE);
-        btnOk.setVisibility(View.INVISIBLE);
+        layoutPopup.setVisibility(View.GONE);
+        textViewClose.setVisibility(View.GONE);
+        textLinearLayout.setVisibility(View.GONE);
+        textViewChange.setVisibility(View.GONE);
+        radioButtonLinearLayout.setVisibility(View.GONE);
+        radioGroup.setVisibility(View.GONE);
+        radioDay.setVisibility(View.GONE);
+        radioWeek.setVisibility(View.GONE);
+        radioMonth.setVisibility(View.GONE);
+        radioYear.setVisibility(View.GONE);
+        btnOk.setVisibility(View.GONE);
 
         //returns the view
         return rootView;
@@ -187,10 +195,48 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
     /**
      * shows the Calendar after the user has clicked the calendar-button
-     * @param v
+     * @param v - the view
      */
     public void showCalendar(View v) {
-        textViewDate.setText(date);
+        textViewDate.setVisibility(View.GONE);
+        buttonCalendar.setVisibility(View.GONE);
+        buttonBefore.setVisibility(View.GONE);
+        buttonAfter.setVisibility(View.GONE);
+        buttonTimeline.setVisibility(View.GONE);
+        pieChartLinearLayout.setVisibility(View.GONE);
+        pieChart.setVisibility(View.GONE);
+
+        calendarLinearLayout.setVisibility(View.VISIBLE);
+        simpleCalendarViewLayout.setVisibility(View.VISIBLE);
+        okCalendarBtn.setVisibility(View.VISIBLE);
+
+        simpleCalendarViewLayout.setMaxDate(actualDayCalendar.getTime());
+        simpleCalendarViewLayout.setShowWeekNumber(true);
+
+    }
+
+    /**
+     * close the calendar
+     */
+    public void closeCalendar() {
+        calendarLinearLayout.setVisibility(View.GONE);
+        simpleCalendarViewLayout.setVisibility(View.GONE);
+        okCalendarBtn.setVisibility(View.GONE);
+
+        textViewDate.setVisibility(View.VISIBLE);
+        buttonCalendar.setVisibility(View.VISIBLE);
+        buttonBefore.setVisibility(View.VISIBLE);
+        buttonAfter.setVisibility(View.VISIBLE);
+        buttonTimeline.setVisibility(View.VISIBLE);
+        pieChartLinearLayout.setVisibility(View.VISIBLE);
+        pieChart.setVisibility(View.VISIBLE);
+    }
+
+    public void confirmCalendar(View v) {
+        long dateCalendar = simpleCalendarViewLayout.getDate();
+        //this.date = this.formatter.format(simpleCalendarViewLayout.setDate(dateCalendar));
+        textViewDate.setText(this.date);
+        closeCalendar();
     }
 
     /**
