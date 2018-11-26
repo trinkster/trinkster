@@ -3,6 +3,7 @@ package ch.bfh.btx8108.trinkster;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.SimpleTimeZone;
 import java.util.Locale;
 import java.util.Date;
@@ -23,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -32,6 +34,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.graphics.Color;
@@ -53,7 +56,10 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 
-public class Statistic extends Fragment implements OnChartValueSelectedListener {
+import ch.bfh.btx8108.trinkster.database.DbHelper;
+import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
+
+public class Statistic extends Fragment implements OnChartValueSelectedListener, OnDateChangeListener {
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
     String date;
@@ -69,14 +75,11 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
     TextView textViewDate;
     ImageButton buttonAfter;
-    Dialog myDialog;
     String timeline = "day";
     ImageButton buttonBefore;
     TextView errorMessage;
     SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formating according to my need
     View rootView;
-    View secondView;
-    View detailView;
     ImageButton backRootView;
     TextView drinkCategoryText;
     String drinkCategoryString;
@@ -108,6 +111,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     LinearLayout calendarLinearLayout;
     CalendarView simpleCalendarViewLayout;
     Button okCalendarBtn;
+    private DrinkDAO drinkDAO;
 
     @Nullable
     @Override
@@ -147,6 +151,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         this.detailsTotalLayout = (LinearLayout) rootView.findViewById(R.id.detailsTotal);
         this.imageDetails = (ImageView) rootView.findViewById(R.id.image);
         this.textViewTotal = (TextView) rootView.findViewById(R.id.total);
+
+        //create database
+        DbHelper dbHelper = new DbHelper(getContext());
+        this.drinkDAO = new DrinkDAO(dbHelper);
 
         //create Popup: activity_timeline_popup
         this.layoutPopup = (LinearLayout) rootView.findViewById(R.id.popupLayout);
@@ -189,6 +197,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         radioYear.setVisibility(View.GONE);
         btnOk.setVisibility(View.GONE);
 
+        //dbHelper.close();
+
         //returns the view
         return rootView;
     }
@@ -210,13 +220,16 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         simpleCalendarViewLayout.setVisibility(View.VISIBLE);
         okCalendarBtn.setVisibility(View.VISIBLE);
 
-        simpleCalendarViewLayout.setMaxDate(actualDayCalendar.getTime());
-        simpleCalendarViewLayout.setShowWeekNumber(true);
+        long dateInLong = dateCalendar.getTime();
 
+        simpleCalendarViewLayout.setMaxDate(actualDayCalendar.getTime());
+        //simpleCalendarViewLayout.setMinDate();
+        simpleCalendarViewLayout.setDate(dateInLong, true, false);
+        simpleCalendarViewLayout.setOnDateChangeListener(this);
     }
 
     /**
-     * close the calendar
+     * closes the calendar
      */
     public void closeCalendar() {
         calendarLinearLayout.setVisibility(View.GONE);
@@ -232,11 +245,26 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         pieChart.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * closes the calender when the ok button was pressed and changes the date
+     * @param v
+     */
     public void confirmCalendar(View v) {
-        long dateCalendar = simpleCalendarViewLayout.getDate();
-        //this.date = this.formatter.format(simpleCalendarViewLayout.setDate(dateCalendar));
         textViewDate.setText(this.date);
         closeCalendar();
+        checkButtonAfter();
+    }
+
+    /**
+     * checks if the button after has to be shown
+     */
+    public void checkButtonAfter () {
+        //show button after only if its not today
+        if (date.equals(actualDay)) {
+            buttonAfter.setVisibility(View.GONE);
+        } else {
+            buttonAfter.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -265,12 +293,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
             this.textViewDate.setText(this.date);
         }
 
-        //show button after only if its not today
-        if (date.equals(actualDay)) {
-            buttonAfter.setVisibility(View.GONE);
-        } else {
-            buttonAfter.setVisibility(View.VISIBLE);
-        }
+        checkButtonAfter();
     }
 
     /**
@@ -299,12 +322,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
             this.textViewDate.setText(this.date);
         }
 
-        //show button after only if its not today
-        if (date.equals(actualDay)) {
-            buttonAfter.setVisibility(View.GONE);
-        } else {
-            buttonAfter.setVisibility(View.VISIBLE);
-        }
+        checkButtonAfter();
     }
 
     /**
@@ -541,6 +559,56 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         detailsTotalLayout.setVisibility(View.VISIBLE);
         imageDetails.setVisibility(View.VISIBLE);
         textViewTotal.setVisibility(View.VISIBLE);
+
+        showEntries();
+    }
+
+    public void showEntries() {
+
+        //check drink category
+        List<Drink> drinkList = drinkDAO.getAllDrinks();
+        ArrayList<Drink> drinkUngesuesste = new ArrayList<>();
+        ArrayList<Drink> drinkSonstige = new ArrayList<>();
+        ArrayList<Drink> drinkKoffeinhaltige = new ArrayList<>();
+        ArrayList<Drink> drinkAlkoholhaltige = new ArrayList<>();
+        for (int i = 0; i<drinkList.size(); i++){
+            Drink drink = drinkList.get(i);
+            Category category = drink.getCategory();
+            String s = category.getName();
+            if (s.equals("Ungesüsste Getränke")) {
+                drinkUngesuesste.add(drink);
+            } else if (s.equals("Sonstige Getränke")) {
+                drinkSonstige.add(drink);
+            } else if (s.equals("Koffeinhaltige Getränke")) {
+                drinkKoffeinhaltige.add(drink);
+            } else if (s.equals("Alkoholhaltige Getränke")) {
+                drinkAlkoholhaltige.add(drink);
+            } else {
+                textViewDate.setText("error in category matching");
+            }
+        }
+
+        /*ArrayList<Drink> alist = new ArrayList<>();
+        if (drinkCategoryString.equals("Ungesüsste Getränke")){
+            alist = drinkUngesuesste;
+        } else if (drinkCategoryString.equals("Sonstige Getränke")) {
+           alist = drinkUngesuesste;
+        } else if (drinkCategoryString.equals("Koffeinhaltige Getränke")) {
+            alist = drinkKoffeinhaltige;
+        } else if (drinkCategoryString.equals("Alkoholhaltige Getränke")) {
+            alist = drinkAlkoholhaltige;
+        } else {
+            textViewDate.setText("error drink category");
+        }*/
+        ArrayAdapter<Drink> drinkArrayAdapter = new ArrayAdapter<>(
+                getContext(),
+                android.R.layout.simple_list_item_multiple_choice,
+                drinkUngesuesste);
+
+        //check drink date
+
+        list_drinks.setBackgroundColor(Color.argb(255, 112, 128, 144));
+        list_drinks.setAdapter(drinkArrayAdapter);
     }
 
     /**
@@ -618,5 +686,20 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     @Override
     public void onNothingSelected() {
 
+    }
+
+    /**
+     * changes the date when the user clicks on an other day
+     * @param view - the calendar view
+     * @param year - the selected year
+     * @param month - the selected month
+     * @param dayOfMonth - the selected day of month
+     */
+    @Override
+    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+        Calendar myCalendar = new GregorianCalendar();
+        myCalendar.set(year, month, dayOfMonth);
+        this.date = formatter.format(myCalendar.getTime());
+        this.dateCalendar = myCalendar.getTime();
     }
 }
