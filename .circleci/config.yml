@@ -24,8 +24,10 @@ jobs:
 #          name: Run Tests
 #          command: ./gradlew lint test
       - run:
-          name: Download Dependencies
+          name: Compile the application
           command: ./gradlew :app:assembleDebug
+      - store_artifacts:
+          path: app/build/outputs/apk
       - store_artifacts:
           path: app/build/reports
           destination: reports
