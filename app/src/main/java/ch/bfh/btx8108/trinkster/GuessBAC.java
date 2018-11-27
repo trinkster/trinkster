@@ -51,9 +51,9 @@ public class GuessBAC extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_guess_bac, container, false);
+        final View rootView = inflater.inflate(R.layout.activity_guess_bac, container, false);
 
-//        this.statusMessageTextView = (TextView) rootView.findViewById(R.id.status_message_text_view_id);
+        this.statusMessageTextView = (TextView) rootView.findViewById(R.id.status_message_text_view_id);
 //        this.batteryLevelTextView = (TextView) rootView.findViewById(R.id.battery_level_text_view_id);
 
 //        this.setStatus(R.string.TEXT_DISCONNECTED);
@@ -62,13 +62,63 @@ public class GuessBAC extends Fragment {
 //        this.useCountButton = (Button) rootView.findViewById(R.id.get_use_count_button_id);
 
         SeekBar simpleSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar); // initiate the Seek bar
+        final TextView seekBarValue = rootView.findViewById(R.id.guessbac_number);
+        final TextView seekBarDescr = rootView.findViewById(R.id.guessbac_number_descr);
 
-//        prepareBACTrack();
+        simpleSeekBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener(){
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        float bacInPromille = ((float) progress)/10;
+                        String bac = String.valueOf(bacInPromille);
+
+                        seekBarValue.setText( bac + " " + getString(R.string.STR_BAC_IN_PROMILLE));
+
+                        switch (bac){
+                            case "0.1": case "0.2":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_01));
+                                break;
+                            case "0.3": case "0.4":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_03));
+                                break;
+                            case "0.5": case "0.6": case "0.7":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_05));
+                                break;
+                            case "0.8": case "0.9":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_08));
+                                break;
+                            case "1.0": case "1.1": case "1.2": case "1.3": case "1.4": case "1.5": case "1.6": case "1.7": case "1.8": case "1.9":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_10));
+                                break;
+                            case "2.0": case "2.1": case "2.2": case "2.3": case "2.4": case "2.5": case "2.6": case "2.7": case "2.8": case "2.9":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_20));
+                                break;
+                            case "3.0":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_30));
+                                break;
+                        }
+
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+
+        prepareBACTrack();
 
         return rootView;
     }
 
     private void prepareBACTrack(){
+        Log.d(LOG_TAG, "prepareBACTrack() enter");
+
         try {
             mAPI = new BACtrackAPI(this.getContext(), mCallbacks, apiKey);
             mContext = this.getContext();
@@ -82,7 +132,30 @@ public class GuessBAC extends Fragment {
             e.printStackTrace();
             this.setStatus(R.string.TEXT_ERR_LOCATIONS_NOT_ENABLED);
         }
+
+        Log.d(LOG_TAG, "prepareBACTrack() leave");
     }
+
+    public void startBreathalyzerComparison(View v){
+        Log.d(LOG_TAG, "startBreathalyzerComparison() enter");
+
+        // check if connected to a bactrack
+        if(!mAPI.isConnected()){
+            // TODO: Maybe show a "connecting"-dialog to inform the user?
+            setStatus(R.string.TEXT_CONNECTING);
+            mAPI.connectToNearestBreathalyzer();
+            // TODO: Show a dialog for successful connection
+        }
+
+
+
+        // prepare blowing process
+
+        Log.d(LOG_TAG, "startBreathalyzerComparison() leave");
+    }
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -99,6 +172,7 @@ public class GuessBAC extends Fragment {
     public void connectNearestClicked(View v) {
         if (mAPI != null) {
             setStatus(R.string.TEXT_CONNECTING);
+
             // Here, thisActivity is the current activity
             if ( ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -230,7 +304,6 @@ public class GuessBAC extends Fragment {
     }
 
     private final BACtrackAPICallbacks mCallbacks = new BACtrackAPICallbacks() {
-
         @Override
         public void BACtrackAPIKeyDeclined(String errorMessage) {
             APIKeyVerificationAlert verify = new APIKeyVerificationAlert();

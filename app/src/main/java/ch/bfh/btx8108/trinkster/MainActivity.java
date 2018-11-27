@@ -144,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Guess BAC
+    public void startBreathalyzerComparison(View v){
+        Log.d(LOG_TAG, "startBreathalyzerComparison() enter");
+        fragment_guessbac.startBreathalyzerComparison(v);
+    }
 
     public void connectNearestClicked(View v){
         Log.d(LOG_TAG, "connectNearestClicked() enter");
