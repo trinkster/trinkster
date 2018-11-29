@@ -429,6 +429,14 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
        closePopup(v);
     }
 
+    public void thisDay(View v) {
+        this.date = this.actualDay;
+        this.dateCalendar = this.actualDayCalendar;
+        this.timeline = "day";
+        this.textViewDate.setText(this.date);
+        closeCalendar();
+    }
+
     /**
      * change timeline to day
      */
@@ -536,6 +544,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         //legend
         Legend l = pieChart.getLegend();
         l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
+        //l.setOrientation(Legend.LegendOrientation.VERTICAL);
         //l.setFormSize(17f);
         //l.setXEntrySpace(7);
         //l.setYEntrySpace(5);
@@ -566,46 +575,14 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     public void showEntries() {
 
         //check drink category
-        List<Drink> drinkList = drinkDAO.getAllDrinks();
-        ArrayList<Drink> drinkUngesuesste = new ArrayList<>();
-        ArrayList<Drink> drinkSonstige = new ArrayList<>();
-        ArrayList<Drink> drinkKoffeinhaltige = new ArrayList<>();
-        ArrayList<Drink> drinkAlkoholhaltige = new ArrayList<>();
-        for (int i = 0; i<drinkList.size(); i++){
-            Drink drink = drinkList.get(i);
-            Category category = drink.getCategory();
-            String s = category.getName();
-            if (s.equals("Ungesüsste Getränke")) {
-                drinkUngesuesste.add(drink);
-            } else if (s.equals("Sonstige Getränke")) {
-                drinkSonstige.add(drink);
-            } else if (s.equals("Koffeinhaltige Getränke")) {
-                drinkKoffeinhaltige.add(drink);
-            } else if (s.equals("Alkoholhaltige Getränke")) {
-                drinkAlkoholhaltige.add(drink);
-            } else {
-                textViewDate.setText("error in category matching");
-            }
-        }
+            List<Drink> drinkList = drinkDAO.getAllDrinks();
+       // List<Drink> drinkList = drinkDAO.getDrinksOfCategory("Su");
 
-        /*ArrayList<Drink> alist = new ArrayList<>();
-        if (drinkCategoryString.equals("Ungesüsste Getränke")){
-            alist = drinkUngesuesste;
-        } else if (drinkCategoryString.equals("Sonstige Getränke")) {
-           alist = drinkUngesuesste;
-        } else if (drinkCategoryString.equals("Koffeinhaltige Getränke")) {
-            alist = drinkKoffeinhaltige;
-        } else if (drinkCategoryString.equals("Alkoholhaltige Getränke")) {
-            alist = drinkAlkoholhaltige;
-        } else {
-            textViewDate.setText("error drink category");
-        }*/
+
         ArrayAdapter<Drink> drinkArrayAdapter = new ArrayAdapter<>(
                 getContext(),
                 android.R.layout.simple_list_item_multiple_choice,
-                drinkUngesuesste);
-
-        //check drink date
+                drinkList);
 
         list_drinks.setBackgroundColor(Color.argb(255, 112, 128, 144));
         list_drinks.setAdapter(drinkArrayAdapter);

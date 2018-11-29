@@ -121,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
         fragment_statistic.changeDateOneDayAfter(v);
     }
 
+    public void thisDay(View v) {
+        fragment_statistic.thisDay(v);
+    }
+
     public void changeDateOneDayBefore(View v) {
         fragment_statistic.changeDateOneDayBefore(v);
     }
