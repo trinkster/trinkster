@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
@@ -56,7 +58,10 @@ public class History extends Fragment {
         Category alkoholhaltige = categoryDAO.createCategory("Alkoholhaltige Getränke", "Bier, Wein, Spirituosen etc.");
 
         drinkDAO = new DrinkDAO(dbHelper);
-        Drink drink = drinkDAO.createDrink(ungesuesste,"Grüntee", 2.5d);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DbHelper.DATE_TIME_FORMAT);
+        String actualDateTime = now.format(formatter);
+        Drink drink = drinkDAO.createDrink(ungesuesste,"Grüntee", 2.5d, actualDateTime);
         Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
         Log.d(LOG_TAG, "ID: " + drink.getId() + ", Inhalt: " + drink.toString());
 

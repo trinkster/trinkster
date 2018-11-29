@@ -12,7 +12,9 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String LOG_TAG = DbHelper.class.getSimpleName();
 
     public static final String DB_NAME = "trinkster.db";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 3;
+
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -38,9 +40,13 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(LOG_TAG, "onUpgrade() enter - oldVersion " + oldVersion + " and newVersion " + newVersion);
 
-        if(newVersion == 2){ // in V2 sind Kategorien noch neu
+        if(newVersion == 2) { // in V2 sind Kategorien noch neu
             db.execSQL(CategoryTable.SQL_CREATE);
         }
 
+        if (newVersion == 3) { // Datum Spalte zur Drink-Tabelle hinzugefügt
+            db.execSQL(DrinkTable.DROP_TABLE_V3);
+            db.execSQL(DrinkTable.SQL_CREATE);
+        }
     }
 }

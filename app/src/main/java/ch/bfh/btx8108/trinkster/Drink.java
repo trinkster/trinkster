@@ -1,5 +1,7 @@
 package ch.bfh.btx8108.trinkster;
 
+import java.time.LocalDateTime;
+
 public class Drink {
     private long id;
 
@@ -7,11 +9,16 @@ public class Drink {
 
     private String name;
     private double quantity;
-    public Drink(long id, Category category, String name, double quantity) {
+
+    private LocalDateTime dateTime;
+
+
+    public Drink(long id, Category category, String name, double quantity, LocalDateTime dateTime) {
         this.id = id;
         this.category = category;
         this.name = name;
         this.quantity = quantity;
+        this.dateTime = dateTime;
     }
 
     public long getId() {
@@ -44,6 +51,14 @@ public class Drink {
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     @Override

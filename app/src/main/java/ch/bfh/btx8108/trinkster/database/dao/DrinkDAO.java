@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,8 @@ public class DrinkDAO {
             DrinkTable.COLUMN_ID,
             DrinkTable.COLUMN_CATEGORY_ID,
             DrinkTable.COLUMN_NAME,
-            DrinkTable.COLUMN_QUANTITY
+            DrinkTable.COLUMN_QUANTITY,
+            DrinkTable.COLUMN_DATE_TIME
     };
 
     private final static String COLUMN_CATEGORY_NAME = "category_name";
@@ -32,11 +35,12 @@ public class DrinkDAO {
         database = dbHelper.getWritableDatabase();
     }
 
-    public Drink createDrink(Category category, String name, double quantity) {
+    public Drink createDrink(Category category, String name, double quantity, String dateTime) {
         ContentValues values = new ContentValues();
         values.put(DrinkTable.COLUMN_CATEGORY_ID, category.getId());
         values.put(DrinkTable.COLUMN_NAME, name);
         values.put(DrinkTable.COLUMN_QUANTITY, quantity);
+        values.put(DrinkTable.COLUMN_DATE_TIME, dateTime);
 
         long insertId = database.insert(DrinkTable.TABLE_DRINK, null, values);
 
@@ -46,7 +50,8 @@ public class DrinkDAO {
                                     + "d." + DrinkTable.COLUMN_NAME + ", "
                                     + "d." + DrinkTable.COLUMN_QUANTITY + ", "
                                     + "d." + DrinkTable.COLUMN_CATEGORY_ID + ", "
-                                    + "c." + CategoryTable.COLUMN_NAME + " " + COLUMN_CATEGORY_NAME +", "
+                                    + "d." + DrinkTable.COLUMN_DATE_TIME + ", "
+                                    + "c." + CategoryTable.COLUMN_NAME + " " + COLUMN_CATEGORY_NAME + ", "
                                     + "c." + CategoryTable.COLUMN_DESCRIPTION
                             + " FROM " + DrinkTable.TABLE_DRINK + " d"
                             + " INNER JOIN " + CategoryTable.TABLE_CATEGORY + " c ON d." + DrinkTable.COLUMN_CATEGORY_ID + " = c." + CategoryTable.COLUMN_ID
@@ -65,6 +70,7 @@ public class DrinkDAO {
         int idIndex = cursor.getColumnIndex(DrinkTable.COLUMN_ID);
         int idName = cursor.getColumnIndex(DrinkTable.COLUMN_NAME);
         int idQuantity = cursor.getColumnIndex(DrinkTable.COLUMN_QUANTITY);
+        int idDateTime = cursor.getColumnIndex(DrinkTable.COLUMN_DATE_TIME);
         int idCategoryIndex = cursor.getColumnIndex(DrinkTable.COLUMN_CATEGORY_ID);
         int idCategoryName = cursor.getColumnIndex(COLUMN_CATEGORY_NAME);
         int idCategoryDescription = cursor.getColumnIndex(CategoryTable.COLUMN_DESCRIPTION);
@@ -72,12 +78,14 @@ public class DrinkDAO {
         long categoryId = cursor.getLong(idCategoryIndex);
         String categoryName = cursor.getString(idCategoryName);
         String categoryDescription = cursor.getString(idCategoryDescription);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DbHelper.DATE_TIME_FORMAT);
+        LocalDateTime dateTime = LocalDateTime.parse(cursor.getString(idDateTime), formatter);
 
         long id = cursor.getLong(idIndex);
         String name = cursor.getString(idName);
         double quantity = cursor.getDouble(idQuantity);
 
-        return new Drink(id, new Category(categoryId, categoryName, categoryDescription), name, quantity);
+        return new Drink(id, new Category(categoryId, categoryName, categoryDescription), name, quantity, dateTime);
     }
 
     public List<Drink> getAllDrinks() {
@@ -87,6 +95,7 @@ public class DrinkDAO {
                 + "d." + DrinkTable.COLUMN_NAME + ", "
                 + "d." + DrinkTable.COLUMN_QUANTITY + ", "
                 + "d." + DrinkTable.COLUMN_CATEGORY_ID + ", "
+                + "d." + DrinkTable.COLUMN_DATE_TIME + ", "
                 + "c." + CategoryTable.COLUMN_NAME + " " + COLUMN_CATEGORY_NAME +", "
                 + "c." + CategoryTable.COLUMN_DESCRIPTION
                 + " FROM " + DrinkTable.TABLE_DRINK + " d"
