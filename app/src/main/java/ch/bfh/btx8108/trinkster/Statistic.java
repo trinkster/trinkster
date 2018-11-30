@@ -31,14 +31,17 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TreeMap;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
+import ch.bfh.btx8108.trinkster.database.dao.StatisticDAO;
 
 public class Statistic extends Fragment implements OnChartValueSelectedListener, OnDateChangeListener {
     private static final String LOG_TAG = Statistic.class.getSimpleName();
@@ -477,23 +480,35 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         pieChart.setTouchEnabled(true);
         pieChart.setOnChartValueSelectedListener(this);
 
+        DbHelper dbHelper = new DbHelper(getContext());
+        StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
+        LocalDateTime localDateTime = LocalDateTime.of(2018, 12, 1, 0, 0);
+        List<StatisticEntry> statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateTime);
+        dbHelper.close();
+
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         ArrayList<Entry> yvalues = new ArrayList<Entry>();
-        yvalues.add(new Entry(20f, 0));
-        yvalues.add(new Entry(5f, 1));
-        yvalues.add(new Entry(2f, 2));
-        yvalues.add(new Entry(3f, 3));
+        this.xVals = new ArrayList<String>();
+        // yvalues.add(new Entry(20f, 0));
+        // yvalues.add(new Entry(5f, 1));
+        // yvalues.add(new Entry(2f, 2));
+        // yvalues.add(new Entry(3f, 3));
+
+        //PieDataSet dataSet = new PieDataSet(yvalues, "Getränkehaushalt");
+        // this.xVals = new ArrayList<String>();
+        // this.xVals.add("Ungesüsste Getränke");
+        // this.xVals.add("Sonstige Getränke");
+        // this.xVals.add("Koffeinhaltige Getränke");
+        // this.xVals.add("Alkoholhaltige Getränke");
+
+        for (int i = 0; i < statistic.size(); i++) {
+            yvalues.add(new Entry(statistic.get(i).getQuantity().floatValue(), i));
+            this.xVals.add(statistic.get(i).getCategory());
+        }
 
         this.dataSet = new PieDataSet(yvalues, "");
-        //PieDataSet dataSet = new PieDataSet(yvalues, "Getränkehaushalt");
-        this.xVals = new ArrayList<String>();
-        this.xVals.add("Ungesüsste Getränke");
-        this.xVals.add("Sonstige Getränke");
-        this.xVals.add("Koffeinhaltige Getränke");
-        this.xVals.add("Alkoholhaltige Getränke");
-
         PieData data = new PieData(this.xVals, this.dataSet);
 
         // In percentage Term

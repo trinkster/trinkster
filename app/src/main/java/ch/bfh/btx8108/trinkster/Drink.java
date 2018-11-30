@@ -2,6 +2,10 @@ package ch.bfh.btx8108.trinkster;
 
 import java.time.LocalDateTime;
 
+/**
+ * Domain-Objekt des Typs Drink (Container für Daten).
+ * Drink repräsentiert ein konsumiertes Getränk.
+ */
 public class Drink {
     private long id;
 

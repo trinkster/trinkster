@@ -1,5 +1,9 @@
 package ch.bfh.btx8108.trinkster;
 
+/**
+ * Domain-Objekt des Typs Category (Container für Daten).
+ * Category ist für die Kategorisierung der Getränke notwendig.
+ */
 public class Category {
     private long id;
     private String name;

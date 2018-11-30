@@ -2,12 +2,11 @@ package ch.bfh.btx8108.trinkster;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +14,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
-import ch.bfh.btx8108.trinkster.database.dao.CategoryDAO;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
 
+/**
+ * Fragment zur Darstellung der History
+ */
 public class History extends Fragment {
 
     private static final String LOG_TAG = History.class.getSimpleName();
 
     private DrinkDAO drinkDAO;
     private Context context;
-
 
     @Nullable
     @Override
@@ -50,22 +48,7 @@ public class History extends Fragment {
         });
 
         DbHelper dbHelper = new DbHelper(getContext());
-
-        CategoryDAO categoryDAO = new CategoryDAO(dbHelper);
-        Category ungesuesste = categoryDAO.createCategory("Ungesüsste Getränke", "Getränke ohne Zucker oder Süssstoff");
-        Category sonstige = categoryDAO.createCategory("Sonstige Getränke", "Fruchtsäfte, Milch etc.");
-        Category koffeinhaltige = categoryDAO.createCategory("Koffeinhaltige Getränke", "Kaffee, Cola etc.");
-        Category alkoholhaltige = categoryDAO.createCategory("Alkoholhaltige Getränke", "Bier, Wein, Spirituosen etc.");
-
         drinkDAO = new DrinkDAO(dbHelper);
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DbHelper.DATE_TIME_FORMAT);
-        String actualDateTime = now.format(formatter);
-        Drink drink = drinkDAO.createDrink(ungesuesste,"Grüntee", 2.5d, actualDateTime);
-        Log.d(LOG_TAG, "Es wurde der folgende Eintrag in die Datenbank geschrieben:");
-        Log.d(LOG_TAG, "ID: " + drink.getId() + ", Inhalt: " + drink.toString());
-
-        Log.d(LOG_TAG, "Folgende Einträge sind in der Datenbank vorhanden:");
         showAllListEntries(rootView);
 
         dbHelper.close();

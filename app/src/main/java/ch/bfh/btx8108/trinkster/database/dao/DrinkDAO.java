@@ -16,11 +16,17 @@ import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.tables.CategoryTable;
 import ch.bfh.btx8108.trinkster.database.tables.DrinkTable;
 
+/**
+ * Data Access Object (DAO) für den Typ Drink.
+ * DAOs sind dafür da, die Zugriffslogik auf DB-Objekte zu kapseln und von der
+ * Repräsentation der Daten (hier Klasse Drink) zu trennen.
+ */
 public class DrinkDAO {
     private static final String LOG_TAG = DrinkDAO.class.getSimpleName();
 
     private SQLiteDatabase database;
 
+    // Stringarray mit den Tabellenspalten für spätere DB-Befehle
     private String[] columns = {
             DrinkTable.COLUMN_ID,
             DrinkTable.COLUMN_CATEGORY_ID,
@@ -31,10 +37,23 @@ public class DrinkDAO {
 
     private final static String COLUMN_CATEGORY_NAME = "category_name";
 
+    /**
+     * Konstruktor, der eine schreibbare Instanz vom dbHelper holt
+     * @param dbHelper
+     */
     public DrinkDAO(DbHelper dbHelper) {
         database = dbHelper.getWritableDatabase();
     }
 
+    /**
+     * createDrink() erzeugt einen Drink-Datensatz in der DB und liefert ein Drink-Domain-
+     * Objekt mit dessen Daten zurück
+     * @param category
+     * @param name
+     * @param quantity
+     * @param dateTime
+     * @return drink
+     */
     public Drink createDrink(Category category, String name, double quantity, String dateTime) {
         ContentValues values = new ContentValues();
         values.put(DrinkTable.COLUMN_CATEGORY_ID, category.getId());
@@ -44,7 +63,7 @@ public class DrinkDAO {
 
         long insertId = database.insert(DrinkTable.TABLE_DRINK, null, values);
 
-        // Beim Abfragen eines Datenbankeintrags wird ein Cursor, d.h. ein Objekt, das pro Column Index den jeweiligen Wert
+        // Beim Abfragen eines Datenbankeintrags wird ein Cursor erstellt, d.h. ein Objekt, das pro Column Index den jeweiligen Wert
         // der Spalte enthält.
         Cursor cursor = database.rawQuery("SELECT d." + DrinkTable.COLUMN_ID + ","
                                     + "d." + DrinkTable.COLUMN_NAME + ", "
@@ -66,28 +85,11 @@ public class DrinkDAO {
         return drink;
     }
 
-    private Drink cursorToDrink(Cursor cursor) {
-        int idIndex = cursor.getColumnIndex(DrinkTable.COLUMN_ID);
-        int idName = cursor.getColumnIndex(DrinkTable.COLUMN_NAME);
-        int idQuantity = cursor.getColumnIndex(DrinkTable.COLUMN_QUANTITY);
-        int idDateTime = cursor.getColumnIndex(DrinkTable.COLUMN_DATE_TIME);
-        int idCategoryIndex = cursor.getColumnIndex(DrinkTable.COLUMN_CATEGORY_ID);
-        int idCategoryName = cursor.getColumnIndex(COLUMN_CATEGORY_NAME);
-        int idCategoryDescription = cursor.getColumnIndex(CategoryTable.COLUMN_DESCRIPTION);
-
-        long categoryId = cursor.getLong(idCategoryIndex);
-        String categoryName = cursor.getString(idCategoryName);
-        String categoryDescription = cursor.getString(idCategoryDescription);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DbHelper.DATE_TIME_FORMAT);
-        LocalDateTime dateTime = LocalDateTime.parse(cursor.getString(idDateTime), formatter);
-
-        long id = cursor.getLong(idIndex);
-        String name = cursor.getString(idName);
-        double quantity = cursor.getDouble(idQuantity);
-
-        return new Drink(id, new Category(categoryId, categoryName, categoryDescription), name, quantity, dateTime);
-    }
-
+    /**
+     * getAllDrinks() lädt alle vorhandenen Drinks aus der Datenbank und gibt sie
+     * als Liste zurück.
+     * @return drinkList
+     */
     public List<Drink> getAllDrinks() {
         List<Drink> drinkList = new ArrayList<>();
 
@@ -114,5 +116,32 @@ public class DrinkDAO {
         cursor.close();
 
         return drinkList;
+    }
+
+    /**
+     * Lädt die Daten eines Cursors in ein Domain-Objekt
+     * @param cursor
+     * @return Drink
+     */
+    private Drink cursorToDrink(Cursor cursor) {
+        int idIndex = cursor.getColumnIndex(DrinkTable.COLUMN_ID);
+        int idName = cursor.getColumnIndex(DrinkTable.COLUMN_NAME);
+        int idQuantity = cursor.getColumnIndex(DrinkTable.COLUMN_QUANTITY);
+        int idDateTime = cursor.getColumnIndex(DrinkTable.COLUMN_DATE_TIME);
+        int idCategoryIndex = cursor.getColumnIndex(DrinkTable.COLUMN_CATEGORY_ID);
+        int idCategoryName = cursor.getColumnIndex(COLUMN_CATEGORY_NAME);
+        int idCategoryDescription = cursor.getColumnIndex(CategoryTable.COLUMN_DESCRIPTION);
+
+        long categoryId = cursor.getLong(idCategoryIndex);
+        String categoryName = cursor.getString(idCategoryName);
+        String categoryDescription = cursor.getString(idCategoryDescription);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DbHelper.DATE_TIME_FORMAT);
+        LocalDateTime dateTime = LocalDateTime.parse(cursor.getString(idDateTime), formatter);
+
+        long id = cursor.getLong(idIndex);
+        String name = cursor.getString(idName);
+        double quantity = cursor.getDouble(idQuantity);
+
+        return new Drink(id, new Category(categoryId, categoryName, categoryDescription), name, quantity, dateTime);
     }
 }
