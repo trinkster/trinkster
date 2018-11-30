@@ -1,60 +1,41 @@
 package ch.bfh.btx8108.trinkster;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SimpleTimeZone;
-import java.util.Locale;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import android.support.annotation.Nullable;
-import android.content.Intent;
-import android.support.design.widget.TabItem;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.design.widget.TabItem;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.ListView;
 import android.widget.Button;
-import android.widget.RadioButton;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.CalendarView.OnDateChangeListener;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.app.Dialog;
-import android.app.DatePickerDialog;
-import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
@@ -247,7 +228,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
     /**
      * closes the calender when the ok button was pressed and changes the date
-     * @param v
+     * @param v - the view
      */
     public void confirmCalendar(View v) {
         textViewDate.setText(this.date);
@@ -435,6 +416,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.timeline = "day";
         this.textViewDate.setText(this.date);
         closeCalendar();
+        checkButtonAfter();
     }
 
     /**
@@ -532,22 +514,21 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         //Disable Drink category in the Pie Chart
         pieChart.setDrawSliceText(false);
 
+       // Enable description on bottom right of the chart
+        pieChart.setDescription(null);
+
         //Text Size and Text Color
-        data.setValueTextSize(17f);
+        data.setValueTextSize(18f);
         data.setValueTextColor(Color.DKGRAY);
-        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        //pieChart.isDrawCenterTextEnabled();
-        //pieChart.isUsePercentValuesEnabled();
-        //pieChart.setUsePercentValues(true);
-        //dataSet.
 
         //legend
         Legend l = pieChart.getLegend();
-        l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
-        //l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        //l.setFormSize(17f);
-        //l.setXEntrySpace(7);
-        //l.setYEntrySpace(5);
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setTextSize(14f);
+        l.setWordWrapEnabled(true);
+        l.setForm(Legend.LegendForm.CIRCLE);
+        l.setFormSize(14f);
+        l.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
 
         pieChart.invalidate(); // refresh
     }
