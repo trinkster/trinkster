@@ -19,12 +19,19 @@
             android:id="@+id/calendar"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:gravity="left"
             android:layout_marginStart="10dp"
+            android:background="@color/colorGrey"
             android:onClick="showCalendar"
             android:src="@drawable/ic_today_black_24dp"/>
         <!--android:layout_marginTop="7dp"
         android:layout_marginEnd="50dp"-->
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/dayBefore"
@@ -32,14 +39,18 @@
             android:layout_width="wrap_content"
             android:onClick="changeDateOneDayBefore"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginRight="5dp"
+            android:background="@color/colorGrey"
             android:src="@drawable/ic_navigate_before_black_24dp" />
 
         <TextView
             android:id="@+id/dateView"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
+            android:onClick="thisDay"
             android:text="Heute"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
@@ -56,18 +67,27 @@
             android:focusable="true"
             android:contentDescription="@string/TEXT_NAVIGATE_NEXT"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginLeft="5dp"
+            android:background="@color/colorGrey"
             android:src="@drawable/ic_navigate_next_black_24dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/timeline"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:src="@drawable/ic_timeline_black_24dp"
-            android:layout_marginTop="7dp"
-            android:layout_gravity="right"
+            android:layout_gravity="center"
+            android:gravity="end"
             android:layout_marginEnd="10dp"
+            android:background="@color/colorGrey"
             android:onClick="changeTimeline"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </LinearLayout>
@@ -94,6 +114,7 @@
             android:text="@string/TEXT_OK"
             android:layout_marginTop="25dp"
             android:layout_gravity="center_horizontal"
+            android:background="@color/colorGrey"
             android:onClick="confirmCalendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -105,6 +126,7 @@
             android:text="Datum zurücksetzen"
             android:layout_marginTop="25dp"
             android:layout_gravity="center_horizontal"
+            android:background="@color/colorGrey"
             android:onClick="thisDay"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -123,19 +145,24 @@
             android:id="@+id/back"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:background="@color/colorGrey"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
             android:onClick="goBack"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="7dp"
             android:layout_marginEnd="5dp"
             android:src="@drawable/ic_navigate_before_black_24dp" />
 
         <TextView
             android:id="@+id/textBack"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="5dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:onClick="goBack"
             android:text="Zurück"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
@@ -301,6 +328,7 @@
             android:text="@string/TEXT_OK"
             android:layout_marginTop="25dp"
             android:layout_gravity="center_horizontal"
+            android:background="@color/colorGrey"
             android:onClick="confirmPopup"/>
 
         <TextView

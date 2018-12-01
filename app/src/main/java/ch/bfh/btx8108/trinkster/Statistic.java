@@ -37,7 +37,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TreeMap;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
@@ -154,7 +153,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.btnOk = (Button) rootView.findViewById(R.id.ok);
 
         //show only rootView without details or popup
-        buttonAfter.setVisibility(View.GONE);
+        buttonAfter.setVisibility(View.INVISIBLE);
         calendarLinearLayout.setVisibility(View.GONE);
         simpleCalendarViewLayout.setVisibility(View.GONE);
         okCalendarBtn.setVisibility(View.GONE);
@@ -245,7 +244,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     public void checkButtonAfter () {
         //show button after only if its not today
         if (date.equals(actualDay)) {
-            buttonAfter.setVisibility(View.GONE);
+            buttonAfter.setVisibility(View.INVISIBLE);
         } else {
             buttonAfter.setVisibility(View.VISIBLE);
         }
@@ -413,6 +412,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
        closePopup(v);
     }
 
+    /**
+     * changes the date to the actual day
+     * @param v - this view
+     */
     public void thisDay(View v) {
         this.date = this.actualDay;
         this.dateCalendar = this.actualDayCalendar;
@@ -473,7 +476,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
     /**
      * sets the pie Chart
-     * @param pieChart - the generetad pie Chart
+     * @param pieChart - the generated pie Chart
      */
     public void setPieChart (PieChart pieChart) {
         pieChart.setUsePercentValues(true);
