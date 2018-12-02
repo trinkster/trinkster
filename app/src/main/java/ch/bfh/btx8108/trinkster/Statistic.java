@@ -236,6 +236,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         textViewDate.setText(this.date);
         closeCalendar();
         checkButtonAfter();
+        setPieChart(this.pieChart);
     }
 
     /**
@@ -277,6 +278,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         }
 
         checkButtonAfter();
+        setPieChart(this.pieChart);
     }
 
     /**
@@ -306,6 +308,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         }
 
         checkButtonAfter();
+        setPieChart(this.pieChart);
     }
 
     /**
@@ -423,6 +426,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.textViewDate.setText(this.date);
         closeCalendar();
         checkButtonAfter();
+        setPieChart(this.pieChart);
     }
 
     /**
@@ -483,10 +487,18 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         pieChart.setTouchEnabled(true);
         pieChart.setOnChartValueSelectedListener(this);
 
+        Calendar c = Calendar.getInstance();
+        c.setTime(dateCalendar);
+        int year = c.get(Calendar.YEAR);
+        int monthJava = c.get(Calendar.MONTH);
+        int month = monthJava + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
         DbHelper dbHelper = new DbHelper(getContext());
         StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
-        LocalDateTime localDateTime = LocalDateTime.of(2018, 12, 1, 0, 0);
-        List<StatisticEntry> statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateTime);
+        //LocalDateTime localDateTime = LocalDateTime.of(2018, 12, 1, 0, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(year, month, day, 0, 0);
+        List<StatisticEntry> statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateTime, localDateTime);
         dbHelper.close();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
@@ -494,17 +506,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         // drawn above each other.
         ArrayList<Entry> yvalues = new ArrayList<Entry>();
         this.xVals = new ArrayList<String>();
-        // yvalues.add(new Entry(20f, 0));
-        // yvalues.add(new Entry(5f, 1));
-        // yvalues.add(new Entry(2f, 2));
-        // yvalues.add(new Entry(3f, 3));
-
-        //PieDataSet dataSet = new PieDataSet(yvalues, "Getränkehaushalt");
-        // this.xVals = new ArrayList<String>();
-        // this.xVals.add("Ungesüsste Getränke");
-        // this.xVals.add("Sonstige Getränke");
-        // this.xVals.add("Koffeinhaltige Getränke");
-        // this.xVals.add("Alkoholhaltige Getränke");
 
         for (int i = 0; i < statistic.size(); i++) {
             yvalues.add(new Entry(statistic.get(i).getQuantity().floatValue(), i));
@@ -567,18 +568,24 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         detailsTotalLayout.setVisibility(View.VISIBLE);
         imageDetails.setVisibility(View.VISIBLE);
         textViewTotal.setVisibility(View.VISIBLE);
-
-        showEntries();
     }
 
-    public void showEntries() {
+    public void showEntries(String category) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(dateCalendar);
+        int year = c.get(Calendar.YEAR);
+        int monthJava = c.get(Calendar.MONTH);
+        int month = monthJava + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
 
         //check drink category
-            List<Drink> drinkList = drinkDAO.getAllDrinks();
-       // List<Drink> drinkList = drinkDAO.getDrinksOfCategory("Su");
+        DbHelper dbHelper = new DbHelper(getContext());
+        StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
+        LocalDateTime localDateTime = LocalDateTime.of(year, month, day, 0, 0);
+        List<DrinkName> drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
 
 
-        ArrayAdapter<Drink> drinkArrayAdapter = new ArrayAdapter<>(
+        ArrayAdapter<DrinkName> drinkArrayAdapter = new ArrayAdapter<>(
                 getContext(),
                 android.R.layout.simple_list_item_multiple_choice,
                 drinkList);
@@ -611,10 +618,24 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      * @param categoryText - the shown text with the total, the drink category and the date
      */
     public void totalText(String categoryText) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(dateCalendar);
+        int year = c.get(Calendar.YEAR);
+        int monthJava = c.get(Calendar.MONTH);
+        int month = monthJava + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DbHelper dbHelper = new DbHelper(getContext());
+        StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
+        //LocalDateTime localDateTime = LocalDateTime.of(2018, 12, 1, 0, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(year, month, day, 0, 0);
+        double total = statisticDAO.totalQuantityForACategoryAndDay(categoryText, localDateTime, localDateTime);
+        dbHelper.close();
+
         textViewTotal.setText("Du hast am "
                 + date //day
                 + " insgesamt "
-                + 6 //total
+                + total //total
                 + "dl "
                 + categoryText //category
                 + " getrunken.");
@@ -653,7 +674,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         drinkCategoryText.setText(this.drinkCategoryString);
         totalText(this.drinkCategoryString);
         changeImage(index);
-        //set listView --> data from database
+        showEntries(this.drinkCategoryString);
     }
 
     /**
@@ -661,7 +682,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      */
     @Override
     public void onNothingSelected() {
-
+        this.pieChart.setDrawSliceText(false);
     }
 
     /**

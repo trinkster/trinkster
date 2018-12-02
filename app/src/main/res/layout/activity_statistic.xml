@@ -210,7 +210,7 @@
         <ListView
             android:id="@+id/listview_drinks"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
