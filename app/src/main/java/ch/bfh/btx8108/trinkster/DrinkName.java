@@ -16,4 +16,10 @@ public class DrinkName {
     public Double getQuantity() {
         return quantity;
     }
+
+    @Override
+    public String toString() {
+        return name + ", " + quantity;
+    }
+
 }

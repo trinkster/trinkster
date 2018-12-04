@@ -73,21 +73,26 @@ public class StatisticDAO {
         DrinkName drink;
 
         while(!cursor.isAfterLast()) {
-            //drink = cursorToDrink(cursor);
-            //drinkList.add(drink);
-            //Log.d(LOG_TAG, "ID: " + drink.getId() + ", Inhalt: " + drink.toString());
-            int idName = cursor.getColumnIndex(DrinkTable.COLUMN_NAME);
-            int idQuantity = cursor.getColumnIndex(DrinkTable.COLUMN_QUANTITY);
-            String name = cursor.getString(idName);
-            Double quantity = cursor.getDouble(idQuantity);
-            drinkList.add(new DrinkName(name, quantity));
-            Log.d(LOG_TAG, "Name: " + name + ", Inhalt: " + quantity);
+            drink = cursorToDrink(cursor);
+            drinkList.add(drink);
+            Log.d(LOG_TAG, "Name: " + drink.getName() + ", Quantity: " + drink.getQuantity());
             cursor.moveToNext();
         }
 
         cursor.close();
 
+        Log.d(LOG_TAG, "DrinkList: " + drinkList);
         return drinkList;
+
+    }
+
+    private DrinkName cursorToDrink(Cursor cursor) {
+        int idName = cursor.getColumnIndex(DrinkTable.COLUMN_NAME);
+        int idQuantity = cursor.getColumnIndex(DrinkTable.COLUMN_QUANTITY);
+        String name = cursor.getString(idName);
+        Double quantity = cursor.getDouble(idQuantity);
+
+        return new DrinkName(name, quantity);
     }
 
     public double totalQuantityForACategoryAndDay(String category, LocalDateTime localDateTimeBegin, LocalDateTime localDateTimeEnd) {

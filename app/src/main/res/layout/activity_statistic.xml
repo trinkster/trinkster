@@ -175,6 +175,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pieChartLayout"
         android:layout_marginTop="55dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -183,6 +184,18 @@
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="350dp" />
+
+        <TextView
+            android:id="@+id/noPieChart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Für dieses Datum sind keine Einträge erfasst."
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
 
     </LinearLayout>
 
