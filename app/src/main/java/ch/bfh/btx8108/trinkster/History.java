@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +20,29 @@ import java.util.List;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
+import ch.bfh.btx8108.trinkster.HistoryAddFragment;
 
 /**
  * Fragment zur Darstellung der History
  */
-public class History extends Fragment {
+public class History extends Fragment{
 
     private static final String LOG_TAG = History.class.getSimpleName();
 
     private DrinkDAO drinkDAO;
     private Context context;
+
+    static HistoryFragmentListener historyFragmentListener;
+
+    public History() {
+
+    }
+
+    public static History createInstance(HistoryFragmentListener listener) {
+        History historyFragment = new History();
+        historyFragment.historyFragmentListener = listener;
+        return historyFragment;
+    }
 
     @Nullable
     @Override
@@ -37,15 +52,6 @@ public class History extends Fragment {
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 
         textView.setText( "HISTORY-SCREEN" );
-
-        // prepare FloatingActionButton
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
 
         DbHelper dbHelper = new DbHelper(getContext());
         drinkDAO = new DrinkDAO(dbHelper);
@@ -69,4 +75,14 @@ public class History extends Fragment {
         drinkListView.setBackgroundColor(Color.argb(255, 112, 128, 144));
         drinkListView.setAdapter(drinkArrayAdapter);
     }
+
+    public void addDrink(View rootView){
+        Log.d(LOG_TAG, "addDrink(): enter");
+
+
+        Log.d(LOG_TAG, "addDrink(): SWITCH VIEW");
+        historyFragmentListener.onSwitchToNextFragment();
+
+    }
+
 }
