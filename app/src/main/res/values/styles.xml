@@ -9,14 +9,25 @@
         <item name="android:colorBackground">@android:color/background_light</item>
     </style>
 
-    <style name="statusBarStyle" parent="AppTheme">
+    <style name="statusBarStyle" parent="@style/AppTheme">
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="customTabTextAppearance" parent="@style/AppTheme">
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">17sp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorSliderFill</item>
+        <item name="android:background">@android:color/background_light</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
