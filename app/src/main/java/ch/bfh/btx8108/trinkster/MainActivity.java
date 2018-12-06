@@ -1,5 +1,6 @@
 package ch.bfh.btx8108.trinkster;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,14 +19,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private int NR_OF_FRAGMENTS = 3;
+    private static final int NR_OF_FRAGMENTS = 3;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
-    private History fragment_history;
-    private Statistic fragment_statistic;
-    private GuessBAC fragment_guessbac;
+    private static History fragment_history;
+    private static Statistic fragment_statistic;
+    private static GuessBAC fragment_guessbac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +69,52 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onBackPressed() {
+        if(mViewPager.getCurrentItem() == 0) {
+            if (mSectionsPagerAdapter.getItem(0) instanceof HistoryAddFragment) {
+                ((HistoryAddFragment) mSectionsPagerAdapter.getItem(0)).backPressed();
+            }
+            else if (mSectionsPagerAdapter.getItem(0) instanceof History) {
+                finish();
+            }
+        }
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        private final class HistoryListener implements HistoryFragmentListener {
+            public void onSwitchToNextFragment() {
+                mFragmentManager.beginTransaction().remove(mFragmentAtPos0).commitNow();
+
+                if (mFragmentAtPos0 instanceof History){
+                    mFragmentAtPos0 = HistoryAddFragment.createInstance(listener);
+                }else{ // Instance of NextFragment
+                    mFragmentAtPos0 = History.createInstance(listener);
+                }
+                notifyDataSetChanged();
+            }
+        }
+
+        private final FragmentManager mFragmentManager;
+        public Fragment mFragmentAtPos0;
+        HistoryListener listener = new HistoryListener();
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            mFragmentManager = fm;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return fragment_history;
+                    if(mFragmentAtPos0 == null){
+                        mFragmentAtPos0 = History.createInstance(listener);
+                    }
+                    return mFragmentAtPos0;
                 case 1:
                     return fragment_statistic;
                 case 2:
@@ -92,6 +126,30 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() { return NR_OF_FRAGMENTS; }
+
+        @Override
+        public int getItemPosition(Object object)
+        {
+            if (object instanceof History && mFragmentAtPos0 instanceof HistoryAddFragment) {
+                return POSITION_NONE;
+            }
+            if (object instanceof HistoryAddFragment && mFragmentAtPos0 instanceof History) {
+                return POSITION_NONE;
+            }
+            return POSITION_UNCHANGED;
+        }
+    }
+
+    public History getFragment_history() {
+        return fragment_history;
+    }
+
+    public Statistic getFragment_statistic() {
+        return fragment_statistic;
+    }
+
+    public GuessBAC getFragment_guessbac() {
+        return fragment_guessbac;
     }
 
     /*
@@ -105,6 +163,12 @@ public class MainActivity extends AppCompatActivity {
 
     Nachfolgend ein paar Beispiele:
      */
+
+    // History
+    public void addDrink(View v){
+
+        fragment_history.addDrink(v);
+    }
 
     //Statistic
     public void showCalendar(View v) {
@@ -149,14 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Guess BAC
     public void startBreathalyzerComparison(View v){
-        Log.d(LOG_TAG, "startBreathalyzerComparison() enter");
         fragment_guessbac.startBreathalyzerComparison(v);
-    }
-
-    public void connectNearestClicked(View v){
-        Log.d(LOG_TAG, "connectNearestClicked() enter");
-
-        fragment_guessbac.connectNearestClicked(v);
     }
 
     public void disconnectClicked(View v){
@@ -179,7 +236,4 @@ public class MainActivity extends AppCompatActivity {
         fragment_guessbac.requestBatteryVoltageClicked(v);
     }
 
-    public void startBlowProcessClicked(View v) {
-        fragment_guessbac.startBlowProcessClicked(v);
-    }
 }
