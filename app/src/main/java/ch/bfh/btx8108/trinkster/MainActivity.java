@@ -216,24 +216,4 @@ public class MainActivity extends AppCompatActivity {
         fragment_guessbac.startBreathalyzerComparison(v);
     }
 
-    public void disconnectClicked(View v){
-        fragment_guessbac.disconnectClicked(v);
-    }
-
-    public void getFirmwareVersionClicked(View v){
-        fragment_guessbac.getFirmwareVersionClicked(v);
-    }
-
-    public void getSerialNumberClicked(View v){
-        fragment_guessbac.getSerialNumberClicked(v);
-    }
-
-    public void requestUseCountClicked(View v){
-        fragment_guessbac.requestUseCountClicked(v);
-    }
-
-    public void requestBatteryVoltageClicked(View v){
-        fragment_guessbac.requestBatteryVoltageClicked(v);
-    }
-
 }

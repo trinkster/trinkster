@@ -31,8 +31,6 @@ public class GuessBAC extends Fragment {
     private static final String LOG_TAG = GuessBAC.class.getSimpleName();
     private static final byte PERMISSIONS_FOR_SCAN = 100;
 
-    private static String TAG = "GuessBAC";
-
     private TextView statusMessageTextView;
     private TextView batteryLevelTextView;
 
@@ -43,6 +41,8 @@ public class GuessBAC extends Fragment {
     private Button useCountButton;
 
     private Context mContext;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
 
     private String apiKey = "08ee704da98a4865b0fbf46117c4be";
     private int MY_PERMISSIONS_REQUEST_BLUETOOTH;
@@ -117,7 +117,7 @@ public class GuessBAC extends Fragment {
     }
 
     private void prepareBACTrack(){
-        Log.d(LOG_TAG, "prepareBACTrack() enter");
+        Log.v(LOG_TAG, "prepareBACTrack() enter");
 
         try {
             mAPI = new BACtrackAPI(this.getContext(), mCallbacks, apiKey);
@@ -133,29 +133,54 @@ public class GuessBAC extends Fragment {
             this.setStatus(R.string.TEXT_ERR_LOCATIONS_NOT_ENABLED);
         }
 
-        Log.d(LOG_TAG, "prepareBACTrack() leave");
+        Log.v(LOG_TAG, "prepareBACTrack() leave");
     }
 
     public void startBreathalyzerComparison(View v){
-        Log.d(LOG_TAG, "startBreathalyzerComparison() enter");
+        Log.v(LOG_TAG, "startBreathalyzerComparison() enter");
 
-        // check if connected to a bactrack
-        if(!mAPI.isConnected()){
-            // TODO: Maybe show a "connecting"-dialog to inform the user?
-            setStatus(R.string.TEXT_CONNECTING);
-            mAPI.connectToNearestBreathalyzer();
-            // TODO: Show a dialog for successful connection
+        builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+
+        if (mAPI != null) {
+            // check if connected to a bactrack
+            if(!mAPI.isConnected()){
+                Log.d(LOG_TAG, "startBreathalyzerComparison(): not yet connected to the bactrack but trying to connect...");
+                builder.setTitle(R.string.DIALOG_NO_BREATHALYZER_TITLE).setMessage(R.string.DIALOG_NO_BREATHALYZER_MESSAGE)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with connecting
+                                setStatus(R.string.TEXT_CONNECTING);
+
+                                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                        && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    ActivityCompat.requestPermissions(getActivity(),
+                                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_FOR_SCAN);
+                                } else {
+                                    Log.d(LOG_TAG, "startBreathalyzerComparison(): Permission already granted, start connecting.");
+                                    mAPI.connectToNearestBreathalyzer();
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_info).show();
+            } else {
+                // already connected, prepare blowing process
+                Log.d(LOG_TAG, "startBreathalyzerComparison() already connected, prepare blowing process");
+                boolean result = mAPI.startCountdown();
+
+                if (!result)
+                    Log.e(LOG_TAG, "mAPI.startCountdown() failed");
+                else
+                    Log.d(LOG_TAG, "startBreathalyzerComparison() Blow process start requested");
+            }
         }
 
-
-
-        // prepare blowing process
-
-        Log.d(LOG_TAG, "startBreathalyzerComparison() leave");
+        Log.v(LOG_TAG, "startBreathalyzerComparison() leave");
     }
-
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -169,113 +194,130 @@ public class GuessBAC extends Fragment {
         }
     }
 
-    public void connectNearestClicked(View v) {
-        if (mAPI != null) {
-            setStatus(R.string.TEXT_CONNECTING);
-
-            // Here, thisActivity is the current activity
-            if ( ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        this.getActivity(),
-                        new String[]{
-                                Manifest.permission.ACCESS_COARSE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION},
-                        PERMISSIONS_FOR_SCAN);
-            } else {
-                /**
-                 * Permission already granted, start scan.
-                 */
-                mAPI.connectToNearestBreathalyzer();
-            }
-        }
-    }
-
     public void disconnectClicked(View v) {
         if (mAPI != null) {
             mAPI.disconnect();
         }
     }
 
-    public void getFirmwareVersionClicked(View v) {
-        boolean result = false;
-        if (mAPI != null) {
-            result = mAPI.getFirmwareVersion();
-        }
-        if (!result)
-            Log.e(TAG, "mAPI.getFirmwareVersion() failed");
-        else
-            Log.d(TAG, "Firmware version requested");
-    }
-
-    public void getSerialNumberClicked(View view) {
-        boolean result = false;
-        if (mAPI != null) {
-            result = mAPI.getSerialNumber();
-        }
-        if (!result)
-            Log.e(TAG, "mAPI.getSerialNumber() failed");
-        else
-            Log.d(TAG, "Serial Number requested");
-    }
-
-    public void requestUseCountClicked(View view) {
-        boolean result = false;
-        if (mAPI != null) {
-            result = mAPI.getUseCount();
-        }
-        if (!result)
-            Log.e(TAG, "mAPI.requestUseCount() failed");
-        else
-            Log.d(TAG, "Use count requested");
-    }
-
-    public void requestBatteryVoltageClicked(View view) {
-        boolean result = false;
-        if (mAPI != null) {
-            result = mAPI.getBreathalyzerBatteryVoltage();
-        }
-        if (!result)
-            Log.e(TAG, "mAPI.getBreathalyzerBatteryVoltage() failed");
-        else
-            Log.d(TAG, "Battery voltage requested");
-    }
-
-
-    public void startBlowProcessClicked(View v) {
-        boolean result = false;
-        if (mAPI != null) {
-            result = mAPI.startCountdown();
-        }
-        if (!result)
-            Log.e(TAG, "mAPI.startCountdown() failed");
-        else
-            Log.d(TAG, "Blow process start requested");
-    }
-
     private void setStatus(int resourceId) {
         this.setStatus(this.getResources().getString(resourceId));
     }
 
+    // FIXME: remove this at the end
     private void setStatus(final String message) {
         this.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, message);
+                //Log.d(LOG_TAG, message);
                 statusMessageTextView.setText(String.format("Status:\n%s", message));
             }
         });
     }
 
-    private void setBatteryStatus(final String message) {
+    private void showCountdownDialog(final int currentcountdown){
         this.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, message);
-                batteryLevelTextView.setText(String.format("\n%s", message));
+                Log.v(LOG_TAG, "showCountdownDialog() enter");
+                Log.d(LOG_TAG, "showCountdownDialog() countdown: " + currentcountdown);
+
+                if( dialog != null && dialog.isShowing()){
+                    dialog.dismiss();
+                }
+
+                builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+                builder.setTitle(getString(R.string.DIALOG_BREATHALYZER_COUNTDOWN_TITLE));
+                builder.setMessage(getString(R.string.DIALOG_BREATHALYZER_COUNTDOWN_MESSAGE) + " " + currentcountdown).create();
+
+                dialog = builder.create();
+                dialog.show();
+
             }
         });
     }
+
+    private void showBlowingDialog(){
+        this.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.v(LOG_TAG, "showBlowingDialog() enter");
+
+                if( dialog != null && dialog.isShowing()){
+                    int titleId = getResources().getIdentifier( "alertTitle", "id", "android" );
+
+                    // the following condition makes sure that the dialog is only shown once when blowing is requested
+                    // this is needed because the communication between the breathalyzer and the app is async
+                    // otherwise a few hunderds of dialog would pop up
+                    // I know this is a dirty hack but I ain't got time for pretty stuff now.
+                    if (titleId > 0) {
+                        TextView dialogTitle = (TextView) dialog.findViewById(titleId);
+                        if (dialogTitle != null) {
+                            if(dialogTitle.getText().toString().equals(getString(R.string.DIALOG_BREATHALYZER_KEEPBLOWING_TITLE))){
+                                Log.d(LOG_TAG, "showBlowingDialog(): already displaying the dialog, not going to display it again...");
+                            } else {
+                                dialog.dismiss();
+
+                                builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+                                builder.setTitle(getString(R.string.DIALOG_BREATHALYZER_KEEPBLOWING_TITLE));
+                                builder.setMessage(getString(R.string.DIALOG_BREATHALYZER_KEEPBLOWING_MESSAGE)).create();
+
+                                dialog = builder.create();
+                                dialog.show();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void showAnalyzingDialog(){
+        this.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.v(LOG_TAG, "showAnalyzingDialog() enter");
+
+                if( dialog != null && dialog.isShowing()){
+                    dialog.dismiss();
+                }
+
+                // show dialog for analyzing
+                builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+                builder.setTitle(R.string.DIALOG_BREATHALYZER_ANALYZING_TITLE)
+                        .setMessage(getString(R.string.DIALOG_BREATHALYZER_ANALYZING_MESSAGE))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.v(LOG_TAG, "showAnalyzingDialog(): leave");
+                            }
+                        }).setIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert)).show();
+            }
+        });
+    }
+
+    private void showResultDialog(final float measuredResult){
+        this.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.v(LOG_TAG, "showResultDialog() enter");
+                Log.d(LOG_TAG, "showResultDialog() result: " + measuredResult);
+
+                if( dialog != null && dialog.isShowing()){
+                    dialog.dismiss();
+                }
+
+                // show dialog for results
+                builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+                builder.setTitle(R.string.DIALOG_BREATHALYZER_ANALYZED_TITLE).setMessage(getString(R.string.DIALOG_BREATHALYZER_ANALYZED_MESSAGE) + " " + measuredResult + " Promille")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.v(LOG_TAG, "showResultDialog(): results leave");
+                            }
+                        }).setIcon(android.R.drawable.ic_dialog_info).show();
+            }
+        });
+    }
+
 
     private class APIKeyVerificationAlert extends AsyncTask<String, Void, String> {
         @Override
@@ -303,6 +345,9 @@ public class GuessBAC extends Fragment {
         }
     }
 
+
+    // --------------- Handle BACtrackCallbacks
+
     private final BACtrackAPICallbacks mCallbacks = new BACtrackAPICallbacks() {
         @Override
         public void BACtrackAPIKeyDeclined(String errorMessage) {
@@ -317,6 +362,15 @@ public class GuessBAC extends Fragment {
 
         @Override
         public void BACtrackConnected(BACTrackDeviceType bacTrackDeviceType) {
+            // show dialog for successful connection
+            builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+            builder.setTitle(R.string.DIALOG_BREATHALYZER_CONNECTED_TITLE).setMessage(R.string.DIALOG_BREATHALYZER_CONNECTED__MESSAGE)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d(LOG_TAG, "BACtrackConnected(): connection successful");
+                        }
+                    }).setIcon(android.R.drawable.ic_dialog_info).show();
+
             setStatus(R.string.TEXT_CONNECTED);
         }
 
@@ -328,8 +382,10 @@ public class GuessBAC extends Fragment {
         @Override
         public void BACtrackDisconnected() {
             setStatus(R.string.TEXT_DISCONNECTED);
-            setBatteryStatus("");
-            setCurrentFirmware(null);
+//            setBatteryStatus("");
+//            setCurrentFirmware(null);
+
+
         }
         @Override
         public void BACtrackConnectionTimeout() {
@@ -338,32 +394,64 @@ public class GuessBAC extends Fragment {
 
         @Override
         public void BACtrackFoundBreathalyzer(BACtrackAPI.b BACtrackDevice) {
-            Log.d(TAG, "Found breathalyzer : " + BACtrackDevice.toString());
+            Log.v(LOG_TAG, "BACtrackFoundBreathalyzer(): enter");
+            Log.d(LOG_TAG, "BACtrackFoundBreathalyzer(): found breathalyzer - '" + BACtrackDevice.toString() + "'");
+            Log.v(LOG_TAG, "BACtrackFoundBreathalyzer(): leave");
         }
 
         @Override
         public void BACtrackCountdown(int currentCountdownCount) {
+            Log.v(LOG_TAG, "BACtrackCountdown(): enter");
+
+            showCountdownDialog(currentCountdownCount);
+
+            Log.d(LOG_TAG, "BACtrackCountdown(): " + getString(R.string.TEXT_COUNTDOWN) + " " + currentCountdownCount);
             setStatus(getString(R.string.TEXT_COUNTDOWN) + " " + currentCountdownCount);
+            Log.v(LOG_TAG, "BACtrackCountdown(): leave");
         }
 
         @Override
         public void BACtrackStart() {
+            Log.v(LOG_TAG, "BACtrackStart(): enter");
+
+            showBlowingDialog();
+
+            Log.d(LOG_TAG, "BACtrackStart(): " + getString(R.string.TEXT_BLOW_NOW));
             setStatus(R.string.TEXT_BLOW_NOW);
+            Log.v(LOG_TAG, "BACtrackStart(): leave");
         }
 
         @Override
         public void BACtrackBlow() {
+            Log.v(LOG_TAG, "BACtrackBlow(): enter");
+
+            Log.d(LOG_TAG, "BACtrackBlow(): " + getString(R.string.TEXT_KEEP_BLOWING));
             setStatus(R.string.TEXT_KEEP_BLOWING);
+            Log.v(LOG_TAG, "BACtrackBlow(): leave");
         }
 
         @Override
         public void BACtrackAnalyzing() {
+            Log.v(LOG_TAG, "BACtrackAnalyzing(): enter");
+
+            // TODO: maybe show dialog with indefinite progress bar?
+            showAnalyzingDialog();
+
+            Log.d(LOG_TAG, "BACtrackAnalyzing(): " + getString(R.string.TEXT_ANALYZING));
             setStatus(R.string.TEXT_ANALYZING);
+            Log.v(LOG_TAG, "BACtrackAnalyzing(): leave");
         }
 
         @Override
         public void BACtrackResults(float measuredBac) {
+            Log.v(LOG_TAG, "BACtrackResults(): enter");
+
+            Log.d(LOG_TAG, "BACtrackResults(): " + getString(R.string.TEXT_FINISHED) + " " + measuredBac);
             setStatus(getString(R.string.TEXT_FINISHED) + " " + measuredBac);
+
+            showResultDialog(measuredBac);
+
+            Log.v(LOG_TAG, "BACtrackResults(): leave");
         }
 
         @Override
@@ -379,7 +467,7 @@ public class GuessBAC extends Fragment {
 
         @Override
         public void BACtrackUseCount(int useCount) {
-            Log.d(TAG, "UseCount: " + useCount);
+            Log.d(LOG_TAG, "UseCount: " + useCount);
             // C6/C8 bug in hardware does not allow getting use count
             if (useCount == 4096)
             {
@@ -398,7 +486,7 @@ public class GuessBAC extends Fragment {
 
         @Override
         public void BACtrackBatteryLevel(int level) {
-            setBatteryStatus(getString(R.string.TEXT_BATTERY_LEVEL) + " " + level);
+//            setBatteryStatus(getString(R.string.TEXT_BATTERY_LEVEL) + " " + level);
 
         }
 
@@ -410,6 +498,7 @@ public class GuessBAC extends Fragment {
     };
 
 
+    // FIXME: DO I EVEN NEED THIS?
     public void setCurrentFirmware(@Nullable String currentFirmware) {
         this.currentFirmware = currentFirmware;
 
@@ -431,8 +520,7 @@ public class GuessBAC extends Fragment {
             });
             return;
         }
-        else if (firmwareSplit.length >= 1
-                && Long.valueOf(firmwareSplit[0]) >= Long.valueOf("201510150003")) {
+        else if (firmwareSplit.length >= 1 && Long.valueOf(firmwareSplit[0]) >= Long.valueOf("201510150003")) {
             this.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

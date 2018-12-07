@@ -33,6 +33,20 @@
     <string name="BTN_COMPARE_BREATHALYZER">Breathalyzer-Vergleich</string>
     <string name="STR_BAC_IN_PROMILLE">BAK in Promille</string>
 
+    <string name="DIALOG_NO_BREATHALYZER_TITLE">Breathalyzer noch nicht verbunden</string>
+    <string name="DIALOG_NO_BREATHALYZER_MESSAGE">Leider ist aktuell noch kein Breathalyzer mit dem Handy verbunden - möchtest du das jetzt nachholen?</string>
+    <string name="DIALOG_BREATHALYZER_CONNECTED_TITLE">Breathalyzer erfolgreich verbunden</string>
+    <string name="DIALOG_BREATHALYZER_CONNECTED__MESSAGE">Der Breathalyzer wurde erfolgreich mit dem Handy verbunden - Du kannst den Vergleich nun starten.</string>
+    <string name="DIALOG_BREATHALYZER_COUNTDOWN_TITLE">Countdown</string>
+    <string name="DIALOG_BREATHALYZER_COUNTDOWN_MESSAGE">Bitte bereitmachen zum pusten!\nAktueller Countdown: </string>
+    <string name="DIALOG_BREATHALYZER_KEEPBLOWING_TITLE">Jetzt Pusten</string>
+    <string name="DIALOG_BREATHALYZER_KEEPBLOWING_MESSAGE">Bitte jetzt kräftig pusten!</string>
+    <string name="DIALOG_BREATHALYZER_ANALYZING_TITLE">Analysieren...</string>
+    <string name="DIALOG_BREATHALYZER_ANALYZING_MESSAGE">Du kannst das pusten einstellen. Deine aktuell Blutalkoholkonzentration (BAK) wird jetzt ausgewertet. </string>
+    <string name="DIALOG_BREATHALYZER_ANALYZED_TITLE">Dein aktueller BAK</string>
+    <string name="DIALOG_BREATHALYZER_ANALYZED_MESSAGE">Deine aktuelle Blutalkoholkonzentration (BAK) beträgt </string>
+
+
     <!-- Quelle https://www.kenn-dein-limit.info/promille-und-folgen.html -->
     <string name="PROMILLE_AB_01">Schon kleine Mengen Alkohol wirken enthemmend. Wir werden kontaktfreudiger, unsere Stimmung ist gelöst. Was uns noch nicht auffällt: Bereits jetzt schätzen wir Entfernungen falsch ein.</string>
     <string name="PROMILLE_AB_03">Bei diesem Wert tritt häufig eine leichte Verminderung der Sehleistung ein. Unsere Aufmerksamkeit und das Reaktionsvermögen lassen nach, unsere Kritikfähigkeit ist herabgesetzt und die Risikobereitschaft steigt. </string>
