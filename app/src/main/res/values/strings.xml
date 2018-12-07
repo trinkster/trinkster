@@ -80,4 +80,7 @@
     <string name="TEXT_ERR_BLOW_ERROR">Error: Blow process failed.</string>
     <string name="TEXT_ERR_LOCATIONS_NOT_ENABLED">Error: Location services are not enabled.</string>
 
+    <!-- History Add Strings -->
+    <string name="DRINK_NAME">Getränkename</string>
+    <string name="DRINK_AMOUNT">Getränkemenge in dl</string>
 </resources>

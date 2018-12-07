@@ -35,7 +35,7 @@ public class HistoryAddFragment extends Fragment {
 
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 
-        textView.setText( "HISTORY-SCREEN" );
+        textView.setText( "Neues Getränk hinzufügen" );
 
         return rootView;
     }
