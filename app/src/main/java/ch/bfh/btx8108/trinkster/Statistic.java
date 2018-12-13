@@ -44,7 +44,7 @@ import ch.bfh.btx8108.trinkster.database.dao.StatisticDAO;
 public class Statistic extends Fragment implements OnChartValueSelectedListener, OnDateChangeListener {
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
-    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formating according to my need
+    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formatting according to my need
     View rootView;
     ListView list_drinks;
     PieChart pieChart;
@@ -131,7 +131,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.buttonTimeline = (ImageButton) rootView.findViewById(R.id.timeline);
         this.pieChartLinearLayout = (LinearLayout) rootView.findViewById(R.id.pieChartLayout);
         this.pieChart = (PieChart) rootView.findViewById(R.id.piechart);
-        setPieChart(pieChart);
+        //setPieChart(pieChart);
         this.textPieChart = (TextView) rootView.findViewById(R.id.noPieChart);
 
         this.errorMessage = (TextView) rootView.findViewById(R.id.error_message);
@@ -175,6 +175,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         calendarLinearLayout.setVisibility(View.GONE);
         simpleCalendarViewLayout.setVisibility(View.GONE);
         okCalendarBtn.setVisibility(View.GONE);
+        checkPieChart();
 
         greyBarDetailsLayout.setVisibility(View.GONE);
         backRootView.setVisibility(View.GONE);
@@ -205,6 +206,26 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     }
 
     /**
+     * checks if the pie Chart is empty or not
+     */
+    public void checkPieChart(){
+        setPieChart(pieChart);
+        //pieChart.invalidate(); // refresh
+        this.pieChart.refreshDrawableState();
+
+        boolean check = this.pieChart.isEmpty();
+        Log.d(LOG_TAG, "checkPieChart() enter: " + check);
+
+        if(check){
+            this.pieChart.setVisibility(View.GONE);
+            this.textPieChart.setVisibility(View.VISIBLE);
+        } else {
+            this.pieChart.setVisibility(View.VISIBLE);
+            this.textPieChart.setVisibility(View.GONE);
+        }
+    }
+
+    /**
      * shows the Calendar after the user has clicked the calendar-button
      * @param v - the view
      */
@@ -223,9 +244,21 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         long dateInLong = dateCalendar.getTime();
 
+        if (timeline.equals("day")){
+            simpleCalendarViewLayout.setDate(dateInLong, true, false);
+        } else if (timeline.equals("week")){
+            long weekInLong = weekDateCalendar.getTime();
+            simpleCalendarViewLayout.setDate(weekInLong, true, false);
+        } else if (timeline.equals("month")) {
+            long monthInLong = monthDateCalendar.getTime();
+        } else if (timeline.equals("year")){
+            long yearInLong = yearDateCalendar.getTime();
+        }
+
         simpleCalendarViewLayout.setMaxDate(actualDayCalendar.getTime());
         //simpleCalendarViewLayout.setMinDate();
-        simpleCalendarViewLayout.setDate(dateInLong, true, false);
+
+        //simpleCalendarViewLayout.set
         simpleCalendarViewLayout.setOnDateChangeListener(this);
     }
 
@@ -253,8 +286,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     public void confirmCalendar(View v) {
         textViewDate.setText(this.date);
         closeCalendar();
+        checkTimeline();
         checkButtonAfter();
-        setPieChart(this.pieChart);
+        checkPieChart(); //setPieChart(this.pieChart);
     }
 
     /**
@@ -270,19 +304,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     }
 
     /**
-     * change the Date to one day before the shown date
-     * @param v - the view
+     * checks if the day, week, month or year is shown
      */
-    public void changeDateOneDayBefore(View v) {
-        Log.d(LOG_TAG, "changeDateOneDayBefore() enter");
-
-        Calendar myCalendar = new GregorianCalendar();
-        myCalendar.setTime(this.dateCalendar);
-        myCalendar.add(Calendar.DATE, -1);
-        this.date = this.formatter.format(myCalendar.getTime());
-        this.dateCalendar = myCalendar.getTime();
-
-        //checks if the day, week, month or year is shown
+    public void checkTimeline () {
         if (timeline.equals("day")) {
             this.textViewDate.setText(this.date);
         } else if (timeline.equals("week")) {
@@ -294,9 +318,42 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else {
             this.textViewDate.setText(this.date);
         }
+    }
 
+    /**
+     * change the Date to one day before the shown date
+     * @param v - the view
+     */
+    public void changeDateOneDayBefore(View v) {
+        Log.d(LOG_TAG, "changeDateOneDayBefore() enter");
+
+        Calendar myCalendar = new GregorianCalendar();
+        myCalendar.setTime(this.dateCalendar);
+
+        if (timeline.equals("day")){
+            myCalendar.add(Calendar.DATE, -1);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
+        } else if (timeline.equals("week")){
+            myCalendar.add(Calendar.DATE, -7);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
+        } else if (timeline.equals("month")){
+            myCalendar.add(Calendar.MONTH, -1);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
+        } else if (timeline.equals("year")){
+            myCalendar.add(Calendar.YEAR, -1);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
+        } else {
+            this.errorMessage.setText("Button changeDateBefore hat nicht funktioniert.");
+        }
+
+        checkTimeline();
         checkButtonAfter();
-        setPieChart(this.pieChart);
+        checkPieChart();
+      //setPieChart(this.pieChart);
     }
 
     /**
@@ -308,25 +365,30 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         Calendar myCalendar = new GregorianCalendar();
         myCalendar.setTime(this.dateCalendar);
-        myCalendar.add(Calendar.DATE, 1);
-        this.date = this.formatter.format(myCalendar.getTime());
-        this.dateCalendar = myCalendar.getTime();
 
-        //checks if the day, week, month or year is shown
-        if (timeline.equals("day")) {
-            this.textViewDate.setText(this.date);
-        } else if (timeline.equals("week")) {
-            changeToWeek();
-        } else if (timeline.equals("month")) {
-            changeToMonth();
-        } else if (timeline.equals("year")) {
-            changeToYear();
+        if (timeline.equals("day")){
+            myCalendar.add(Calendar.DATE, 1);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
+        } else if (timeline.equals("week")){
+            myCalendar.add(Calendar.DATE, 7);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
+        } else if (timeline.equals("month")){
+            myCalendar.add(Calendar.MONTH, 1);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
+        } else if (timeline.equals("year")){
+            myCalendar.add(Calendar.YEAR, 1);
+            this.date = this.formatter.format(myCalendar.getTime());
+            this.dateCalendar = myCalendar.getTime();
         } else {
-            this.textViewDate.setText(this.date);
+            this.errorMessage.setText("Button changeDateAfter hat nicht funktioniert.");
         }
 
+        checkTimeline();
         checkButtonAfter();
-        setPieChart(this.pieChart);
+        checkPieChart();     // setPieChart(this.pieChart);
     }
 
     /**
@@ -358,6 +420,19 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         radioMonth.setVisibility(View.VISIBLE);
         radioYear.setVisibility(View.VISIBLE);
         btnOk.setVisibility(View.VISIBLE);
+
+        //toggle selected timeline
+        if (timeline.equals("day")){
+            radioDay.toggle();
+        } else if (timeline.equals("week")){
+            radioWeek.toggle();
+        } else if (timeline.equals("month")){
+            radioMonth.toggle();
+        } else if (timeline.equals("year")){
+            radioYear.toggle();
+        } else {
+            radioDay.toggle();
+        }
     }
 
     /**
@@ -430,7 +505,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else {
             this.errorMessage.setText("Es wurde keine Zeitspanne ausgewählt.");
         }
-       closePopup(v);
+        closePopup(v);
+        checkPieChart();   //setPieChart(pieChart);
     }
 
     /**
@@ -461,6 +537,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         Calendar myCalendar = new GregorianCalendar();
         myCalendar.setTime(this.dateCalendar);
         myCalendar.add(Calendar.DATE, -7);
+        myCalendar.add(Calendar.DAY_OF_MONTH,1);
         this.weekDate = this.formatter.format(myCalendar.getTime());
         this.weekDateCalendar = myCalendar.getTime();
 
@@ -475,6 +552,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         Calendar myCalendar = new GregorianCalendar();
         myCalendar.setTime(this.dateCalendar);
         myCalendar.add(Calendar.MONTH, -1);
+        myCalendar.add(Calendar.DAY_OF_MONTH,1);
         this.monthDate = this.formatter.format(myCalendar.getTime());
         this.monthDateCalendar = myCalendar.getTime();
 
@@ -489,6 +567,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         Calendar myCalendar = new GregorianCalendar();
         myCalendar.setTime(this.dateCalendar);
         myCalendar.add(Calendar.YEAR,-1);
+        myCalendar.add(Calendar.DAY_OF_MONTH,1);
         this.yearDate = this.formatter.format(myCalendar.getTime());
         this.yearDateCalendar = myCalendar.getTime();
 
@@ -511,7 +590,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         LocalDateTime localDateTime = setLocalTime(dateCalendar);
         List<StatisticEntry> statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateTime, localDateTime);
 
-        /*if (timeline.equals("day")) {
+        if (timeline.equals("day")) {
             statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateTime, localDateTime);
         } else if (timeline.equals("week")) {
             LocalDateTime localDateWeek = setLocalTime(weekDateCalendar);
@@ -522,7 +601,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else if (timeline.equals("year")) {
             LocalDateTime localDateYear = setLocalTime(weekDateCalendar);
             statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateYear, localDateTime);
-        }*/
+        }
 
         dbHelper.close();
 
@@ -569,13 +648,15 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         //legend -> manuell setzen?
         Legend l = pieChart.getLegend();
-        l.setPosition(Legend.LegendPosition.ABOVE_CHART_CENTER);
-        //l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-        //l.setTextSize(14f);
-        //l.setWordWrapEnabled(true);
-        //l.setForm(Legend.LegendForm.CIRCLE);
-        //l.setFormSize(14f);
-        //l.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
+      //l.setPosition(Legend.LegendPosition.ABOVE_CHART_CENTER);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        l.setTextSize(14f);
+        l.setWordWrapEnabled(true);
+        l.setForm(Legend.LegendForm.CIRCLE);
+        l.setFormSize(14f);
+        l.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
+        Log.d(LOG_TAG, "Legend: " + l);
+        l.resetCustom();
 
         pieChart.invalidate(); // refresh
     }
@@ -679,9 +760,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         textViewTotal.setText("Du hast am "
                 + date //day
-                + " insgesamt "
+                + " insgesamt \n"
                 + total //total
-                + "dl "
+                + " dl \n"
                 + categoryText //category
                 + " getrunken.");
     }
@@ -734,6 +815,11 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         //onValueSelected(entry, index, highlight);
         //pieChart.highlightValues(null);
         //pieChart.highlightTouch(null);
+        pieChart.valuesToHighlight();
+        pieChart.highlightValue(null);
+        pieChart.setSelected(false);
+        pieChart.getDefaultFocusHighlightEnabled();
+        //pieChart.needsHighlight(highlight, 0);
     }
 
     /**
