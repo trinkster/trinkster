@@ -84,9 +84,13 @@ public class MainActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the sections/tabs/pages.
      */
     public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private static final String LOG_TAG = SectionsPagerAdapter.class.getSimpleName();
 
         private final class HistoryListener implements HistoryFragmentListener {
+            private final String LOG_TAG = HistoryListener.class.getSimpleName();
+
             public void onSwitchToNextFragment() {
+                Log.d(LOG_TAG, "onSwitchToNextFragment: enter");
                 mFragmentManager.beginTransaction().remove(mFragmentAtPos0).commitNow();
 
                 if (mFragmentAtPos0 instanceof History){
@@ -95,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     mFragmentAtPos0 = History.createInstance(listener);
                 }
                 notifyDataSetChanged();
+
+                Log.d(LOG_TAG, "onSwitchToNextFragment: leave");
             }
         }
 

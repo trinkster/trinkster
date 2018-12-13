@@ -42,6 +42,7 @@ public class HistoryAddFragment extends Fragment {
 
     public void backPressed() {
         Log.d(LOG_TAG, "backPressed(): enter");
+        Log.d(LOG_TAG, "backPressed(): switch back to the main history-view");
         historyFragmentListener.onSwitchToNextFragment();
     }
 

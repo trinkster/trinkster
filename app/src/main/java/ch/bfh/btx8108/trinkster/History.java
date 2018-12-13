@@ -76,13 +76,18 @@ public class History extends Fragment{
         drinkListView.setAdapter(drinkArrayAdapter);
     }
 
+    /**
+     * This method is called when the FAB-button is pressed
+     * It basically just redirects from the current History-Fragment to the next HistoryAdd-Fragment.
+     *
+     * @param rootView
+     */
     public void addDrink(View rootView){
         Log.d(LOG_TAG, "addDrink(): enter");
 
 
-        Log.d(LOG_TAG, "addDrink(): SWITCH VIEW");
+        Log.d(LOG_TAG, "addDrink(): SWITCH TO NEXT HISTORYADD-VIEW");
         historyFragmentListener.onSwitchToNextFragment();
-
     }
 
 }
