@@ -1,6 +1,5 @@
 package ch.bfh.btx8108.trinkster;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,12 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -201,16 +197,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeTimeline(View v) {
         fragment_statistic.changeTimeline(v);
-    }
-
-    public void onRadioButtonClicked(View v) {
-        fragment_statistic.onRadioButtonClicked(v);
-    }
-
-    public void closePopup(View v) {fragment_statistic.closePopup(v); }
-
-    public void confirmPopup(View v) {
-        fragment_statistic.confirmPopup(v);
     }
 
     public void goBack(View v) {

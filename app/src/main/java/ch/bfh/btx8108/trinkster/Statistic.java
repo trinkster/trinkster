@@ -1,5 +1,8 @@
 package ch.bfh.btx8108.trinkster;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,8 +19,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -55,7 +56,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     private DrinkDAO drinkDAO;
 
     //Button
-    Button btnOk;
     Button okCalendarBtn;
 
     //Date
@@ -78,17 +78,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     LinearLayout detailsTotalLayout;
     LinearLayout greyBarDetailsLayout;
     LinearLayout greyBarRootLayout;
-    LinearLayout layoutPopup;
     LinearLayout pieChartLinearLayout;
-    LinearLayout radioButtonLinearLayout;
-    LinearLayout textLinearLayout;
-
-    //RadioGroup
-    RadioGroup radioGroup;
-    RadioButton radioDay;
-    RadioButton radioWeek;
-    RadioButton radioMonth;
-    RadioButton radioYear;
 
     //String
     String actualDay;
@@ -104,14 +94,17 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     TextView errorMessage;
     TextView textBack;
     TextView textPieChart;
-    TextView textViewChange;
-    TextView textViewClose;
     TextView textViewDate;
     TextView textViewTotal;
 
     Entry entry;
     int index;
     Highlight highlight;
+
+    private Context mContext;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+
 
     @Nullable
     @Override
@@ -131,7 +124,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.buttonTimeline = (ImageButton) rootView.findViewById(R.id.timeline);
         this.pieChartLinearLayout = (LinearLayout) rootView.findViewById(R.id.pieChartLayout);
         this.pieChart = (PieChart) rootView.findViewById(R.id.piechart);
-        //setPieChart(pieChart);
+        setPieChart(pieChart);
         this.textPieChart = (TextView) rootView.findViewById(R.id.noPieChart);
 
         this.errorMessage = (TextView) rootView.findViewById(R.id.error_message);
@@ -153,23 +146,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.imageDetails = (ImageView) rootView.findViewById(R.id.image);
         this.textViewTotal = (TextView) rootView.findViewById(R.id.total);
 
-        //create database
-        DbHelper dbHelper = new DbHelper(getContext());
-        this.drinkDAO = new DrinkDAO(dbHelper);
-
-        //create Popup: activity_timeline_popup
-        this.layoutPopup = (LinearLayout) rootView.findViewById(R.id.popupLayout);
-        this.textViewClose = (TextView) rootView.findViewById(R.id.txtclose);
-        this.textLinearLayout = (LinearLayout) rootView.findViewById(R.id.textLayout);
-        this.textViewChange = (TextView) rootView.findViewById(R.id.changeTimeline);
-        this.radioButtonLinearLayout = (LinearLayout) rootView.findViewById(R.id.radioButtonsLayout);
-        this.radioGroup = (RadioGroup) rootView.findViewById(R.id.radioButtonGroup);
-        this.radioDay = (RadioButton) rootView.findViewById(R.id.radio_day);
-        this.radioWeek = (RadioButton) rootView.findViewById(R.id.radio_week);
-        this.radioMonth = (RadioButton) rootView.findViewById(R.id.radio_month);
-        this.radioYear = (RadioButton) rootView.findViewById(R.id.radio_year);
-        this.btnOk = (Button) rootView.findViewById(R.id.ok);
-
         //show only rootView without details or popup
         buttonAfter.setVisibility(View.INVISIBLE);
         calendarLinearLayout.setVisibility(View.GONE);
@@ -187,20 +163,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         imageDetails.setVisibility(View.GONE);
         textViewTotal.setVisibility(View.GONE);
 
-        layoutPopup.setVisibility(View.GONE);
-        textViewClose.setVisibility(View.GONE);
-        textLinearLayout.setVisibility(View.GONE);
-        textViewChange.setVisibility(View.GONE);
-        radioButtonLinearLayout.setVisibility(View.GONE);
-        radioGroup.setVisibility(View.GONE);
-        radioDay.setVisibility(View.GONE);
-        radioWeek.setVisibility(View.GONE);
-        radioMonth.setVisibility(View.GONE);
-        radioYear.setVisibility(View.GONE);
-        btnOk.setVisibility(View.GONE);
-
-        //dbHelper.close();
-
         //returns the view
         return rootView;
     }
@@ -210,8 +172,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      */
     public void checkPieChart(){
         setPieChart(pieChart);
-        //pieChart.invalidate(); // refresh
-        this.pieChart.refreshDrawableState();
 
         boolean check = this.pieChart.isEmpty();
         Log.d(LOG_TAG, "checkPieChart() enter: " + check);
@@ -353,7 +313,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         checkTimeline();
         checkButtonAfter();
         checkPieChart();
-      //setPieChart(this.pieChart);
     }
 
     /**
@@ -374,14 +333,26 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             myCalendar.add(Calendar.DATE, 7);
             this.date = this.formatter.format(myCalendar.getTime());
             this.dateCalendar = myCalendar.getTime();
+            if (date.compareTo(actualDay)>0){
+                this.date = actualDay;
+                this.dateCalendar = actualDayCalendar;
+            }
         } else if (timeline.equals("month")){
             myCalendar.add(Calendar.MONTH, 1);
             this.date = this.formatter.format(myCalendar.getTime());
             this.dateCalendar = myCalendar.getTime();
+            if (date.compareTo(actualDay)>0){
+                this.date = actualDay;
+                this.dateCalendar = actualDayCalendar;
+            }
         } else if (timeline.equals("year")){
             myCalendar.add(Calendar.YEAR, 1);
             this.date = this.formatter.format(myCalendar.getTime());
             this.dateCalendar = myCalendar.getTime();
+            if (date.compareTo(actualDay)>0){
+                this.date = actualDay;
+                this.dateCalendar = actualDayCalendar;
+            }
         } else {
             this.errorMessage.setText("Button changeDateAfter hat nicht funktioniert.");
         }
@@ -409,104 +380,68 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      * @param v - the view
      */
     public void changeTimeline(View v) {
-        layoutPopup.setVisibility(View.VISIBLE);
-        textViewClose.setVisibility(View.VISIBLE);
-        textLinearLayout.setVisibility(View.VISIBLE);
-        textViewChange.setVisibility(View.VISIBLE);
-        radioButtonLinearLayout.setVisibility(View.VISIBLE);
-        radioGroup.setVisibility(View.VISIBLE);
-        radioDay.setVisibility(View.VISIBLE);
-        radioWeek.setVisibility(View.VISIBLE);
-        radioMonth.setVisibility(View.VISIBLE);
-        radioYear.setVisibility(View.VISIBLE);
-        btnOk.setVisibility(View.VISIBLE);
+        builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
 
-        //toggle selected timeline
+        builder.setIcon(R.drawable.ic_timeline_black_24dp);
+        builder.setTitle("Zeitspanne ändern");
+
+        final String[] items = {"Tag", "Woche", "Monat", "Jahr"};
+        int checkedItem;
+
         if (timeline.equals("day")){
-            radioDay.toggle();
+            checkedItem = 0;
         } else if (timeline.equals("week")){
-            radioWeek.toggle();
+            checkedItem = 1;
         } else if (timeline.equals("month")){
-            radioMonth.toggle();
+            checkedItem = 2;
         } else if (timeline.equals("year")){
-            radioYear.toggle();
+            checkedItem = 3;
         } else {
-            radioDay.toggle();
+            checkedItem = 0;
         }
-    }
 
-    /**
-     * closes the popup if the user doesn't wont to change the timeline or after the click on the ok-button
-     * @param v - the view
-     */
-    public void closePopup(View v) {
-        layoutPopup.setVisibility(View.GONE);
-        textViewClose.setVisibility(View.GONE);
-        textLinearLayout.setVisibility(View.GONE);
-        textViewChange.setVisibility(View.GONE);
-        radioButtonLinearLayout.setVisibility(View.GONE);
-        radioGroup.setVisibility(View.GONE);
-        radioDay.setVisibility(View.GONE);
-        radioWeek.setVisibility(View.GONE);
-        radioMonth.setVisibility(View.GONE);
-        radioYear.setVisibility(View.GONE);
-        btnOk.setVisibility(View.GONE);
-    }
-
-    /**
-     * checks if a radio button is chosen an changes the string timeline to the string of the chosen radio button
-     * @param v - the view
-     */
-    public void onRadioButtonClicked(View v) {
-        // Is the button checked?
-        boolean checked = ((RadioButton) v).isChecked();
-
-        // Check which radio button was clicked
-        // Set Sting timeline to the chosen timeline
-        switch(v.getId()) {
-            case R.id.radio_day:
-                if (checked)
-                    this.timeline = "day";
-                    break;
-            case R.id.radio_week:
-                if (checked)
-                    this.timeline = "week";
-                    break;
-            case R.id.radio_month:
-                if (checked)
-                    this.timeline = "month";
-                    break;
-            case R.id.radio_year:
-                if (checked)
-                    this.timeline = "year";
-                    break;
-        }
-    }
-
-    /**
-     * checks if the String timeline has a value and then goes to the method of the chosen radio button and closes the popup
-     * @param v - the view
-     */
-    public void confirmPopup(View v) {
-        boolean chosen = timeline.isEmpty();
-
-        if (chosen!=true) {
-            if (timeline.equals("day")) {
-                changeToDay();
-            } else if (timeline.equals("week")) {
-                changeToWeek();
-            } else if (timeline.equals("month")) {
-                changeToMonth();
-            } else if (timeline.equals("year")) {
-                changeToYear();
-            } else {
-                this.errorMessage.setText("Fehler bei Speicherung der ausgewählten Zeitspanne. String wurde nicht abgespeichert.");
+        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // user checked an item
+                if (items[which].equals("Tag")) {
+                    timeline = "day";
+                    changeToDay();
+                    checkPieChart();
+                }
+                else if (items[which].equals("Woche")) {
+                    timeline = "week";
+                    changeToWeek();
+                    checkPieChart();
+                }
+                else if (items[which].equals("Monat")) {
+                    timeline = "month";
+                    changeToMonth();
+                    checkPieChart();
+                }
+                else if (items[which].equals("Jahr")) {
+                    timeline = "year";
+                    changeToYear();
+                    checkPieChart();
+                }
             }
-        } else {
-            this.errorMessage.setText("Es wurde keine Zeitspanne ausgewählt.");
-        }
-        closePopup(v);
-        checkPieChart();   //setPieChart(pieChart);
+        });
+
+        builder.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // user clicked OK
+                //setPieChart(pieChart);
+                //checkTimeline();
+                //checkButtonAfter();
+                checkPieChart();
+            }
+        });
+        builder.setNegativeButton("Abbrechen", null);
+
+        // create and show the alert dialog
+        //builder.create();
+        builder.show();
     }
 
     /**
@@ -658,6 +593,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         Log.d(LOG_TAG, "Legend: " + l);
         l.resetCustom();
 
+        pieChart.notifyDataSetChanged();
         pieChart.invalidate(); // refresh
     }
 
@@ -718,9 +654,14 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         pieChartLinearLayout.setVisibility(View.VISIBLE);
         pieChart.setVisibility(View.VISIBLE);
-        //setPieChart(this.pieChart);
+        onNothingSelected();
     }
 
+    /**
+     * change date to LocalDateTime
+     * @param dateLocal - Date
+     * @return LocalDateTim
+     */
     public LocalDateTime setLocalTime (Date dateLocal) {
         Calendar c = Calendar.getInstance();
         c.setTime(dateLocal);
@@ -758,13 +699,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         dbHelper.close();
 
-        textViewTotal.setText("Du hast am "
-                + date //day
-                + " insgesamt \n"
-                + total //total
-                + " dl \n"
-                + categoryText //category
-                + " getrunken.");
+        textViewTotal.setText(total + " dl");
     }
 
     /**
@@ -811,15 +746,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      */
     @Override
     public void onNothingSelected() {
-        //pieChart.getOnChartGestureListener().
-        //onValueSelected(entry, index, highlight);
-        //pieChart.highlightValues(null);
-        //pieChart.highlightTouch(null);
-        pieChart.valuesToHighlight();
-        pieChart.highlightValue(null);
-        pieChart.setSelected(false);
-        pieChart.getDefaultFocusHighlightEnabled();
-        //pieChart.needsHighlight(highlight, 0);
+        pieChart.highlightValues(null);
     }
 
     /**

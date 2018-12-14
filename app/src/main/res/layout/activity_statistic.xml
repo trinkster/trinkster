@@ -23,13 +23,8 @@
             android:gravity="left"
             android:layout_marginStart="10dp"
             android:background="@color/colorGrey"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18pt"
             android:onClick="showCalendar"
             android:src="@drawable/ic_today_black_24dp"/>
-        <!--android:layout_marginTop="7dp"
-        android:layout_marginEnd="50dp"-->
 
         <View
             android:layout_width="0dp"
@@ -57,9 +52,6 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:onClick="thisDay"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18dp"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
             tools:layout_constraintLeft_creator="1"
@@ -78,9 +70,6 @@
             android:gravity="center"
             android:layout_marginLeft="5dp"
             android:background="@color/colorGrey"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18pt"
             android:src="@drawable/ic_navigate_next_black_24dp" />
 
         <View
@@ -97,9 +86,6 @@
             android:gravity="end"
             android:layout_marginEnd="10dp"
             android:background="@color/colorGrey"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18pt"
             android:onClick="changeTimeline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -135,9 +121,6 @@
             android:layout_marginTop="25dp"
             android:layout_gravity="center_horizontal"
             android:background="@color/colorGrey"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18dp"
             android:onClick="confirmCalendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -150,9 +133,6 @@
             android:layout_marginTop="25dp"
             android:layout_gravity="center_horizontal"
             android:background="@color/colorGrey"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18dp"
             android:onClick="thisDay"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -190,9 +170,6 @@
             android:gravity="left"
             android:onClick="goBack"
             android:text="Zurück"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18dp"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
             tools:layout_constraintLeft_creator="1"
@@ -247,10 +224,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center"
-            android:text="Ungesüsste Getränke"
             android:textStyle="bold"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
             android:textSize="24dp"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
@@ -282,103 +256,13 @@
                 android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="45dp"
                 android:layout_marginEnd="10dp"
-                android:background="@color/colorGrey"
-                android:text="Du hast heute ... Getränke"
-                android:fontFamily="@font/source_sans_pro"
-                android:textColor="#757575"
-                android:textSize="18dp"
+                android:textSize="36dp"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout"
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintTop_creator="1" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/popupLayout"
-        android:orientation="vertical"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:background="@color/colorAccent"
-        android:gravity="center"
-        android:padding="5dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:id="@+id/txtclose"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:text="X"
-            android:textStyle="bold"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18dp"
-            android:layout_gravity="end"
-            android:gravity="center"
-            android:onClick="closePopup"/>
-
-        <LinearLayout
-            android:id="@+id/textLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/changeTimeline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/TEXT_CHANGE_TIMELINE"
-                android:textStyle="bold"
-                android:fontFamily="@font/source_sans_pro"
-                android:textColor="#757575"
-                android:textSize="18dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/radioButtonsLayout"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/radioButtonGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <RadioButton android:id="@+id/radio_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/TEXT_DAY"
-                    android:onClick="onRadioButtonClicked"/>
-
-                <RadioButton android:id="@+id/radio_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/TEXT_WEEK"
-                    android:onClick="onRadioButtonClicked"/>
-
-                <RadioButton android:id="@+id/radio_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/TEXT_MONTH"
-                    android:onClick="onRadioButtonClicked"/>
-
-                <RadioButton android:id="@+id/radio_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/TEXT_YEAR"
-                    android:onClick="onRadioButtonClicked"/>
-
-            </RadioGroup>
 
         </LinearLayout>
 
@@ -392,8 +276,8 @@
             android:background="@color/colorGrey"
             android:fontFamily="@font/source_sans_pro"
             android:textColor="#757575"
-            android:textSize="18dp"
-            android:onClick="confirmPopup"/>
+            android:textSize="18dp" />
+        <!--android:onClick="confirmPopup"-->
 
     </LinearLayout>
 
