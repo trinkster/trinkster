@@ -11,7 +11,7 @@
     
     <string name="tab_text_1">Verlauf</string>
     <string name="tab_text_2">Statistik</string>
-    <string name="tab_text_3">Promillenschätzer</string>
+    <string name="tab_text_3">Promille-Schätzer</string>
 
     <!-- Statistic-Strings -->
     <string name="TEXT_NAVIGATE_NEXT">Day After</string>
