@@ -554,10 +554,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             LocalDateTime localDateWeek = setLocalTime(weekDateCalendar);
             statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateWeek, localDateTime);
         } else if (timeline.equals("month")) {
-            LocalDateTime localDateMonth = setLocalTime(weekDateCalendar);
+            LocalDateTime localDateMonth = setLocalTime(monthDateCalendar);
             statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateMonth, localDateTime);
         } else if (timeline.equals("year")) {
-            LocalDateTime localDateYear = setLocalTime(weekDateCalendar);
+            LocalDateTime localDateYear = setLocalTime(yearDateCalendar);
             statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateYear, localDateTime);
         }
 
