@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ import java.util.List;
 import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
 import ch.bfh.btx8108.trinkster.database.dao.StatisticDAO;
+import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 
 public class Statistic extends Fragment implements OnChartValueSelectedListener, OnDateChangeListener {
     private static final String LOG_TAG = Statistic.class.getSimpleName();
@@ -101,10 +103,12 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     int index;
     Highlight highlight;
 
+    //Alert Dialog
     private Context mContext;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
 
+    EditText txtDate;
 
     @Nullable
     @Override
@@ -132,6 +136,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         //create calendarView
         this.calendarLinearLayout = (LinearLayout) rootView.findViewById(R.id.calendarLayout);
         this.simpleCalendarViewLayout =(CalendarView) rootView.findViewById(R.id.simpleCalendarView);
+        //this.simpleCalendarViewLayout =(CalendarView) rootView.findViewById(R.id.slyCalendarView);
+        //this.simpleCalendarViewLayout = (CalendarView) rootView.findViewById(R.id.calendarView);
         this.okCalendarBtn = (Button) rootView.findViewById(R.id.okCalendar);
 
         //create detailView: activity_statistic_details
@@ -190,7 +196,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      * @param v - the view
      */
     public void showCalendar(View v) {
-        textViewDate.setVisibility(View.GONE);
+        /*textViewDate.setVisibility(View.GONE);
         buttonCalendar.setVisibility(View.GONE);
         buttonBefore.setVisibility(View.GONE);
         buttonAfter.setVisibility(View.GONE);
@@ -200,9 +206,25 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         calendarLinearLayout.setVisibility(View.VISIBLE);
         simpleCalendarViewLayout.setVisibility(View.VISIBLE);
-        okCalendarBtn.setVisibility(View.VISIBLE);
+        okCalendarBtn.setVisibility(View.VISIBLE);*/
 
-        long dateInLong = dateCalendar.getTime();
+        SlyCalendarDialog.Callback callback = new SlyCalendarDialog.Callback() {
+            @Override
+            public void onCancelled() {
+                Log.d(LOG_TAG, "onCancelled: calendar dialog cancelled");
+            }
+
+            @Override
+            public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
+                Log.d(LOG_TAG, "onCancelled: calendar dialog saved");
+
+            }
+        };
+
+        new SlyCalendarDialog().setSingle(false).setCallback(callback).show(getActivity().getSupportFragmentManager(), "TAG_SLYCALENDAR");
+
+
+        /*long dateInLong = dateCalendar.getTime();
 
         if (timeline.equals("day")){
             simpleCalendarViewLayout.setDate(dateInLong, true, false);
@@ -219,7 +241,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         //simpleCalendarViewLayout.setMinDate();
 
         //simpleCalendarViewLayout.set
-        simpleCalendarViewLayout.setOnDateChangeListener(this);
+        simpleCalendarViewLayout.setOnDateChangeListener(this);*/
+
     }
 
     /**
@@ -763,4 +786,5 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.date = formatter.format(myCalendar.getTime());
         this.dateCalendar = myCalendar.getTime();
     }
+
 }
