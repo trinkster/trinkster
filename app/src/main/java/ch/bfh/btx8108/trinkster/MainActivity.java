@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private TabLayout mTabLayout;
+
 
     private static History fragment_history;
     private static Statistic fragment_statistic;
@@ -40,9 +42,33 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.d(LOG_TAG, "onTabSelected(): enter");
+                Log.d(LOG_TAG, "onTabSelected(): switch to tab - '"+tab.getText().toString()+"'");
+
+                SectionsPagerAdapter tmpSectionPagerAdapter = (SectionsPagerAdapter) mViewPager.getAdapter();
+
+                Log.d(LOG_TAG, "onTabSelected(): current history-fragment: '"+tmpSectionPagerAdapter.mFragmentAtPos0+"'");
+                Log.d(LOG_TAG, "onTabSelected(): mFragmentAtPos0 is instanceof HistoryAddFragment: '"+(tmpSectionPagerAdapter.mFragmentAtPos0 instanceof HistoryAddFragment)+"'");
+
+                if( (tab.getText().toString().equals(getString(R.string.tab_text_1))) && (tmpSectionPagerAdapter.mFragmentAtPos0 instanceof HistoryAddFragment) ){
+                    Log.d(LOG_TAG, "onTabSelected(): We're switching back to verlaufs-tab and the HistoryAddFragment was last seen");
+                    ((HistoryAddFragment) mSectionsPagerAdapter.getItem(0)).backPressed();
+                    mViewPager.setCurrentItem(tab.getPosition(), true);
+                    mTabLayout.setScrollPosition(tab.getPosition(),0f,true);
+                } else {
+                    Log.d(LOG_TAG, "onTabSelected(): neither a verlaufs-tab nor instanceof HistoryAddFragment");
+                    super.onTabSelected(tab);
+                }
+
+            }
+
+        });
+
     }
 
     @Override
@@ -66,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
+        Log.v(LOG_TAG, "onBackPressed(): enter");
+
         if(mViewPager.getCurrentItem() == 0) {
             if (mSectionsPagerAdapter.getItem(0) instanceof HistoryAddFragment) {
                 ((HistoryAddFragment) mSectionsPagerAdapter.getItem(0)).backPressed();
@@ -74,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
+
+        Log.v(LOG_TAG, "onBackPressed(): leave");
     }
 
     /**
@@ -87,15 +117,18 @@ public class MainActivity extends AppCompatActivity {
 
             public void onSwitchToNextFragment() {
                 Log.d(LOG_TAG, "onSwitchToNextFragment: enter");
+                Log.d(LOG_TAG, "onSwitchToNextFragment: mFragmentAtPos before: "+mFragmentAtPos0);
+
                 mFragmentManager.beginTransaction().remove(mFragmentAtPos0).commitNow();
 
                 if (mFragmentAtPos0 instanceof History){
                     mFragmentAtPos0 = HistoryAddFragment.createInstance(listener);
-                }else{ // Instance of NextFragment
+                } else{ // Instance of NextFragment
                     mFragmentAtPos0 = History.createInstance(listener);
                 }
                 notifyDataSetChanged();
 
+                Log.d(LOG_TAG, "onSwitchToNextFragment: mFragmentAtPos after: "+mFragmentAtPos0);
                 Log.d(LOG_TAG, "onSwitchToNextFragment: leave");
             }
         }
@@ -111,6 +144,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Log.d(LOG_TAG, "getItem(): enter");
+
+            Log.d(LOG_TAG, "getItem(): position: "+position);
+            Log.d(LOG_TAG, "getItem(): mFragmentAtPos0: "+mFragmentAtPos0);
+
+
             switch (position) {
                 case 0:
                     if(mFragmentAtPos0 == null){
@@ -125,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     return null;
             }
         }
+
 
         @Override
         public int getCount() { return NR_OF_FRAGMENTS; }
