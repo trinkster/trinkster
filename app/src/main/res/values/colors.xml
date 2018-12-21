@@ -7,7 +7,7 @@
     <color name="colorAccent">#f57c67</color><!-- used for FAB and as highlighting color -->
     <color name="colorHeadingBackground">#EDEDED</color><!-- used for table/list header background -->
     <color name="colorFontMain">#282828</color><!-- main text color -->
-    <color name="colorFontSecond">#282828</color><!-- second text color -->
+    <color name="colorFontSecond">#666666</color><!-- second text color -->
     <color name="colorListBackground">#fdfdfd</color>
     <color name="colorListFont">#282828</color>
 
@@ -26,6 +26,4 @@
     <!-- The color for the icon bar-->
     <color name="colorGrey">#e0e0e0</color>
 
-    <!-- Status bar background color -->
-    <color name="text_color_primary">#fdfdfd</color>
 </resources>

@@ -7,14 +7,15 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!-- <item name="colorPrimaryDark2">@color/primary_dark_material_light</item> -->
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorBackground">@android:color/background_light</item>
-        <item name="android:textColorPrimary">@color/text_color_primary</item>
+        <item name="android:textColorPrimary">@color/colorFontMain</item>  
+        <item name="android:fontFamily">@font/source_sans_pro</item>
     </style>
 
     <style name="statusBarStyle" parent="@style/AppTheme">
         <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorListBackground</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
@@ -30,9 +31,8 @@
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/colorSliderFill</item>
-        <item name="android:background">@android:color/background_light</item>
+        <item name="android:textColorPrimary">@color/colorFontSecond</item>
+        <item name="android:background">@android:color/white</item>
     </style>
-
 
 </resources>
