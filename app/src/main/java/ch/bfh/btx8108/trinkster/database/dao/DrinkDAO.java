@@ -5,10 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.bfh.btx8108.trinkster.Category;
 import ch.bfh.btx8108.trinkster.Drink;
@@ -23,8 +27,10 @@ import ch.bfh.btx8108.trinkster.database.tables.DrinkTable;
  */
 public class DrinkDAO {
     private static final String LOG_TAG = DrinkDAO.class.getSimpleName();
+    private final static String COLUMN_CATEGORY_NAME = "category_name";
 
     private SQLiteDatabase database;
+    private LocalDateTime lastKnownDateTime = LocalDateTime.now();
 
     // Stringarray mit den Tabellenspalten für spätere DB-Befehle
     private String[] columns = {
@@ -35,7 +41,16 @@ public class DrinkDAO {
             DrinkTable.COLUMN_DATE_TIME
     };
 
-    private final static String COLUMN_CATEGORY_NAME = "category_name";
+    private String query = "SELECT d." + DrinkTable.COLUMN_ID + ","
+            + "d." + DrinkTable.COLUMN_NAME + ", "
+            + "d." + DrinkTable.COLUMN_QUANTITY + ", "
+            + "d." + DrinkTable.COLUMN_CATEGORY_ID + ", "
+            + "d." + DrinkTable.COLUMN_DATE_TIME + ", "
+            + "c." + CategoryTable.COLUMN_NAME + " " + COLUMN_CATEGORY_NAME +", "
+            + "c." + CategoryTable.COLUMN_DESCRIPTION
+            + " FROM " + DrinkTable.TABLE_DRINK + " d"
+            + " INNER JOIN " + CategoryTable.TABLE_CATEGORY + " c ON d." + DrinkTable.COLUMN_CATEGORY_ID + " = c." + CategoryTable.COLUMN_ID
+            + " ORDER BY " + DrinkTable.COLUMN_DATE_TIME + " DESC";
 
     /**
      * Konstruktor, der eine schreibbare Instanz vom dbHelper holt
@@ -92,16 +107,7 @@ public class DrinkDAO {
      */
     public List<Drink> getAllDrinks() {
         List<Drink> drinkList = new ArrayList<>();
-
-        Cursor cursor = database.rawQuery("SELECT d." + DrinkTable.COLUMN_ID + ","
-                + "d." + DrinkTable.COLUMN_NAME + ", "
-                + "d." + DrinkTable.COLUMN_QUANTITY + ", "
-                + "d." + DrinkTable.COLUMN_CATEGORY_ID + ", "
-                + "d." + DrinkTable.COLUMN_DATE_TIME + ", "
-                + "c." + CategoryTable.COLUMN_NAME + " " + COLUMN_CATEGORY_NAME +", "
-                + "c." + CategoryTable.COLUMN_DESCRIPTION
-                + " FROM " + DrinkTable.TABLE_DRINK + " d"
-                + " INNER JOIN " + CategoryTable.TABLE_CATEGORY + " c ON d." + DrinkTable.COLUMN_CATEGORY_ID + " = c." + CategoryTable.COLUMN_ID, new String[]{});
+        Cursor cursor = database.rawQuery(query, new String[]{});
 
         cursor.moveToFirst();
         Drink drink;
@@ -109,7 +115,41 @@ public class DrinkDAO {
         while(!cursor.isAfterLast()) {
             drink = cursorToDrink(cursor);
             drinkList.add(drink);
-            Log.d(LOG_TAG, "ID: " + drink.getId() + ", Inhalt: " + drink.toString());
+            Log.d(LOG_TAG, "getAllDrinks(): ID: " + drink.getId() + ", Inhalt: " + drink.toString() + ", Erfassungsdatum: " + drink.getDateTime().toLocalDate());
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return drinkList;
+    }
+
+    /**
+     * getAllDrinksWithDates() lädt alle vorhandenen Drinks aus der Datenbank und gibt sie als Liste zurück.
+     * Im Vergleich zu getAllDrinks werden aber zwischen den Drinks noch die Daten in der Liste abgelegt.
+     *
+     * @return drinkList bestehend aus einer ArrayList mit einerseits Drink-Objekten und LocalDate-Objekten
+     */
+    // TODO: eventuell so abändern, dass nicht eine DB-Abfrage gemacht wird, sondern die Liste von getAllDrinks() entsprechend erweitert wird?
+    public List getAllDrinksWithDates(){
+        List<Object> drinkList = new ArrayList<>();
+        Cursor cursor = database.rawQuery(query, new String[]{});
+
+        cursor.moveToFirst();
+        Drink drink;
+
+        // FIXME: ugly solution but works for now
+        // FIXME: needed because otherwise the first entry doesn't have a header
+        drinkList.add(lastKnownDateTime.toLocalDate());
+
+        while(!cursor.isAfterLast()) {
+            drink = cursorToDrink(cursor);
+
+            if(Duration.between(drink.getDateTime(), lastKnownDateTime).toDays() >= 1){
+                lastKnownDateTime = drink.getDateTime();
+                drinkList.add(lastKnownDateTime.toLocalDate());
+            }
+            drinkList.add(drink);
             cursor.moveToNext();
         }
 

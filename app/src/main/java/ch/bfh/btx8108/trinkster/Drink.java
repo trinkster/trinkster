@@ -10,10 +10,8 @@ public class Drink {
     private long id;
 
     private Category category;
-
     private String name;
     private double quantity;
-
     private LocalDateTime dateTime;
 
 

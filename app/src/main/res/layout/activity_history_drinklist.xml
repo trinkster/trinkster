@@ -34,7 +34,7 @@
             android:ellipsize="marquee"
             android:gravity="center_vertical|start"
             android:singleLine="true"
-            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/colorListFont" />
 
@@ -45,7 +45,7 @@
             android:ellipsize="marquee"
             android:gravity="center_vertical|start"
             android:singleLine="true"
-            android:textAppearance="?attr/textAppearanceListItemSecondary"
+            android:textSize="16sp"
             android:textColor="@color/colorListFont" />
 
     </LinearLayout>
