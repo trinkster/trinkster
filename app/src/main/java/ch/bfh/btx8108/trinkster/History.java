@@ -53,10 +53,6 @@ public class History extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_history, container, false);
 
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-
-        textView.setText( "HISTORY-SCREEN" );
-
         DbHelper dbHelper = new DbHelper(getContext());
         drinkDAO = new DrinkDAO(dbHelper);
         showAllListEntries(rootView);
@@ -127,7 +123,7 @@ public class History extends Fragment{
                         LocalDate tmpDate = (LocalDate) getItem(position);
 
                         TextView tv1 = row.findViewById(R.id.separator);
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("eeee dd. MMMM YYYY", new Locale("de-CH"));
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("eeee, dd. MMMM YYYY", new Locale("de-CH"));
                         String titleString = tmpDate.format(formatter);
 //                        LocalDate parsedDate = LocalDate.parse(titleString, formatter);
                         tv1.setText(titleString);
