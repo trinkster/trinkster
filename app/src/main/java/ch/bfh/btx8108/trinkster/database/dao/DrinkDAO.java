@@ -30,7 +30,8 @@ public class DrinkDAO {
     private final static String COLUMN_CATEGORY_NAME = "category_name";
 
     private SQLiteDatabase database;
-    private LocalDateTime lastKnownDateTime = LocalDateTime.now();
+//    private LocalDateTime lastKnownDateTime = LocalDateTime.now();
+    private LocalDateTime lastKnownDateTime = null;
 
     // Stringarray mit den Tabellenspalten für spätere DB-Befehle
     private String[] columns = {
@@ -138,14 +139,10 @@ public class DrinkDAO {
         cursor.moveToFirst();
         Drink drink;
 
-        // FIXME: ugly solution but works for now
-        // FIXME: needed because otherwise the first entry doesn't have a header
-        drinkList.add(lastKnownDateTime.toLocalDate());
-
         while(!cursor.isAfterLast()) {
             drink = cursorToDrink(cursor);
 
-            if(Duration.between(drink.getDateTime(), lastKnownDateTime).toDays() >= 1){
+            if( (lastKnownDateTime == null) || (Duration.between(drink.getDateTime(), lastKnownDateTime).toDays() >= 1) ){
                 lastKnownDateTime = drink.getDateTime();
                 drinkList.add(lastKnownDateTime.toLocalDate());
             }
