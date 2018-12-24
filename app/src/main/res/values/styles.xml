@@ -20,7 +20,11 @@
     </style>
 
     <style name="tabTextStyle" parent="@style/AppTheme">
-        <item name="android:singleLine">false</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="toolbarTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">22sp</item>
     </style>
 
