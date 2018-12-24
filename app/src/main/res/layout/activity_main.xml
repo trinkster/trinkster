@@ -24,7 +24,6 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name">
-
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
@@ -32,12 +31,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorSecondary"
-            app:tabSelectedTextColor="@color/colorPrimaryDark"
-            app:tabTextColor="@color/colorWhite"
+            app:tabGravity="fill"
             app:tabIndicatorColor="@color/colorPrimaryDark"
-            app:tabMode="fixed"
-            app:tabTextAppearance="@style/customTabTextAppearance"
-            >
+            app:tabIndicatorHeight="5sp"
+            app:tabSelectedTextColor="@color/colorPrimaryDark"
+            app:tabTextAppearance="@style/tabTextStyle"
+            app:tabTextColor="@color/colorWhite">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabHistory"

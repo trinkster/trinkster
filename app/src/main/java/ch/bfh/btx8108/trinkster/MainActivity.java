@@ -1,10 +1,12 @@
 package ch.bfh.btx8108.trinkster;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,14 +49,8 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager){
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.d(LOG_TAG, "onTabSelected(): enter");
-                Log.d(LOG_TAG, "onTabSelected(): switch to tab - '"+tab.getText().toString()+"'");
-
+                // handle the possibility of HistoryAddFragment being open and tabswitching being done
                 SectionsPagerAdapter tmpSectionPagerAdapter = (SectionsPagerAdapter) mViewPager.getAdapter();
-
-                Log.d(LOG_TAG, "onTabSelected(): current history-fragment: '"+tmpSectionPagerAdapter.mFragmentAtPos0+"'");
-                Log.d(LOG_TAG, "onTabSelected(): mFragmentAtPos0 is instanceof HistoryAddFragment: '"+(tmpSectionPagerAdapter.mFragmentAtPos0 instanceof HistoryAddFragment)+"'");
-
                 if( (tab.getText().toString().equals(getString(R.string.tab_text_1))) && (tmpSectionPagerAdapter.mFragmentAtPos0 instanceof HistoryAddFragment) ){
                     Log.d(LOG_TAG, "onTabSelected(): We're switching back to verlaufs-tab and the HistoryAddFragment was last seen");
                     ((HistoryAddFragment) mSectionsPagerAdapter.getItem(0)).backPressed();
@@ -65,6 +61,20 @@ public class MainActivity extends AppCompatActivity {
                     super.onTabSelected(tab);
                 }
 
+                int tabIconColor = ContextCompat.getColor(mViewPager.getContext(), R.color.colorPrimaryDark);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                super.onTabUnselected(tab);
+                int tabIconColor = ContextCompat.getColor(mViewPager.getContext(), R.color.colorWhite);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
             }
 
         });
