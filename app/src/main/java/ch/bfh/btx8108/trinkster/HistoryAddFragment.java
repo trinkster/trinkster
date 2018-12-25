@@ -1,9 +1,13 @@
 package ch.bfh.btx8108.trinkster;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +19,6 @@ public class HistoryAddFragment extends Fragment {
     private static final String LOG_TAG = HistoryAddFragment.class.getSimpleName();
 
     static HistoryFragmentListener historyFragmentListener;
-
-    public HistoryAddFragment() {
-
-    }
 
     public static HistoryAddFragment createInstance(HistoryFragmentListener listener) {
         HistoryAddFragment historyAddFragment = new HistoryAddFragment();
@@ -32,10 +32,11 @@ public class HistoryAddFragment extends Fragment {
         Log.d(LOG_TAG, "onCreateView(): enter");
 
         View rootView = inflater.inflate(R.layout.activity_history_add, container, false);
-
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-
         textView.setText( "Neues Getränk hinzufügen" );
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20.0f);
+        textView.setTypeface(Typeface.DEFAULT);
+        textView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorListFont));
 
         return rootView;
     }
@@ -45,5 +46,4 @@ public class HistoryAddFragment extends Fragment {
         Log.d(LOG_TAG, "backPressed(): switch back to the main history-view");
         historyFragmentListener.onSwitchToNextFragment();
     }
-
 }

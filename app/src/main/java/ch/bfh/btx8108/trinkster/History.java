@@ -123,7 +123,7 @@ public class History extends Fragment{
                         LocalDate tmpDate = (LocalDate) getItem(position);
 
                         TextView tv1 = row.findViewById(R.id.separator);
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("eeee, dd. MMMM YYYY", new Locale("de-CH"));
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("eeee, dd.MM.YYYY", new Locale("de-CH"));
                         String titleString = tmpDate.format(formatter);
 //                        LocalDate parsedDate = LocalDate.parse(titleString, formatter);
                         tv1.setText(titleString);
@@ -153,12 +153,15 @@ public class History extends Fragment{
 
                         // set main text (Drink name and its amount)
                         TextView tv = row.findViewById(R.id.drinklist_text1);
-                        tv.setText(item.toString() + "dl");
+                        tv.setText(item.toString() + " dl");
 
                         // set sub text (Date and Time the drink was added)
                         TextView tv2 = row.findViewById(R.id.drinklist_text2);
                         LocalDateTime ldt1 = item.getDateTime();
-                        tv2.setText(ldt1.getDayOfMonth() +"."+ldt1.getMonthValue() + "." +ldt1.getYear() + " um " + ldt1.toLocalTime());
+                        DateTimeFormatter listDateFormatter = DateTimeFormatter.ofPattern("dd.MM.YYYY", new Locale("de-CH"));
+                        DateTimeFormatter listTimeFormatter = DateTimeFormatter.ofPattern("HH:mm", new Locale("de-CH"));
+                        String drinkHistoryEntry = ldt1.format(listDateFormatter) + " um " + ldt1.format(listTimeFormatter) + " Uhr";
+                        tv2.setText(drinkHistoryEntry);
 
                         // set info link according to category
                         ImageButton imgButton = row.findViewById(R.id.drinklist_icon);
@@ -179,9 +182,7 @@ public class History extends Fragment{
     public void addDrink(View rootView){
         Log.d(LOG_TAG, "addDrink(): enter");
 
-
         Log.d(LOG_TAG, "addDrink(): SWITCH TO NEXT HISTORYADD-VIEW");
         historyFragmentListener.onSwitchToNextFragment();
     }
-
 }

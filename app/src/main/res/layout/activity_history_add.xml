@@ -12,10 +12,12 @@
         android:id="@+id/section_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorGrey"
+        android:paddingLeft="16dp"
         android:paddingTop="18dp"
         android:paddingBottom="18dp"
-        android:paddingLeft="16dp"
-        android:background="@color/colorGrey"
+        android:textSize="22sp"
+        android:textStyle="normal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/history_layout_add"
         tools:layout_constraintLeft_creator="1"
@@ -26,72 +28,284 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:paddingLeft="16dp"
         android:ems="10"
+        android:hint="@string/DRINK_NAME"
         android:inputType="text"
-        android:fontFamily="@font/source_sans_pro"
-        android:textColor="@color/colorSliderFill"
-        android:hint="@string/DRINK_NAME" />
+        android:paddingLeft="16dp"
+        android:textSize="20sp"
+        android:textStyle="normal" />
 
     <EditText
         android:id="@+id/drinkAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:paddingLeft="16dp"
         android:ems="10"
+        android:hint="@string/DRINK_AMOUNT"
         android:inputType="numberDecimal"
-        android:fontFamily="@font/source_sans_pro"
-        android:textColor="@color/colorSliderFill"
-        android:hint="@string/DRINK_AMOUNT"/>
+        android:paddingLeft="16dp"
+        android:textSize="20sp"
+        android:textStyle="normal" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeightSmall"
         android:orientation="horizontal"
-        android:paddingTop="8dp" >
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="12dip"
+        android:layout_marginTop="12dp">
+
         <ImageView
-            android:id="@+id/imageView2"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/image_water"
-            android:layout_marginVertical="8dp"
             android:layout_marginHorizontal="8dp"
-            android:scaleType="fitXY"/>
-        <TextView
-            android:id="@+id/unsweetendLabel"
-            android:layout_weight="0.8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"
-            android:paddingLeft="16dp"
-            android:background="@color/colorGrey"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/history_layout_add"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1"
-            android:text="This is a text\nwith linebreak..."/>
+            android:layout_marginVertical="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_water" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/unsweetendLabelHeader"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_UNSWEETEND"
+                android:textColor="@color/colorListFont"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee" />
+
+            <TextView
+                android:id="@+id/unsweetendLabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_UNSWEETEND_DESC"
+                android:textColor="@color/colorFontSecond"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee"/>
+        </LinearLayout>
         <RadioButton
             android:id="@+id/rbUnsweeted"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:tag="1"
+            android:onClick="selectDrinkCategory"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeightSmall"
+        android:orientation="horizontal"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="12dip"
+        android:layout_marginTop="12dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_soda" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/otherLabelHeader"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_OTHER"
+                android:textColor="@color/colorListFont"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee"/>
+
+            <TextView
+                android:id="@+id/otherLabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_OTHER_DESC"
+                android:textColor="@color/colorFontSecond"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee"/>
+        </LinearLayout>
+        <RadioButton
+            android:id="@+id/rbOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="2"
+            android:onClick="selectDrinkCategory"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeightSmall"
+        android:orientation="horizontal"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="12dip"
+        android:layout_marginTop="12dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_coffee" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/caffeinLabelHeader"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_CAFFEIN"
+                android:textColor="@color/colorListFont"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee"/>
+
+            <TextView
+                android:id="@+id/caffeinLabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_CAFFEIN_DESC"
+                android:textColor="@color/colorFontSecond"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee"/>
+        </LinearLayout>
+        <RadioButton
+            android:id="@+id/rbCaffein"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="3"
+            android:onClick="selectDrinkCategory" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeightSmall"
+        android:orientation="horizontal"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="12dip"
+        android:layout_marginTop="12dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_beer" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/alcoholLabelHeader"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_ALCOHOL"
+                android:textColor="@color/colorListFont"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee"/>
+
+            <TextView
+                android:id="@+id/alcoholLabel"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical|start"
+                android:singleLine="true"
+                android:text="@string/DRINK_ALCOHOL_DESC"
+                android:textColor="@color/colorFontSecond"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:ellipsize="marquee"/>
+        </LinearLayout>
+        <RadioButton
+            android:id="@+id/rbAlcohol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="4"
+            android:onClick="selectDrinkCategory" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"></LinearLayout>
+        android:orientation="horizontal"
+        android:layout_gravity="right"
+        android:paddingTop="12dp">
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/colorPrimary"
+            android:onClick="cancelHistoryAdd"
+            android:text="@string/DRINK_BTN_CANCEL"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:textStyle="normal" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"></LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"></LinearLayout>
-
-
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/colorPrimary"
+            android:onClick="addDrinkToHistory"
+            android:text="@string/DRINK_BTN_SAVE"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+    </LinearLayout>
 </LinearLayout>

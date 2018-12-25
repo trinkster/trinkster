@@ -83,4 +83,14 @@
     <!-- History Add Strings -->
     <string name="DRINK_NAME">Getränkename</string>
     <string name="DRINK_AMOUNT">Getränkemenge in dl</string>
+    <string name="DRINK_UNSWEETEND">Ungesüsste Getränke</string>
+    <string name="DRINK_UNSWEETEND_DESC">Wasser, ungesüsster Tee etc.</string>
+    <string name="DRINK_OTHER">Sonstige Getränke</string>
+    <string name="DRINK_OTHER_DESC">Limonade, Fruchtsaft, Milch etc.</string>
+    <string name="DRINK_CAFFEIN">Koffeinhaltige Getränke</string>
+    <string name="DRINK_CAFFEIN_DESC">Kaffee, Cola, Energy Drinks etc.</string>
+    <string name="DRINK_ALCOHOL">Alkoholhaltige Getränke</string>
+    <string name="DRINK_ALCOHOL_DESC">Bier, Wein, Spirituosen, Cocktails etc.</string>
+    <string name="DRINK_BTN_CANCEL">Abbrechen</string>
+    <string name="DRINK_BTN_SAVE">Speichern</string>
 </resources>

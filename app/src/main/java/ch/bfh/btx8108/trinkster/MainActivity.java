@@ -9,11 +9,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.TextView;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import ch.bfh.btx8108.trinkster.database.DbHelper;
+import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -27,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private static History fragment_history;
     private static Statistic fragment_statistic;
     private static GuessBAC fragment_guessbac;
+
+    private AppCompatRadioButton[] drinkCategoryRadios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
     }
 
     @Override
@@ -218,8 +232,13 @@ public class MainActivity extends AppCompatActivity {
 
     // History
     public void addDrink(View v){
-
         fragment_history.addDrink(v);
+
+        drinkCategoryRadios = new AppCompatRadioButton[] {
+                findViewById(R.id.rbUnsweeted), findViewById(R.id.rbOther), findViewById(R.id.rbCaffein),
+                findViewById(R.id.rbAlcohol)
+        };
+        ((RadioButton)findViewById(R.id.rbUnsweeted)).setChecked(true);
     }
 
     //Statistic
@@ -257,5 +276,44 @@ public class MainActivity extends AppCompatActivity {
     public void startBreathalyzerComparison(View v){
         fragment_guessbac.startBreathalyzerComparison(v);
     }
+
+    public void selectDrinkCategory(View view) {
+        if (view instanceof AppCompatRadioButton) {
+            for (int i = 0; i < drinkCategoryRadios.length; i++){
+                if (!view.equals(drinkCategoryRadios[i])) {
+                    drinkCategoryRadios[i].setChecked(false);
+                }
+            }
+        }
+    }
+
+    private Integer selectedDrinkCategory() {
+        Optional<AppCompatRadioButton> optionalButton = Arrays.stream(drinkCategoryRadios)
+                .filter(button -> button.isChecked())
+                .findFirst();
+
+        return Integer.valueOf(optionalButton.get().getTag().toString());
+    }
+
+    public void cancelHistoryAdd(View view) {
+        fragment_history.historyFragmentListener.onSwitchToNextFragment();
+    }
+
+    public void addDrinkToHistory(View view) {
+        DbHelper dbHelper = new DbHelper(this);
+        DrinkDAO drinkDAO = new DrinkDAO(dbHelper);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DbHelper.DATE_TIME_FORMAT);
+
+        drinkDAO.createDrink(new Category(selectedDrinkCategory()),
+                ((TextView)findViewById(R.id.drinkName)).getText().toString(),
+                Double.valueOf(((TextView) findViewById(R.id.drinkAmount)).getText().toString()),
+                LocalDateTime.now().format(formatter).toString());
+
+        dbHelper.close();
+
+        fragment_history.historyFragmentListener.onSwitchToNextFragment();
+    }
+
 
 }
