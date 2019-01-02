@@ -92,7 +92,7 @@
 
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/calendarLayout"
         android:layout_width="match_parent"
@@ -100,30 +100,6 @@
         android:background="@color/colorGrey"
         android:orientation="vertical"
         tools:context=".MainActivity">
-
-        <CalendarView
-            android:id="@+id/simpleCalendarView"
-            android:layout_width="fill_parent"
-            android:layout_height="330dp"
-            android:firstDayOfWeek="2" />
-
-       <!-- <MFCalendarView
-            android:id="@+id/simpleCalendarView"
-            android:layout_width="fill_parent"
-            android:layout_height="330dp"
-            />-->
-
-        <Button
-            android:id="@+id/okCalendar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/TEXT_OK"
-            android:layout_marginTop="25dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorGrey"
-            android:onClick="confirmCalendar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Button
             android:id="@+id/btnReset"
@@ -137,7 +113,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -168,8 +144,8 @@
             android:layout_marginEnd="5dp"
             android:layout_gravity="center_vertical"
             android:gravity="left"
-            android:onClick="goBack"
             android:text="Zurück"
+            android:onClick="goBack"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
             tools:layout_constraintLeft_creator="1"

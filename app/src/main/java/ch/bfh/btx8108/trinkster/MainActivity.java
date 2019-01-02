@@ -20,9 +20,7 @@ import android.widget.TextView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
@@ -244,10 +242,6 @@ public class MainActivity extends AppCompatActivity {
     //Statistic
     public void showCalendar(View v) {
         fragment_statistic.showCalendar(v);
-    }
-
-    public void confirmCalendar(View v) {
-        fragment_statistic.confirmCalendar(v);
     }
 
     public void changeDateOneDayAfter(View v) {

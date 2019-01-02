@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.EditText;
@@ -54,11 +53,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     ImageView imageDetails;
     PieDataSet dataSet;
     ArrayList<String> xVals;
-    CalendarView simpleCalendarViewLayout;
     private DrinkDAO drinkDAO;
-
-    //Button
-    Button okCalendarBtn;
 
     //Date
     Date actualDayCalendar;
@@ -75,7 +70,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     ImageButton buttonTimeline;
 
     //LinearLayout
-    LinearLayout calendarLinearLayout;
     LinearLayout detailsLayoutLinear;
     LinearLayout detailsTotalLayout;
     LinearLayout greyBarDetailsLayout;
@@ -133,13 +127,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         this.errorMessage = (TextView) rootView.findViewById(R.id.error_message);
 
-        //create calendarView
-        this.calendarLinearLayout = (LinearLayout) rootView.findViewById(R.id.calendarLayout);
-        this.simpleCalendarViewLayout =(CalendarView) rootView.findViewById(R.id.simpleCalendarView);
-        //this.simpleCalendarViewLayout =(CalendarView) rootView.findViewById(R.id.slyCalendarView);
-        //this.simpleCalendarViewLayout = (CalendarView) rootView.findViewById(R.id.calendarView);
-        this.okCalendarBtn = (Button) rootView.findViewById(R.id.okCalendar);
-
         //create detailView: activity_statistic_details
         this.greyBarDetailsLayout = (LinearLayout) rootView.findViewById(R.id.greyBarDetails);
         this.backRootView = (ImageButton) rootView.findViewById(R.id.back);
@@ -154,9 +141,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         //show only rootView without details or popup
         buttonAfter.setVisibility(View.INVISIBLE);
-        calendarLinearLayout.setVisibility(View.GONE);
-        simpleCalendarViewLayout.setVisibility(View.GONE);
-        okCalendarBtn.setVisibility(View.GONE);
         checkPieChart();
 
         greyBarDetailsLayout.setVisibility(View.GONE);
@@ -196,17 +180,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      * @param v - the view
      */
     public void showCalendar(View v) {
-        /*textViewDate.setVisibility(View.GONE);
-        buttonCalendar.setVisibility(View.GONE);
-        buttonBefore.setVisibility(View.GONE);
-        buttonAfter.setVisibility(View.GONE);
-        buttonTimeline.setVisibility(View.GONE);
-        pieChartLinearLayout.setVisibility(View.GONE);
-        pieChart.setVisibility(View.GONE);
-
-        calendarLinearLayout.setVisibility(View.VISIBLE);
-        simpleCalendarViewLayout.setVisibility(View.VISIBLE);
-        okCalendarBtn.setVisibility(View.VISIBLE);*/
 
         SlyCalendarDialog.Callback callback = new SlyCalendarDialog.Callback() {
             @Override
@@ -243,35 +216,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         //simpleCalendarViewLayout.set
         simpleCalendarViewLayout.setOnDateChangeListener(this);*/
 
-    }
-
-    /**
-     * closes the calendar
-     */
-    public void closeCalendar() {
-        calendarLinearLayout.setVisibility(View.GONE);
-        simpleCalendarViewLayout.setVisibility(View.GONE);
-        okCalendarBtn.setVisibility(View.GONE);
-
-        textViewDate.setVisibility(View.VISIBLE);
-        buttonCalendar.setVisibility(View.VISIBLE);
-        buttonBefore.setVisibility(View.VISIBLE);
-        buttonAfter.setVisibility(View.VISIBLE);
-        buttonTimeline.setVisibility(View.VISIBLE);
-        pieChartLinearLayout.setVisibility(View.VISIBLE);
-        pieChart.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * closes the calender when the ok button was pressed and changes the date
-     * @param v - the view
-     */
-    public void confirmCalendar(View v) {
-        textViewDate.setText(this.date);
-        closeCalendar();
-        checkTimeline();
-        checkButtonAfter();
-        checkPieChart(); //setPieChart(this.pieChart);
     }
 
     /**
@@ -476,7 +420,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.dateCalendar = this.actualDayCalendar;
         this.timeline = "day";
         this.textViewDate.setText(this.date);
-        closeCalendar();
         checkButtonAfter();
         setPieChart(this.pieChart);
     }
