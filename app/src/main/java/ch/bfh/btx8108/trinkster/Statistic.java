@@ -601,6 +601,20 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         LocalDateTime localDateTime = setLocalTime(dateCalendar);
         List<DrinkName> drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
 
+        if (timeline.equals("day")){
+            drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
+        } else if (timeline.equals("week")){
+            LocalDateTime weekLocalDate = setLocalTime(weekDateCalendar);
+            drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, weekLocalDate, localDateTime);
+        } else if (timeline.equals("month")){
+            LocalDateTime monthLocalDate = setLocalTime(monthDateCalendar);
+            drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, monthLocalDate, localDateTime);
+        } else if (timeline.equals("year")){
+            LocalDateTime yearLocalDate = setLocalTime(yearDateCalendar);
+            drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, yearLocalDate, localDateTime);
+        } else {
+            Log.d(LOG_TAG, "show Entries: else");
+        }
 
         ArrayAdapter<DrinkName> drinkArrayAdapter = new ArrayAdapter<>(
                 getContext(),
