@@ -180,7 +180,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      * @param v - the view
      */
     public void showCalendar(View v) {
-
         SlyCalendarDialog.Callback callback = new SlyCalendarDialog.Callback() {
             @Override
             public void onCancelled() {
@@ -190,31 +189,42 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             @Override
             public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
                 Log.d(LOG_TAG, "onCancelled: calendar dialog saved");
-
+                dateCalendar = firstDate.getTime();
+                date = formatter.format(dateCalendar);
+                //dateCalendar = secondDate.getTime();
+                //date = dateCalendar.toString();
+                textViewDate.setText(date);
+                checkTimeline();
+                checkButtonAfter();
+                checkPieChart();
             }
         };
 
-        new SlyCalendarDialog().setSingle(false).setCallback(callback).show(getActivity().getSupportFragmentManager(), "TAG_SLYCALENDAR");
-
-
-        /*long dateInLong = dateCalendar.getTime();
-
+        Date iDate = dateCalendar;
         if (timeline.equals("day")){
-            simpleCalendarViewLayout.setDate(dateInLong, true, false);
+            iDate=dateCalendar;
         } else if (timeline.equals("week")){
-            long weekInLong = weekDateCalendar.getTime();
-            simpleCalendarViewLayout.setDate(weekInLong, true, false);
-        } else if (timeline.equals("month")) {
-            long monthInLong = monthDateCalendar.getTime();
+            iDate=weekDateCalendar;
+        } else if (timeline.equals("month")){
+            iDate=monthDateCalendar;
         } else if (timeline.equals("year")){
-            long yearInLong = yearDateCalendar.getTime();
+            iDate=yearDateCalendar;
+        } else{
+            Log.d(LOG_TAG, "Date for calender did not work");
         }
 
-        simpleCalendarViewLayout.setMaxDate(actualDayCalendar.getTime());
-        //simpleCalendarViewLayout.setMinDate();
+        new SlyCalendarDialog()
+                .setSingle(false)
+                .setCallback(callback)
+                // .setBackgroundColor(Color.parseColor("#ff0000"))
+                .setEndDate(dateCalendar)
+                .setStartDate(iDate)
+                .show(getActivity().getSupportFragmentManager(), "TAG_SLYCALENDAR");
 
-        //simpleCalendarViewLayout.set
-        simpleCalendarViewLayout.setOnDateChangeListener(this);*/
+
+       /*
+        simpleCalendarViewLayout.setMaxDate(actualDayCalendar.getTime());
+        */
 
     }
 
