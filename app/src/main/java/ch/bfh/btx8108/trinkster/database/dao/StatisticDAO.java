@@ -56,7 +56,7 @@ public class StatisticDAO {
         return statistic;
     }
 
-    public List<DrinkName> getDrinksOfCategoryAndDate(String category, LocalDateTime localDateTimeBegin, LocalDateTime localDateTimeEnd) {
+    public List<Object> getDrinksOfCategoryAndDate(String category, LocalDateTime localDateTimeBegin, LocalDateTime localDateTimeEnd) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String begin = localDateTimeBegin.format(formatter) + " 00:00:00";
         String end = localDateTimeEnd.format(formatter) + " 23:59:59";
@@ -69,7 +69,7 @@ public class StatisticDAO {
 
         cursor.moveToFirst();
 
-        List<DrinkName> drinkList = new ArrayList<>();
+        List<Object> drinkList = new ArrayList<>();
         DrinkName drink;
 
         while(!cursor.isAfterLast()) {

@@ -31,12 +31,15 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
@@ -599,7 +602,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         DbHelper dbHelper = new DbHelper(getContext());
         StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
         LocalDateTime localDateTime = setLocalTime(dateCalendar);
-        List<DrinkName> drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
+        List<Object> drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
 
         if (timeline.equals("day")){
             drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
@@ -616,15 +619,106 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             Log.d(LOG_TAG, "show Entries: else");
         }
 
-        ArrayAdapter<DrinkName> drinkArrayAdapter = new ArrayAdapter<>(
+        /*ArrayAdapter<DrinkName> drinkArrayAdapter = new ArrayAdapter<>(
                 getContext(),
                 android.R.layout.simple_list_item_multiple_choice,
-                drinkList);
+                drinkList);*/
 
-        Log.d(LOG_TAG, "Context: " + getContext());
+        list_drinks.setAdapter( new ArrayAdapter<Object>(getContext(), R.layout.activity_statistic_drinklist, R.id.drinklist_text, drinkList){
+                                      private static final int TYPE_DIVIDER = 0;
+                                      private static final int TYPE_DRINK = 1;
+                                      private final String LOG_TAG = ArrayAdapter.class.getSimpleName();
 
-        list_drinks.setBackgroundColor(Color.argb(255, 112, 128, 144));
-        list_drinks.setAdapter(drinkArrayAdapter);
+            private int mFieldId;
+            private Context mContext;
+            private View row;
+
+            @Override
+            public int getViewTypeCount() { // TYPE_DRINK and TYPE_DIVIDER
+                return 2;
+            }
+
+            @Override
+            public int getItemViewType(int position) {
+                if (getItem(position) instanceof DrinkName) {
+                    return TYPE_DRINK;
+                }
+
+                return TYPE_DIVIDER;
+            }
+
+            @Override
+            public boolean isEnabled(int position) {
+                return (getItemViewType(position) == TYPE_DRINK);
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                mFieldId = R.id.drinklist_text1;
+                mContext = getContext();
+
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                int type = getItemViewType(position);
+
+
+                if (convertView == null) {
+                    switch (type) {
+                        case TYPE_DIVIDER:
+                            row = inflater.inflate(R.layout.activity_history_drinklist_dateheader, parent, false);
+                            break;
+                        case TYPE_DRINK:
+                            row = inflater.inflate(R.layout.activity_statistic_drinklist, parent, false);
+                            break;
+                    }
+                } else {
+                    row = convertView;
+                }
+
+                switch (type) {
+                    case TYPE_DIVIDER:
+                        LocalDate tmpDate = (LocalDate) getItem(position);
+
+                        TextView tv1 = row.findViewById(R.id.separator);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("eeee, dd.MM.YYYY", new Locale("de-CH"));
+                        String titleString = tmpDate.format(formatter);
+//                        LocalDate parsedDate = LocalDate.parse(titleString, formatter);
+                        tv1.setText(titleString);
+                        break;
+                    case TYPE_DRINK:
+                        DrinkName item = (DrinkName) getItem(position);
+
+                        // set image according to drink category
+                        ImageView imgView = (ImageView) row.findViewById(R.id.drinklist_drink_image);
+                        switch(category){
+                            case "Ungesüsste Getränke":
+                                imgView.setImageDrawable(getResources().getDrawable(R.drawable.image_water));
+                                break;
+                            case "Sonstige Getränke":
+                                imgView.setImageDrawable(getResources().getDrawable(R.drawable.image_soda));
+                                break;
+                            case "Koffeinhaltige Getränke":
+                                imgView.setImageDrawable(getResources().getDrawable(R.drawable.image_coffee));
+                                break;
+                            case "Alkoholhaltige Getränke":
+                                imgView.setImageDrawable(getResources().getDrawable(R.drawable.image_beer));
+                                break;
+                            default:
+                                imgView.setImageDrawable(getResources().getDrawable(R.drawable.image_water));
+                                break;
+                        }
+
+                        // set main text (Drink name and its amount)
+                        TextView tv = row.findViewById(R.id.drinklist_text);
+                        tv.setText(item.toString() + " dl");
+
+                        // set info link according to category
+                        ImageButton imgButton = row.findViewById(R.id.drinklist_icon);
+
+                        break;
+                }
+                return row;
+
+            }});
     }
 
     /**
