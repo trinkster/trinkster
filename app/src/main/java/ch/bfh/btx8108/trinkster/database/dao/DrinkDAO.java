@@ -6,13 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ch.bfh.btx8108.trinkster.Category;
 import ch.bfh.btx8108.trinkster.Drink;

@@ -14,14 +14,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.time.LocalDateTime;
 import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
 import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;

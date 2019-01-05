@@ -2,8 +2,6 @@ package ch.bfh.btx8108.trinkster.database.tables;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import ch.bfh.btx8108.trinkster.Category;
-
 /**
  * Klasse, welche die Datenbanktabelle repräsentiert.
  */

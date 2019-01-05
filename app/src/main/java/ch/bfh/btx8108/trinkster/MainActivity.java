@@ -271,6 +271,14 @@ public class MainActivity extends AppCompatActivity {
         fragment_guessbac.startBreathalyzerComparison(v);
     }
 
+    /**
+     * Methode stellt bei der Auswahl einer DrinkCategory sicher, das evtl. schon
+     * ausgewählte DrinkCategories abgewählt werden, so das am Ende nur ein Radiobutton
+     * ausgewählt werden kann. Das ist wichtig, da die Radiobutton nicht in einer Group
+     * angeordnet werden können, die dieses Verhalten sicherstellen würde.
+     *
+     * @param view      Der ausgewählte View (Radiobutton)
+     */
     public void selectDrinkCategory(View view) {
         if (view instanceof AppCompatRadioButton) {
             for (int i = 0; i < drinkCategoryRadios.length; i++){
@@ -281,6 +289,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Methode prüft, welcher Radiobutton aktuell ausgewählt ist. Die Radiobuttons zur Auswahl
+     * der DrinkCatetory sind im Tag eindeutig mit einem Integerwert gekennzeichnet.
+     *
+     * @return      Integer zur Identifikation des gewählten Radiobuttons
+     */
     private Integer selectedDrinkCategory() {
         Optional<AppCompatRadioButton> optionalButton = Arrays.stream(drinkCategoryRadios)
                 .filter(button -> button.isChecked())
@@ -289,10 +303,22 @@ public class MainActivity extends AppCompatActivity {
         return Integer.valueOf(optionalButton.get().getTag().toString());
     }
 
+    /**
+     * Methode beendet das Hinzufügen eines neuen Drinks zur History ohne zu speichern
+     * und schliesst die History-Add-Eingabemaske.
+     *
+     * @param view
+     */
     public void cancelHistoryAdd(View view) {
         fragment_history.historyFragmentListener.onSwitchToNextFragment();
     }
 
+    /**
+     * Methode speichert die Werte eines Drinks in der Datenbank und schliesst die
+     * History-Add-Eingabemaske.
+     *
+     * @param view
+     */
     public void addDrinkToHistory(View view) {
         DbHelper dbHelper = new DbHelper(this);
         DrinkDAO drinkDAO = new DrinkDAO(dbHelper);
@@ -308,6 +334,4 @@ public class MainActivity extends AppCompatActivity {
 
         fragment_history.historyFragmentListener.onSwitchToNextFragment();
     }
-
-
 }
