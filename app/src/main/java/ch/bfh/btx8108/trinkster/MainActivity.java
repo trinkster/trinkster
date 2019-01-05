@@ -74,6 +74,28 @@ public class MainActivity extends AppCompatActivity {
                     super.onTabSelected(tab);
                 }
 
+                if((tab.getText().toString().equals("Statistik"))){
+                    Log.d(LOG_TAG, "onTabSelected(): statistic");
+                    fragment_statistic.dateCalendar = fragment_statistic.actualDayCalendar;
+                    fragment_statistic.date = fragment_statistic.actualDay;
+                    fragment_statistic.textViewDate.setText(fragment_statistic.date);
+                    fragment_statistic.setPieChart(fragment_statistic.pieChart);
+                    fragment_statistic.pieChartLinearLayout.setVisibility(View.VISIBLE);
+                    fragment_statistic.pieChart.setVisibility(View.VISIBLE);
+                    fragment_statistic.onNothingSelected();
+                    fragment_statistic.buttonAfter.setVisibility(View.INVISIBLE);
+                    fragment_statistic.checkPieChart();
+                    fragment_statistic.greyBarDetailsLayout.setVisibility(View.GONE);
+                    fragment_statistic.backRootView.setVisibility(View.GONE);
+                    fragment_statistic.textBack.setVisibility(View.GONE);
+                    fragment_statistic.detailsLayoutLinear.setVisibility(View.GONE);
+                    fragment_statistic.drinkCategoryText.setVisibility(View.GONE);
+                    fragment_statistic.list_drinks.setVisibility(View.GONE);
+                    fragment_statistic.detailsTotalLayout.setVisibility(View.GONE);
+                    fragment_statistic.imageDetails.setVisibility(View.GONE);
+                    fragment_statistic.textViewTotal.setVisibility(View.GONE);
+                }
+
                 int tabIconColor = ContextCompat.getColor(mViewPager.getContext(), R.color.colorPrimaryDark);
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             }

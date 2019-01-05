@@ -64,6 +64,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     Date monthDateCalendar;
     Date weekDateCalendar;
     Date yearDateCalendar;
+    Date myCalendar;
 
     //ImageButton
     ImageButton backRootView;
@@ -87,6 +88,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     String timeline = "day";
     String weekDate;
     String yearDate;
+    String myDate;
 
     //TextView
     TextView drinkCategoryText;
@@ -164,6 +166,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      * checks if the pie Chart is empty or not
      */
     public void checkPieChart(){
+        Log.d(LOG_TAG, "checkPieChart() enter");
+
         setPieChart(pieChart);
 
         boolean check = this.pieChart.isEmpty();
@@ -183,6 +187,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
      * @param v - the view
      */
     public void showCalendar(View v) {
+        Log.d(LOG_TAG, "showCalendar() enter");
+
         SlyCalendarDialog.Callback callback = new SlyCalendarDialog.Callback() {
             @Override
             public void onCancelled() {
@@ -191,11 +197,16 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
             @Override
             public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
-                Log.d(LOG_TAG, "onCancelled: calendar dialog saved");
+                Log.d(LOG_TAG, "onDataSelected: calendar dialog saved");
                 dateCalendar = firstDate.getTime();
                 date = formatter.format(dateCalendar);
-                //dateCalendar = secondDate.getTime();
-                //date = dateCalendar.toString();
+                //myCalendar = secondDate.getTime();
+                //myDate = myCalendar.toString();
+
+                //Log.d(LOG_TAG, "myDate: " + myDate);
+
+                //String s = myDate + " - " + date;
+                //textViewDate.setText(s);
                 textViewDate.setText(date);
                 checkTimeline();
                 checkButtonAfter();
@@ -219,7 +230,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         new SlyCalendarDialog()
                 .setSingle(false)
                 .setCallback(callback)
-                // .setBackgroundColor(Color.parseColor("#ff0000"))
                 .setEndDate(dateCalendar)
                 .setStartDate(iDate)
                 .show(getActivity().getSupportFragmentManager(), "TAG_SLYCALENDAR");
@@ -420,7 +430,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         builder.setNegativeButton("Abbrechen", null);
 
         // create and show the alert dialog
-        //builder.create();
         builder.show();
     }
 
@@ -619,11 +628,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             Log.d(LOG_TAG, "show Entries: else");
         }
 
-        /*ArrayAdapter<DrinkName> drinkArrayAdapter = new ArrayAdapter<>(
-                getContext(),
-                android.R.layout.simple_list_item_multiple_choice,
-                drinkList);*/
-
         list_drinks.setAdapter( new ArrayAdapter<Object>(getContext(), R.layout.activity_statistic_drinklist, R.id.drinklist_text, drinkList){
                                       private static final int TYPE_DIVIDER = 0;
                                       private static final int TYPE_DRINK = 1;
@@ -774,10 +778,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             LocalDateTime localDateWeek = setLocalTime(weekDateCalendar);
             total = statisticDAO.totalQuantityForACategoryAndDay(categoryText, localDateWeek, localDateTime);
         } else if (timeline.equals("month")) {
-            LocalDateTime localDateMonth = setLocalTime(weekDateCalendar);
+            LocalDateTime localDateMonth = setLocalTime(monthDateCalendar);
             total = statisticDAO.totalQuantityForACategoryAndDay(categoryText, localDateMonth, localDateTime);
         } else if (timeline.equals("year")) {
-            LocalDateTime localDateYear = setLocalTime(weekDateCalendar);
+            LocalDateTime localDateYear = setLocalTime(yearDateCalendar);
             total = statisticDAO.totalQuantityForACategoryAndDay(categoryText, localDateYear, localDateTime);
         }
 
