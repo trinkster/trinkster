@@ -198,17 +198,28 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             @Override
             public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
                 Log.d(LOG_TAG, "onDataSelected: calendar dialog saved");
-                dateCalendar = firstDate.getTime();
-                date = formatter.format(dateCalendar);
-                //myCalendar = secondDate.getTime();
-                //myDate = myCalendar.toString();
 
-                //Log.d(LOG_TAG, "myDate: " + myDate);
+                if(secondDate==null){
+                    timeline="day";
+                    dateCalendar = firstDate.getTime();
+                    date = formatter.format(dateCalendar);
+                    changeToDay();
+                } else {
+                    myCalendar = firstDate.getTime();
+                    myDate = formatter.format(myCalendar);
+                    dateCalendar = secondDate.getTime();
+                    date = formatter.format(dateCalendar);
+                    String s = myDate + " - " + date;
+                    setTextViewDate(s);
 
-                //String s = myDate + " - " + date;
-                //textViewDate.setText(s);
-                textViewDate.setText(date);
-                checkTimeline();
+                    DbHelper dbHelper = new DbHelper(getContext());
+                    StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
+                    LocalDateTime myLocalDateTime = setLocalTime(myCalendar);
+                    LocalDateTime localDateTime = setLocalTime(dateCalendar);
+                    List<StatisticEntry> statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(myLocalDateTime, localDateTime);
+                }
+
+                //checkTimeline();
                 checkButtonAfter();
                 checkPieChart();
             }
@@ -251,6 +262,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else {
             buttonAfter.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setTextViewDate(String s){
+        this.textViewDate.setText(s);
     }
 
     /**
@@ -569,14 +584,15 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         data.setValueTextSize(18f);
         data.setValueTextColor(Color.DKGRAY);
 
-        //legend -> manuell setzen?
+        //legend
         Legend l = pieChart.getLegend();
-      //l.setPosition(Legend.LegendPosition.ABOVE_CHART_CENTER);
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
-        l.setTextSize(14f);
+        l.setTextSize(16);
+        l.setTextColor(Color.DKGRAY);
+        //android:fontFamily="@font/source_sans_pro"
         l.setWordWrapEnabled(true);
         l.setForm(Legend.LegendForm.CIRCLE);
-        l.setFormSize(14f);
+        l.setFormSize(16);
         l.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
         Log.d(LOG_TAG, "Legend: " + l);
         l.resetCustom();

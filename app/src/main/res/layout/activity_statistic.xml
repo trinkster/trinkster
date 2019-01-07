@@ -12,7 +12,7 @@
         android:id="@+id/greyBarRoot"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/colorGrey"
+        android:background="@color/colorHeadingBackground"
         tools:context=".MainActivity">
 
         <ImageButton
@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:gravity="left"
             android:layout_marginStart="10dp"
-            android:background="@color/colorGrey"
+            android:background="@color/colorHeadingBackground"
             android:onClick="showCalendar"
             android:src="@drawable/ic_today_black_24dp"/>
 
@@ -33,16 +33,13 @@
 
         <ImageButton
             android:id="@+id/dayBefore"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_width="35dp"
             android:onClick="changeDateOneDayBefore"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginRight="5dp"
-            android:background="@color/colorGrey"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18pt"
+            android:background="@color/colorHeadingBackground"
             android:src="@drawable/ic_navigate_before_black_24dp" />
 
         <TextView
@@ -51,6 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:background="@color/colorHeadingBackground"
+            android:textSize="22sp"
+            android:textStyle="normal"
+            android:textColor="@color/colorListFont"
             android:onClick="thisDay"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
@@ -69,7 +70,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginLeft="5dp"
-            android:background="@color/colorGrey"
+            android:background="@color/colorHeadingBackground"
             android:src="@drawable/ic_navigate_next_black_24dp" />
 
         <View
@@ -85,49 +86,26 @@
             android:layout_gravity="center"
             android:gravity="end"
             android:layout_marginEnd="10dp"
-            android:background="@color/colorGrey"
+            android:background="@color/colorHeadingBackground"
             android:onClick="changeTimeline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </LinearLayout>
 
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/calendarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorGrey"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
-
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Datum zurücksetzen"
-            android:layout_marginTop="25dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorGrey"
-            android:onClick="thisDay"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-    </LinearLayout>-->
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/greyBarDetails"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/colorGrey"
+        android:background="@color/colorHeadingBackground"
         tools:context=".MainActivity">
 
         <ImageButton
             android:id="@+id/back"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:background="@color/colorGrey"
+            android:background="@color/colorHeadingBackground"
             android:layout_gravity="center_vertical"
             android:gravity="left"
             android:onClick="goBack"
@@ -146,6 +124,10 @@
             android:gravity="left"
             android:text="Zurück"
             android:onClick="goBack"
+            android:background="@color/colorHeadingBackground"
+            android:textSize="22sp"
+            android:textStyle="normal"
+            android:textColor="@color/colorListFont"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"
             tools:layout_constraintLeft_creator="1"
@@ -158,7 +140,7 @@
         android:id="@+id/pieChartLayout"
         android:layout_marginTop="55dp"
         android:orientation="vertical"
-        android:gravity="center"
+        android:gravity="top"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -166,7 +148,8 @@
             android:id="@+id/piechart"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="350dp" />
+            android:layout_marginTop="30dp"
+            android:layout_height="500dp" />
 
         <TextView
             android:id="@+id/noPieChart"
@@ -174,14 +157,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:layout_marginTop="300dp"
             android:text="Für dieses Datum wurden keine Einträge erfasst."
             android:fontFamily="@font/source_sans_pro"
             android:textColor="#757575"
-            android:textSize="18dp"
+            android:textSize="20sp"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintTop_creator="1" />
-        <!--app:layout_constraintLeft_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/constraintLayout"-->
 
     </LinearLayout>
 
@@ -253,7 +235,6 @@
             android:fontFamily="@font/source_sans_pro"
             android:textColor="#757575"
             android:textSize="18dp" />
-        <!--android:onClick="confirmPopup"-->
 
     </LinearLayout>
 
