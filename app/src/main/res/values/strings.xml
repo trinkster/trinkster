@@ -11,7 +11,7 @@
     
     <string name="tab_text_1">Verlauf</string>
     <string name="tab_text_2">Statistik</string>
-    <string name="tab_text_3">Promille-Schätzer</string>
+    <string name="tab_text_3">‰-Schätzer</string>
 
     <!-- Statistic-Strings -->
     <string name="TEXT_NAVIGATE_NEXT">Day After</string>
@@ -28,33 +28,33 @@
 
     <!-- Guess Your BAC-Strings -->
     <string name="TITLE_GUESS_BAC">Promille-Schätzer</string>
-    <string name="DESC_GUESS_BAC">Schätze deine Blutalkoholkonzentration (BAK) und vergleiche deinen Schätzwert mit deinem gemessenen Wert.</string>
-    <string name="EXPLAIN_TEXT_GUESS_BAC">Hier steht ein Beispieltext, welcher beschreibt was für folgen welche Mengen von Promillen hat</string>
+    <string name="DESC_GUESS_BAC">Schätze deinen Promillewert und vergleiche deinen geschätzten mit deinem gemessenen Wert.</string>
+    <string name="EXPLAIN_TEXT_GUESS_BAC">Hier steht ein Beispieltext, welcher beschreibt welche Folgen der Promillewert hat.</string>
     <string name="BTN_COMPARE_BREATHALYZER">Breathalyzer-Vergleich</string>
-    <string name="STR_BAC_IN_PROMILLE">BAK in Promille</string>
+    <string name="STR_BAC_IN_PROMILLE"> ‰</string>
 
-    <string name="DIALOG_NO_BREATHALYZER_TITLE">Breathalyzer noch nicht verbunden</string>
-    <string name="DIALOG_NO_BREATHALYZER_MESSAGE">Leider ist aktuell noch kein Breathalyzer mit dem Handy verbunden - möchtest du das jetzt nachholen?</string>
-    <string name="DIALOG_BREATHALYZER_CONNECTED_TITLE">Breathalyzer erfolgreich verbunden</string>
-    <string name="DIALOG_BREATHALYZER_CONNECTED__MESSAGE">Der Breathalyzer wurde erfolgreich mit dem Handy verbunden - Du kannst den Vergleich nun starten.</string>
+    <string name="DIALOG_NO_BREATHALYZER_TITLE">Breathalyzer noch nicht verbunden.</string>
+    <string name="DIALOG_NO_BREATHALYZER_MESSAGE">Leider ist aktuell noch kein Breathalyzer mit dem Smartphone verbunden - Möchtest du das jetzt nachholen?</string>
+    <string name="DIALOG_BREATHALYZER_CONNECTED_TITLE">Breathalyzer erfolgreich verbunden.</string>
+    <string name="DIALOG_BREATHALYZER_CONNECTED__MESSAGE">Der Breathalyzer wurde erfolgreich mit dem Smartphone verbunden - Du kannst den Vergleich nun starten.</string>
     <string name="DIALOG_BREATHALYZER_COUNTDOWN_TITLE">Countdown</string>
     <string name="DIALOG_BREATHALYZER_COUNTDOWN_MESSAGE">Bitte bereitmachen zum pusten!\nAktueller Countdown: </string>
     <string name="DIALOG_BREATHALYZER_KEEPBLOWING_TITLE">Jetzt Pusten</string>
     <string name="DIALOG_BREATHALYZER_KEEPBLOWING_MESSAGE">Bitte jetzt kräftig pusten!</string>
     <string name="DIALOG_BREATHALYZER_ANALYZING_TITLE">Analysieren...</string>
-    <string name="DIALOG_BREATHALYZER_ANALYZING_MESSAGE">Du kannst das pusten einstellen. Deine aktuell Blutalkoholkonzentration (BAK) wird jetzt ausgewertet. </string>
-    <string name="DIALOG_BREATHALYZER_ANALYZED_TITLE">Dein aktueller BAK</string>
-    <string name="DIALOG_BREATHALYZER_ANALYZED_MESSAGE">Deine aktuelle Blutalkoholkonzentration (BAK) beträgt </string>
+    <string name="DIALOG_BREATHALYZER_ANALYZING_MESSAGE">Du kannst das Pusten einstellen. Dein aktueller Promillewert wird jetzt ausgewertet.</string>
+    <string name="DIALOG_BREATHALYZER_ANALYZED_TITLE">Dein aktueller Promillewert</string>
+    <string name="DIALOG_BREATHALYZER_ANALYZED_MESSAGE">Dein aktueller Promillewert beträgt </string>
 
 
     <!-- Quelle https://www.kenn-dein-limit.info/promille-und-folgen.html -->
     <string name="PROMILLE_AB_01">Schon kleine Mengen Alkohol wirken enthemmend. Wir werden kontaktfreudiger, unsere Stimmung ist gelöst. Was uns noch nicht auffällt: Bereits jetzt schätzen wir Entfernungen falsch ein.</string>
-    <string name="PROMILLE_AB_03">Bei diesem Wert tritt häufig eine leichte Verminderung der Sehleistung ein. Unsere Aufmerksamkeit und das Reaktionsvermögen lassen nach, unsere Kritikfähigkeit ist herabgesetzt und die Risikobereitschaft steigt. </string>
-    <string name="PROMILLE_AB_05">Wir sehen immer schlechter, etwa 15% Sehleistung haben wir bei diesem Promillewert schon eingebüßt. Auch das Hören ist beeinträchtigt und wir können Geschwindigkeiten nicht mehr richtig einschätzen. Da kann es durchaus passieren, dass wir beim Vorbeigehen versehentlich jemanden anrempeln. Nicht selten werden wir dann sauer, weil wir reizbarer sind, als im nüchternen Zustand.  </string>
-    <string name="PROMILLE_AB_08">Wir können uns kaum noch konzentrieren und es kommt zum Tunnelblick (Einschränkung des Blickfeldes um 1/4). Mit diesem Promillewert verlängert sich die Reaktionszeit um etwa 30 bis 50 Prozent und man hat mit Gleichgewichtsstörungen zu kämpfen. Gleichzeitig werden viele euphorisch, enthemmt und überschätzen sich, eine gefährliche Kombination. Der Rausch ist für unser Umfeld kaum noch zu übersehen. </string>
-    <string name="PROMILLE_AB_10">Im sogenannten Rauschstadium kommt es zur weiteren Verschlechterung der Sehfähigkeit und vor allem des räumlichen Sehens. Wir sind verwirrt und haben deutliche Sprech-, Reaktions-, Gleichgewichts- und Orientierungsstörungen. Wer so viel Alkohol im Blut hat, hat auch seine Kritikfähigkeit meist verloren. Das sind deutliche Warnsignale für eine Alkoholvergiftung. </string>
-    <string name="PROMILLE_AB_20">Bei diesem Promillewert ist professionelle Hilfe gefragt. Wer das Betäubungsstadium erreicht, reagiert kaum noch und bewegt sich unkoordiniert. Durch Erbrechen versucht der Körper, sich zumindest des Alkohols im Magen zu entledigen. Gleichzeitig kann es zur Muskelerschlaffung kommen. </string>
-    <string name="PROMILLE_AB_30">Wer so viel Alkohol zu sich nimmt, bringt das eigene Leben in Gefahr. Bewusst- und Reflexlosigkeit, Gedächtnisverlust und schwache Atmung sind die Symptome einer gefährlichen Alkoholvergiftung. Es drohen Lähmungen, Koma, Atemstillstand und Tod. </string>
+    <string name="PROMILLE_AB_03">Bei diesem Wert tritt häufig eine leichte Verminderung der Sehleistung auf. Unsere Aufmerksamkeit und das Reaktionsvermögen lassen nach, unsere Kritikfähigkeit ist herabgesetzt und die Risikobereitschaft steigt.</string>
+    <string name="PROMILLE_AB_05">Wir sehen immer schlechter (etwa 15% Sehleistung weniger). Auch das Hören ist beeinträchtigt und wir können Geschwindigkeiten nicht mehr richtig einschätzen. Wir sind reizbarer als im nüchternen Zustand.</string>
+    <string name="PROMILLE_AB_08">Wir können uns kaum noch konzentrieren und es kommt zum Tunnelblick. Die Reaktionszeit verlängert sich um etwa 30-50% und man hat Gleichgewichtsstörungen. Gleichzeitig werden wir euphorisch, enthemmt und überschätzen uns.</string>
+    <string name="PROMILLE_AB_10">Im Rauschstadium kommt es zur weiteren Verschlechterung der Sehfähigkeit und vor allem des räumlichen Sehens. Wir sind verwirrt und haben deutliche Sprech-, Reaktions-, Gleichgewichts- und Orientierungsstörungen. Das sind deutliche Warnsignale für eine Alkoholvergiftung.</string>
+    <string name="PROMILLE_AB_20">Bei diesem Promillewert ist professionelle Hilfe gefragt. Wer das Betäubungsstadium erreicht, reagiert kaum noch und bewegt sich unkoordiniert. Durch Erbrechen versucht der Körper, sich zumindest des Alkohols im Magen zu entledigen.</string>
+    <string name="PROMILLE_AB_30">Wer so viel Alkohol zu sich nimmt, bringt das eigene Leben in Gefahr. Bewusst- und Reflexlosigkeit, Gedächtnisverlust und schwache Atmung sind die Symptome einer gefährlichen Alkoholvergiftung. Es drohen Lähmungen, Koma, Atemstillstand und Tod.</string>
 
     <!-- BACTrack-Strings -->
     <string name="TEXT_DISCONNECTED">Disconnected</string>

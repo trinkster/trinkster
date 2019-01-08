@@ -30,7 +30,7 @@
         android:gravity="center"
         android:text="@string/DESC_GUESS_BAC"
         android:textAlignment="viewStart"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guessbac_title" />
 
@@ -72,7 +72,7 @@
         android:fontFamily="@font/source_sans_pro_bold"
         android:text="@string/STR_BAC_IN_PROMILLE"
         android:textAlignment="viewStart"
-        android:textSize="18sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/guessbac_descr" />
@@ -87,7 +87,7 @@
         android:fontFamily="@font/source_sans_pro"
         android:text="Hier steht ein Beispieltext, welcher beschreibt was für Folgen welche Mengen von Promillen für eine Person hat."
         android:textAlignment="viewStart"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/guessbac_number" />
