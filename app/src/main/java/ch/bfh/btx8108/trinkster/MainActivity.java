@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(LOG_TAG, "onTabSelected(): statistic");
                     fragment_statistic.dateCalendar = fragment_statistic.actualDayCalendar;
                     fragment_statistic.date = fragment_statistic.actualDay;
+                    fragment_statistic.timeline = "day";
                     fragment_statistic.textViewDate.setText(fragment_statistic.date);
                     fragment_statistic.setPieChart(fragment_statistic.pieChart);
                     fragment_statistic.pieChartLinearLayout.setVisibility(View.VISIBLE);

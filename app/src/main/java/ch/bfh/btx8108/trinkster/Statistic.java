@@ -57,6 +57,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     PieDataSet dataSet;
     ArrayList<String> xVals;
     private DrinkDAO drinkDAO;
+    int different;
+    long between;
 
     //Date
     Date actualDayCalendar;
@@ -211,12 +213,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
                     date = formatter.format(dateCalendar);
                     String s = myDate + " - " + date;
                     setTextViewDate(s);
-
-                    DbHelper dbHelper = new DbHelper(getContext());
-                    StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
-                    LocalDateTime myLocalDateTime = setLocalTime(myCalendar);
-                    LocalDateTime localDateTime = setLocalTime(dateCalendar);
-                    List<StatisticEntry> statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(myLocalDateTime, localDateTime);
+                    timeline = "different";
+                    checkPieChart();
+                    between = secondDate.getTimeInMillis()-firstDate.getTimeInMillis();
+                    different = (int) (between / (1000*60*60*24));
                 }
 
                 //checkTimeline();
@@ -235,7 +235,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else if (timeline.equals("year")){
             iDate=yearDateCalendar;
         } else{
-            Log.d(LOG_TAG, "Date for calender did not work");
+            iDate=myCalendar;
         }
 
         new SlyCalendarDialog()
@@ -245,10 +245,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
                 .setStartDate(iDate)
                 .show(getActivity().getSupportFragmentManager(), "TAG_SLYCALENDAR");
 
-
-       /*
-        simpleCalendarViewLayout.setMaxDate(actualDayCalendar.getTime());
-        */
 
     }
 
@@ -281,7 +277,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else if (timeline.equals("year")) {
             changeToYear();
         } else {
-            this.textViewDate.setText(this.date);
+            changeDifferentTimeline();
         }
     }
 
@@ -297,23 +293,18 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         if (timeline.equals("day")){
             myCalendar.add(Calendar.DATE, -1);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
         } else if (timeline.equals("week")){
             myCalendar.add(Calendar.DATE, -7);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
         } else if (timeline.equals("month")){
             myCalendar.add(Calendar.MONTH, -1);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
         } else if (timeline.equals("year")){
             myCalendar.add(Calendar.YEAR, -1);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
         } else {
-            this.errorMessage.setText("Button changeDateBefore hat nicht funktioniert.");
+            myCalendar.add(Calendar.DATE, -different);
+            myCalendar.add(Calendar.DATE, -1);
         }
+        this.date = this.formatter.format(myCalendar.getTime());
+        this.dateCalendar = myCalendar.getTime();
 
         checkTimeline();
         checkButtonAfter();
@@ -332,39 +323,26 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         if (timeline.equals("day")){
             myCalendar.add(Calendar.DATE, 1);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
         } else if (timeline.equals("week")){
             myCalendar.add(Calendar.DATE, 7);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
-            if (date.compareTo(actualDay)>0){
-                this.date = actualDay;
-                this.dateCalendar = actualDayCalendar;
-            }
         } else if (timeline.equals("month")){
             myCalendar.add(Calendar.MONTH, 1);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
-            if (date.compareTo(actualDay)>0){
-                this.date = actualDay;
-                this.dateCalendar = actualDayCalendar;
-            }
         } else if (timeline.equals("year")){
             myCalendar.add(Calendar.YEAR, 1);
-            this.date = this.formatter.format(myCalendar.getTime());
-            this.dateCalendar = myCalendar.getTime();
-            if (date.compareTo(actualDay)>0){
-                this.date = actualDay;
-                this.dateCalendar = actualDayCalendar;
-            }
         } else {
-            this.errorMessage.setText("Button changeDateAfter hat nicht funktioniert.");
+            myCalendar.add(Calendar.DATE, different);
+            myCalendar.add(Calendar.DATE, 1);
+        }
+        this.date = this.formatter.format(myCalendar.getTime());
+        this.dateCalendar = myCalendar.getTime();
+        if (date.compareTo(actualDay)>0){
+            this.date = actualDay;
+            this.dateCalendar = actualDayCalendar;
         }
 
         checkTimeline();
         checkButtonAfter();
-        checkPieChart();     // setPieChart(this.pieChart);
+        checkPieChart();
     }
 
     /**
@@ -391,7 +369,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         builder.setTitle("Zeitspanne ändern");
 
         final String[] items = {"Tag", "Woche", "Monat", "Jahr"};
-        int checkedItem;
+        int checkedItem = 4;
 
         if (timeline.equals("day")){
             checkedItem = 0;
@@ -401,33 +379,27 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             checkedItem = 2;
         } else if (timeline.equals("year")){
             checkedItem = 3;
-        } else {
-            checkedItem = 0;
         }
 
+        final String[] str = new String[1];
         builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // user checked an item
                 if (items[which].equals("Tag")) {
-                    timeline = "day";
-                    changeToDay();
-                    checkPieChart();
+                    str[0] = "day";
+                    Log.d(LOG_TAG, "str day: " + str);
                 }
                 else if (items[which].equals("Woche")) {
-                    timeline = "week";
-                    changeToWeek();
-                    checkPieChart();
+                    str[0] = "week";
+                    Log.d(LOG_TAG, "str week: " + str);
                 }
                 else if (items[which].equals("Monat")) {
-                    timeline = "month";
-                    changeToMonth();
-                    checkPieChart();
+                    str[0] = "month";
                 }
                 else if (items[which].equals("Jahr")) {
-                    timeline = "year";
-                    changeToYear();
-                    checkPieChart();
+                    str[0] = "year";
                 }
             }
         });
@@ -436,9 +408,22 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // user clicked OK
-                //setPieChart(pieChart);
-                //checkTimeline();
-                //checkButtonAfter();
+                if (str[0].equals("day")){
+                    timeline = "day";
+                    changeToDay();
+                } else if (str[0].equals("week")){
+                    timeline = "week";
+                    changeToWeek();
+                } else if (str[0].equals("month")){
+                    timeline = "month";
+                    changeToMonth();
+                } else if (str[0].equals("year")){
+                    timeline = "year";
+                    changeToYear();
+                } else {
+                    timeline = "day";
+                    changeToDay();
+                }
                 checkPieChart();
             }
         });
@@ -513,6 +498,17 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.textViewDate.setText(s);
     }
 
+    public void changeDifferentTimeline(){
+        Calendar thisCalendar = new GregorianCalendar();
+        thisCalendar.setTime(dateCalendar);
+        thisCalendar.add(Calendar.DATE, -different);
+        this.myDate = this.formatter.format(thisCalendar.getTime());
+        this.myCalendar = thisCalendar.getTime();
+
+        String s = myDate + " - " + this.date;
+        this.textViewDate.setText(s);
+    }
+
     /**
      * sets the pie Chart
      * @param pieChart - the generated pie Chart
@@ -539,6 +535,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else if (timeline.equals("year")) {
             LocalDateTime localDateYear = setLocalTime(yearDateCalendar);
             statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(localDateYear, localDateTime);
+        } else {
+            LocalDateTime myLocalDateTime = setLocalTime(myCalendar);
+            statistic = statisticDAO.totalQuantitiesPerCategoryAndDay(myLocalDateTime, localDateTime);
         }
 
         dbHelper.close();
@@ -607,7 +606,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     public void showDetails() {
         pieChartLinearLayout.setVisibility(View.GONE);
         pieChart.setVisibility(View.GONE);
-        //errorMessage.setVisibility(View.INVISIBLE);
         greyBarDetailsLayout.setVisibility(View.VISIBLE);
         backRootView.setVisibility(View.VISIBLE);
         textBack.setVisibility(View.VISIBLE);
@@ -627,7 +625,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         DbHelper dbHelper = new DbHelper(getContext());
         StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
         LocalDateTime localDateTime = setLocalTime(dateCalendar);
-        List<Object> drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
+        List<Object> drinkList;
 
         if (timeline.equals("day")){
             drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, localDateTime, localDateTime);
@@ -641,7 +639,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             LocalDateTime yearLocalDate = setLocalTime(yearDateCalendar);
             drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, yearLocalDate, localDateTime);
         } else {
-            Log.d(LOG_TAG, "show Entries: else");
+            LocalDateTime myLocalDateTime = setLocalTime(myCalendar);
+            drinkList = statisticDAO.getDrinksOfCategoryAndDate(category, myLocalDateTime, localDateTime);
         }
 
         list_drinks.setAdapter( new ArrayAdapter<Object>(getContext(), R.layout.activity_statistic_drinklist, R.id.drinklist_text, drinkList){
@@ -674,7 +673,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                mFieldId = R.id.drinklist_text1;
+                mFieldId = R.id.drinklist_text;
                 mContext = getContext();
 
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -799,6 +798,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         } else if (timeline.equals("year")) {
             LocalDateTime localDateYear = setLocalTime(yearDateCalendar);
             total = statisticDAO.totalQuantityForACategoryAndDay(categoryText, localDateYear, localDateTime);
+        } else {
+            LocalDateTime myLocalDateTime = setLocalTime(myCalendar);
+            total = statisticDAO.totalQuantityForACategoryAndDay(categoryText, myLocalDateTime, localDateTime);
         }
 
         dbHelper.close();
