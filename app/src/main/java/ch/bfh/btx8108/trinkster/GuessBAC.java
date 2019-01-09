@@ -58,17 +58,16 @@ public class GuessBAC extends Fragment {
 
         this.statusMessageTextView = (TextView) rootView.findViewById(R.id.status_message_text_view_id);
 //        this.batteryLevelTextView = (TextView) rootView.findViewById(R.id.battery_level_text_view_id);
-
-//        this.setStatus(R.string.TEXT_DISCONNECTED);
-
 //        this.serialNumberButton = (Button) rootView.findViewById(R.id.get_serial_number_button_id);
 //        this.useCountButton = (Button) rootView.findViewById(R.id.get_use_count_button_id);
 
         SeekBar simpleSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar); // initiate the Seek bar
         final TextView seekBarValue = rootView.findViewById(R.id.guessbac_number);
-        seekBarValue.setText( "0.0 " + getString(R.string.STR_BAC_IN_PROMILLE));
         final TextView seekBarDescr = rootView.findViewById(R.id.guessbac_number_descr);
+        seekBarValue.setText( "0.0 " + getString(R.string.STR_BAC_IN_PROMILLE));
         seekBarDescr.setText(getString(R.string.PROMILLE_AB_00));
+        //        this.setStatus(R.string.TEXT_DISCONNECTED);
+
 
         simpleSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener(){

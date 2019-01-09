@@ -102,7 +102,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         android:gravity="center"
-        android:text="Status: STATUS_MSG"
+        android:text="Status: Noch keine Statusmeldung"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="20sp"
         android:textStyle="normal"
