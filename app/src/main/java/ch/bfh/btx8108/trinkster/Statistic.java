@@ -575,8 +575,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         pieChart.setData(data);
 
         //set Colors
-        int [] color={ Color.rgb(255,99,71), Color.rgb(255,127,80), Color.rgb(255,140,0),
-                Color.rgb(255,165,0)
+        int [] color={ Color.parseColor("#feb729"), Color.parseColor("#643173"), Color.parseColor("#2c6d6c"),
+                Color.parseColor("#e2711d")
         };
         dataSet.setColors(color);
 
@@ -590,18 +590,18 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         pieChart.setDescription(null);
 
         //Text Size and Text Color
-        data.setValueTextSize(18f);
-        data.setValueTextColor(Color.DKGRAY);
+        data.setValueTextSize(24f);
+        data.setValueTextColor(Color.WHITE);
 
         //legend
         Legend l = pieChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
-        l.setTextSize(16);
+        l.setTextSize(18);
         l.setTextColor(Color.DKGRAY);
         //android:fontFamily="@font/source_sans_pro"
         l.setWordWrapEnabled(true);
         l.setForm(Legend.LegendForm.CIRCLE);
-        l.setFormSize(16);
+        l.setFormSize(18);
         l.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
         Log.d(LOG_TAG, "Legend: " + l);
         l.resetCustom();
