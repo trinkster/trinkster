@@ -1,5 +1,7 @@
 package ch.bfh.btx8108.trinkster;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -129,7 +132,18 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_impressum) {
-            System.out.println("Impressum");  // User chose the "Settings" item, show the app settings UI...
+            Log.d(LOG_TAG, "onOptionsItemSelected(): Impressum entered");
+
+            // show dialog for results
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AppCompatAlertDialogStyle);
+            builder.setTitle(R.string.impressum_title)
+                    .setMessage(Html.fromHtml(getString(R.string.impressum_text), Html.FROM_HTML_MODE_LEGACY))
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.v(LOG_TAG, "onOptionsItemSelected(): results leave");
+                        }
+                    }).show();
+
             return true;
         }
 
