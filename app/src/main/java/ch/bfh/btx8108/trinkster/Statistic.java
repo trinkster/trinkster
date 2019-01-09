@@ -200,6 +200,16 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             @Override
             public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
                 Log.d(LOG_TAG, "onDataSelected: calendar dialog saved");
+                Calendar thisCalendar = new GregorianCalendar();
+                thisCalendar.setTime(actualDayCalendar);
+
+                if (firstDate.after(thisCalendar)) {
+                    Log.d(LOG_TAG, "firstDate.after(actualDayCalendar): true");
+                    firstDate = thisCalendar;
+                } else if (secondDate.after(thisCalendar)){
+                    secondDate = thisCalendar;
+                }
+
 
                 if(secondDate==null){
                     timeline="day";
@@ -565,8 +575,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         pieChart.setData(data);
 
         //set Colors
-        int [] color={ Color.rgb(50,205,50), Color.rgb(255,160,122), Color.rgb(238,174,238),
-                Color.rgb(150,205,205)
+        int [] color={ Color.rgb(255,99,71), Color.rgb(255,127,80), Color.rgb(255,140,0),
+                Color.rgb(255,165,0)
         };
         dataSet.setColors(color);
 
