@@ -200,16 +200,16 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
             @Override
             public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
                 Log.d(LOG_TAG, "onDataSelected: calendar dialog saved");
-                Calendar thisCalendar = new GregorianCalendar();
+                /*Calendar thisCalendar = new GregorianCalendar();
                 thisCalendar.setTime(actualDayCalendar);
 
                 if (firstDate.after(thisCalendar)) {
                     Log.d(LOG_TAG, "firstDate.after(actualDayCalendar): true");
                     firstDate = thisCalendar;
-                } else if (secondDate.after(thisCalendar)){
-                    secondDate = thisCalendar;
                 }
-
+                if (secondDate.after(thisCalendar)){
+                    secondDate = thisCalendar;
+                }*/
 
                 if(secondDate==null){
                     timeline="day";
