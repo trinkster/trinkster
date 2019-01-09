@@ -13,7 +13,7 @@
     -->
 
     <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    <item android:id="@+id/action_impressum"
+        android:title="@string/action_impressum"
         trinkster:showAsAction="never"/>
 </menu>

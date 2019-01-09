@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         // the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            System.out.println("Settings");  // User chose the "Settings" item, show the app settings UI...
+        if (id == R.id.action_impressum) {
+            System.out.println("Impressum");  // User chose the "Settings" item, show the app settings UI...
             return true;
         }
 
