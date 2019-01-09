@@ -57,6 +57,6 @@
         android:src="@android:drawable/ic_dialog_info"
         android:background="@color/colorListBackground"
         android:tint="@color/colorPrimaryDark"
-        android:scaleType="center" />
+        android:scaleType="center"/>
 
 </LinearLayout>

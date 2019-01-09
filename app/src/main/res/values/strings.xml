@@ -95,6 +95,7 @@
     <string name="DRINK_AMOUNT">Getränkemenge in dl</string>
     <string name="DRINK_UNSWEETEND">Ungesüsste Getränke</string>
     <string name="DRINK_UNSWEETEND_DESC">Wasser, ungesüsster Tee etc.</string>
+    <string name="DRINK_UNSWEETEND_INFO">Der Bedarf an Wasser ist unterschiedlich und hängt von diversen Faktoren ab. Als Richtlinie dient für gesunde Erwachsene 2-2.5 Liter pro Tag.</string>
     <string name="DRINK_OTHER">Sonstige Getränke</string>
     <string name="DRINK_OTHER_DESC">Limonade, Fruchtsaft, Milch etc.</string>
     <string name="DRINK_CAFFEIN">Koffeinhaltige Getränke</string>

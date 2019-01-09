@@ -1,9 +1,12 @@
 package ch.bfh.btx8108.trinkster;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -162,6 +165,63 @@ public class History extends Fragment{
 
                         // set info link according to category
                         ImageButton imgButton = row.findViewById(R.id.drinklist_icon);
+                        imgButton.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                Log.d(LOG_TAG, "onClick(): IMAGE BUTTON CLICKED");
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+
+                                // depending on category, show different dialog
+                                switch((int) item.getCategory().getId()){
+                                    case 1: // water
+                                        builder.setTitle(R.string.DRINK_UNSWEETEND)
+                                                .setMessage(getString(R.string.DRINK_UNSWEETEND_INFO))
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Log.v(LOG_TAG, "onOptionsItemSelected(): results leave");
+                                                    }
+                                                }).show();
+                                        break;
+                                    case 2: // soda
+                                        builder.setTitle(R.string.DRINK_OTHER)
+                                                .setMessage(getString(R.string.lorem_ipsum))
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Log.v(LOG_TAG, "onOptionsItemSelected(): results leave");
+                                                    }
+                                                }).show();
+                                        break;
+                                    case 3: // coffee
+                                        builder.setTitle(R.string.DRINK_CAFFEIN)
+                                                .setMessage(getString(R.string.lorem_ipsum))
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Log.v(LOG_TAG, "onOptionsItemSelected(): results leave");
+                                                    }
+                                                }).show();
+                                        break;
+                                    case 4: // alcohol
+                                        builder.setTitle(R.string.DRINK_ALCOHOL)
+                                                .setMessage(getString(R.string.lorem_ipsum))
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Log.v(LOG_TAG, "onOptionsItemSelected(): results leave");
+                                                    }
+                                                }).show();
+                                        break;
+                                    default: // water
+                                        builder.setTitle(R.string.DRINK_UNSWEETEND)
+                                                .setMessage(getString(R.string.DRINK_UNSWEETEND_INFO))
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Log.v(LOG_TAG, "onOptionsItemSelected(): results leave");
+                                                    }
+                                                }).show();
+                                        break;
+                                }
+                            }
+                        });
+
 
                         break;
                 }
