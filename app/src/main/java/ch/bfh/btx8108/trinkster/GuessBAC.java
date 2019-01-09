@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -63,7 +66,9 @@ public class GuessBAC extends Fragment {
 
         SeekBar simpleSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar); // initiate the Seek bar
         final TextView seekBarValue = rootView.findViewById(R.id.guessbac_number);
+        seekBarValue.setText( "0.0 " + getString(R.string.STR_BAC_IN_PROMILLE));
         final TextView seekBarDescr = rootView.findViewById(R.id.guessbac_number_descr);
+        seekBarDescr.setText(getString(R.string.PROMILLE_AB_00));
 
         simpleSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener(){
@@ -75,6 +80,9 @@ public class GuessBAC extends Fragment {
                         seekBarValue.setText( bac + " " + getString(R.string.STR_BAC_IN_PROMILLE));
 
                         switch (bac){
+                            case "0.0":
+                                seekBarDescr.setText(getString(R.string.PROMILLE_AB_00));
+                                break;
                             case "0.1": case "0.2":
                                 seekBarDescr.setText(getString(R.string.PROMILLE_AB_01));
                                 break;
@@ -282,6 +290,9 @@ public class GuessBAC extends Fragment {
                     dialog.dismiss();
                 }
 
+                Drawable icon = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
+                icon.setTint(getResources().getColor(R.color.colorPrimaryDark));
+
                 // show dialog for analyzing
                 builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
                 builder.setTitle(R.string.DIALOG_BREATHALYZER_ANALYZING_TITLE)
@@ -290,7 +301,7 @@ public class GuessBAC extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.v(LOG_TAG, "showAnalyzingDialog(): leave");
                             }
-                        }).setIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert)).show();
+                        }).setIcon(icon).show();
             }
         });
     }
@@ -306,6 +317,9 @@ public class GuessBAC extends Fragment {
                     dialog.dismiss();
                 }
 
+                Drawable icon = getResources().getDrawable(android.R.drawable.ic_dialog_info);
+                icon.setTint(getResources().getColor(R.color.colorPrimaryDark));
+
                 // show dialog for results
                 builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
                 builder.setTitle(R.string.DIALOG_BREATHALYZER_ANALYZED_TITLE).setMessage(getString(R.string.DIALOG_BREATHALYZER_ANALYZED_MESSAGE) + " " + measuredResult + " Promille")
@@ -313,7 +327,7 @@ public class GuessBAC extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.v(LOG_TAG, "showResultDialog(): results leave");
                             }
-                        }).setIcon(android.R.drawable.ic_dialog_info).show();
+                        }).setIcon(icon).show();
             }
         });
     }
@@ -446,6 +460,9 @@ public class GuessBAC extends Fragment {
         public void BACtrackResults(float measuredBac) {
             Log.v(LOG_TAG, "BACtrackResults(): enter");
 
+            // FIXME: convert the measured BAC from percent into permille
+            // This is because the US uses another unit of measurement
+            // (see: https://en.wikipedia.org/wiki/Blood_alcohol_content#Units_of_measurement)
             Log.d(LOG_TAG, "BACtrackResults(): " + getString(R.string.TEXT_FINISHED) + " " + measuredBac);
             setStatus(getString(R.string.TEXT_FINISHED) + " " + measuredBac);
 

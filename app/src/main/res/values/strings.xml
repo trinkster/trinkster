@@ -48,6 +48,7 @@
 
 
     <!-- Quelle https://www.kenn-dein-limit.info/promille-und-folgen.html -->
+    <string name="PROMILLE_AB_00">Bei diesem Promillewert wurde noch kein Alkohol konsumiert.</string>
     <string name="PROMILLE_AB_01">Schon kleine Mengen Alkohol wirken enthemmend. Wir werden kontaktfreudiger, unsere Stimmung ist gelöst. Was uns noch nicht auffällt: Bereits jetzt schätzen wir Entfernungen falsch ein.</string>
     <string name="PROMILLE_AB_03">Bei diesem Wert tritt häufig eine leichte Verminderung der Sehleistung auf. Unsere Aufmerksamkeit und das Reaktionsvermögen lassen nach, unsere Kritikfähigkeit ist herabgesetzt und die Risikobereitschaft steigt.</string>
     <string name="PROMILLE_AB_05">Wir sehen immer schlechter (etwa 15% Sehleistung weniger). Auch das Hören ist beeinträchtigt und wir können Geschwindigkeiten nicht mehr richtig einschätzen. Wir sind reizbarer als im nüchternen Zustand.</string>
