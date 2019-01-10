@@ -139,10 +139,13 @@ public class DrinkDAO {
         while(!cursor.isAfterLast()) {
             drink = cursorToDrink(cursor);
 
-            if( (lastKnownDateTime == null) || (Duration.between(drink.getDateTime(), lastKnownDateTime).toDays() >= 1) ){
+            // check if last known date is set or if last known date is the different?
+            if( (lastKnownDateTime == null) || (drink.getDateTime().getDayOfMonth() != lastKnownDateTime.getDayOfMonth()) ){
                 lastKnownDateTime = drink.getDateTime();
                 drinkList.add(lastKnownDateTime.toLocalDate());
             }
+            Log.d(LOG_TAG, "getAllDrinksWithDates(): last known date: "+lastKnownDateTime.toLocalDate() );
+            Log.d(LOG_TAG, "getAllDrinksWithDates(): date different?: "+(drink.getDateTime().getDayOfMonth() != lastKnownDateTime.getDayOfMonth()));
             drinkList.add(drink);
             cursor.moveToNext();
         }
