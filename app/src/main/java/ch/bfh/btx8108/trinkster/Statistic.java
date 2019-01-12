@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
-import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,11 +40,10 @@ import java.util.List;
 import java.util.Locale;
 
 import ch.bfh.btx8108.trinkster.database.DbHelper;
-import ch.bfh.btx8108.trinkster.database.dao.DrinkDAO;
 import ch.bfh.btx8108.trinkster.database.dao.StatisticDAO;
 import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 
-public class Statistic extends Fragment implements OnChartValueSelectedListener, OnDateChangeListener {
+public class Statistic extends Fragment implements OnChartValueSelectedListener {
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formatting according to my need
@@ -56,7 +53,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     ImageView imageDetails;
     PieDataSet dataSet;
     ArrayList<String> xVals;
-    private DrinkDAO drinkDAO;
     int different;
     long between;
 
@@ -79,7 +75,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     LinearLayout detailsLayoutLinear;
     LinearLayout detailsTotalLayout;
     LinearLayout greyBarDetailsLayout;
-    LinearLayout greyBarRootLayout;
     LinearLayout pieChartLinearLayout;
 
     //String
@@ -105,9 +100,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     Highlight highlight;
 
     //Alert Dialog
-    private Context mContext;
     private AlertDialog.Builder builder;
-    private AlertDialog dialog;
 
     EditText txtDate;
 
@@ -166,10 +159,11 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
     /**
      * checks if the pie Chart is empty or not
+     * and if empty shows a text
+     * else shows the pie Chart
      */
     public void checkPieChart(){
         Log.d(LOG_TAG, "checkPieChart() enter");
-
         setPieChart(pieChart);
 
         boolean check = this.pieChart.isEmpty();
@@ -192,25 +186,35 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         Log.d(LOG_TAG, "showCalendar() enter");
 
         SlyCalendarDialog.Callback callback = new SlyCalendarDialog.Callback() {
+
+            //after click on button "cancel" -> do no changes
             @Override
             public void onCancelled() {
                 Log.d(LOG_TAG, "onCancelled: calendar dialog cancelled");
             }
 
+            //after click on button "save" -> show chosen date with pie Chart
             @Override
             public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
                 Log.d(LOG_TAG, "onDataSelected: calendar dialog saved");
-                /*Calendar thisCalendar = new GregorianCalendar();
-                thisCalendar.setTime(actualDayCalendar);
 
+                //checks that the chosen date is not in the future
+                Calendar thisCalendar = new GregorianCalendar();
+                thisCalendar.setTime(actualDayCalendar);
                 if (firstDate.after(thisCalendar)) {
                     Log.d(LOG_TAG, "firstDate.after(actualDayCalendar): true");
                     firstDate = thisCalendar;
                 }
-                if (secondDate.after(thisCalendar)){
-                    secondDate = thisCalendar;
-                }*/
+                if(secondDate!=null){
+                    if (secondDate.after(thisCalendar)){
+                        secondDate = thisCalendar;
+                    }
+                    if(firstDate==secondDate){
+                        secondDate=null;
+                    }
+                }
 
+                //changes the timeline after chosen date(s) in calendar
                 if(secondDate==null){
                     timeline="day";
                     dateCalendar = firstDate.getTime();
@@ -229,7 +233,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
                     different = (int) (between / (1000*60*60*24));
                 }
 
-                //checkTimeline();
+                checkTimeline();
                 checkButtonAfter();
                 checkPieChart();
             }
@@ -392,6 +396,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         }
 
         final String[] str = new String[1];
+        str[0] = timeline;
         builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
 
             @Override
@@ -508,6 +513,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         this.textViewDate.setText(s);
     }
 
+    /**
+     * change timeline after chosen in calendar
+     */
     public void changeDifferentTimeline(){
         Calendar thisCalendar = new GregorianCalendar();
         thisCalendar.setTime(dateCalendar);
@@ -527,8 +535,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         pieChart.setUsePercentValues(true);
         pieChart.setTouchEnabled(true);
         pieChart.setOnChartValueSelectedListener(this);
-        //pieChart.setHighlightPerTapEnabled(false);
 
+        //get data from database
         DbHelper dbHelper = new DbHelper(getContext());
         StatisticDAO statisticDAO = new StatisticDAO(dbHelper);
         LocalDateTime localDateTime = setLocalTime(dateCalendar);
@@ -552,9 +560,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         dbHelper.close();
 
-        // IMPORTANT: In a PieChart, no values (Entry) should have the same
-        // xIndex (even if from different DataSets), since no values can be
-        // drawn above each other.
+        // set data
         ArrayList<Entry> yvalues = new ArrayList<Entry>();
         this.xVals = new ArrayList<>();
 
@@ -598,7 +604,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setTextSize(18);
         l.setTextColor(Color.DKGRAY);
-        //android:fontFamily="@font/source_sans_pro"
         l.setWordWrapEnabled(true);
         l.setForm(Legend.LegendForm.CIRCLE);
         l.setFormSize(18);
@@ -606,8 +611,9 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
         Log.d(LOG_TAG, "Legend: " + l);
         l.resetCustom();
 
+        // refresh
         pieChart.notifyDataSetChanged();
-        pieChart.invalidate(); // refresh
+        pieChart.invalidate();
     }
 
     /**
@@ -710,7 +716,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
                         TextView tv1 = row.findViewById(R.id.separator);
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("eeee, dd.MM.YYYY", new Locale("de-CH"));
                         String titleString = tmpDate.format(formatter);
-//                        LocalDate parsedDate = LocalDate.parse(titleString, formatter);
                         tv1.setText(titleString);
                         break;
                     case TYPE_DRINK:
@@ -797,6 +802,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         double total = 0;
 
+        //gets data from database
         if (timeline.equals("day")) {
             total = statisticDAO.totalQuantityForACategoryAndDay(categoryText, localDateTime, localDateTime);
         } else if (timeline.equals("week")) {
@@ -815,7 +821,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
 
         dbHelper.close();
 
-        textViewTotal.setText(total + " dl");
+        textViewTotal.setText(total + getString(R.string.TEXT_DL));
     }
 
     /**
@@ -863,21 +869,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener,
     @Override
     public void onNothingSelected() {
         pieChart.highlightValues(null);
-    }
-
-    /**
-     * changes the date when the user clicks on an other day
-     * @param view - the calendar view
-     * @param year - the selected year
-     * @param month - the selected month
-     * @param dayOfMonth - the selected day of month
-     */
-    @Override
-    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-        Calendar myCalendar = new GregorianCalendar();
-        myCalendar.set(year, month, dayOfMonth);
-        this.date = formatter.format(myCalendar.getTime());
-        this.dateCalendar = myCalendar.getTime();
     }
 
 }

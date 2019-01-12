@@ -32,7 +32,7 @@
     <string name="TEXT_CHANGE_TIMELINE">Zeitspanne ändern</string>
     <string name="TEXT_YOU_HAVE">Du hast am </string>
     <string name="TEXT_TOTAL"> insgesamt </string>
-    <string name="TEXT_DL">dl </string>
+    <string name="TEXT_DL"> dl</string>
     <string name="TEXT_DRUNK"> getrunken.</string>
 
     <!-- Guess Your BAC-Strings -->
