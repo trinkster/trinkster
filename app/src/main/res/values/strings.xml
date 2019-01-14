@@ -23,17 +23,19 @@
     <string name="tab_text_3">‰-Schätzer</string>
 
     <!-- Statistic-Strings -->
-    <string name="TEXT_NAVIGATE_NEXT">Day After</string>
+    <string name="TEXT_CALENDAR">Kalender</string>
+    <string name="TEXT_NAVIGATE_NEXT">Tag vorher</string>
+    <string name="TEXT_NAVIGATE_BEFORE">Tag nachher</string>
     <string name="TEXT_OK">OK</string>
     <string name="TEXT_DAY">Tag</string>
     <string name="TEXT_WEEK">Woche</string>
     <string name="TEXT_MONTH">Monat</string>
     <string name="TEXT_YEAR">Jahr</string>
     <string name="TEXT_CHANGE_TIMELINE">Zeitspanne ändern</string>
-    <string name="TEXT_YOU_HAVE">Du hast am </string>
-    <string name="TEXT_TOTAL"> insgesamt </string>
     <string name="TEXT_DL"> dl</string>
-    <string name="TEXT_DRUNK"> getrunken.</string>
+    <string name="TEXT_BACK">Zurück</string>
+    <string name="TEXT_NO_ENTRY">Für dieses Datum wurden keine Einträge erfasst.</string>
+    <string name="TEXT_IMAGE">Bild der Getränkekategorie</string>
 
     <!-- Guess Your BAC-Strings -->
     <string name="TITLE_GUESS_BAC">Promille-Schätzer</string>

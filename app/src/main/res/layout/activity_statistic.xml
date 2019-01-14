@@ -20,7 +20,8 @@
             android:layout_height="30dp"
             android:layout_width="30dp"
             android:layout_gravity="center"
-            android:gravity="left"
+            android:gravity="start"
+            android:contentDescription="@string/TEXT_CALENDAR"
             android:layout_marginStart="10dp"
             android:onClick="showCalendar"
             android:background="@drawable/ic_today_black_24dp"/>
@@ -37,7 +38,8 @@
             android:onClick="changeDateOneDayBefore"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginRight="5dp"
+            android:contentDescription="@string/TEXT_NAVIGATE_BEFORE"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/ic_navigate_before_black_24dp" />
 
         <TextView
@@ -52,7 +54,6 @@
             android:textColor="@color/colorListFont"
             android:onClick="thisDay"
             app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintTop_creator="1" />
 
@@ -67,7 +68,7 @@
             android:contentDescription="@string/TEXT_NAVIGATE_NEXT"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/ic_navigate_next_black_24dp" />
 
         <View
@@ -82,6 +83,7 @@
             android:background="@drawable/ic_timeline_black_24dp"
             android:layout_gravity="center"
             android:gravity="end"
+            android:contentDescription="@string/TEXT_CHANGE_TIMELINE"
             android:layout_marginEnd="10dp"
             android:onClick="changeTimeline"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -102,8 +104,9 @@
             android:layout_height="30dp"
             android:layout_width="30dp"
             android:layout_gravity="center_vertical"
-            android:gravity="left"
+            android:gravity="start"
             android:onClick="goBack"
+            android:contentDescription="@string/TEXT_BACK"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/ic_navigate_before_black_24dp" />
@@ -116,15 +119,14 @@
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="5dp"
             android:layout_gravity="center_vertical"
-            android:gravity="left"
-            android:text="Zurück"
+            android:gravity="start"
+            android:text="@string/TEXT_BACK"
             android:onClick="goBack"
             android:background="@color/colorHeadingBackground"
             android:textSize="22sp"
             android:textStyle="normal"
             android:textColor="@color/colorListFont"
             app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintTop_creator="1" />
 
@@ -153,7 +155,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginTop="300dp"
-            android:text="Für dieses Datum wurden keine Einträge erfasst."
+            android:text="@string/TEXT_NO_ENTRY"
             android:fontFamily="@font/source_sans_pro"
             android:textColor="#757575"
             android:textSize="20sp"
@@ -180,7 +182,6 @@
             android:textStyle="bold"
             android:textSize="24sp"
             app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintTop_creator="1" />
 
@@ -196,14 +197,16 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".MainActivity">
+            tools:context=".MainActivity"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/image_water"/>
+                android:src="@drawable/image_water"
+                android:contentDescription="@string/TEXT_IMAGE" />
 
             <TextView
                 android:id="@+id/total"
@@ -213,23 +216,10 @@
                 android:layout_marginEnd="10dp"
                 android:textSize="36sp"
                 app:layout_constraintLeft_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout"
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintTop_creator="1" />
 
         </LinearLayout>
-
-       <!-- <Button
-            android:id="@+id/ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/TEXT_OK"
-            android:layout_marginTop="25dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorGrey"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="#757575"
-            android:textSize="18dp" />-->
 
     </LinearLayout>
 
@@ -239,7 +229,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/source_sans_pro"
         android:textColor="#757575"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"/>
 

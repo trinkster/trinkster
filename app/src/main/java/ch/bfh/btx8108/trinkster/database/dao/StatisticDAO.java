@@ -23,12 +23,18 @@ public class StatisticDAO {
 
     /**
      * Konstruktor, der eine schreibbare Instanz vom dbHelper holt
-     * @param dbHelper
+     * @param dbHelper - helper for database
      */
     public StatisticDAO(DbHelper dbHelper) {
         database = dbHelper.getWritableDatabase();
     }
 
+    /**
+     * returns each category and their quantaty to create the pie chart
+     * @param localDateTimeBegin - when the timeline starts
+     * @param localDateTimeEnd
+     * @return
+     */
     public List<StatisticEntry> totalQuantitiesPerCategoryAndDay(LocalDateTime localDateTimeBegin, LocalDateTime localDateTimeEnd) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String begin = localDateTimeBegin.format(formatter) + " 00:00:00";

@@ -377,10 +377,10 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
      * @param v - the view
      */
     public void changeTimeline(View v) {
-        builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
+        this.builder = new AlertDialog.Builder(getContext(), R.style.AppCompatAlertDialogStyle);
 
-        builder.setIcon(R.drawable.ic_timeline_black_24dp);
-        builder.setTitle("Zeitspanne ändern");
+        this.builder.setIcon(R.drawable.ic_timeline_black_24dp);
+        this.builder.setTitle(R.string.TEXT_CHANGE_TIMELINE);
 
         final String[] items = {"Tag", "Woche", "Monat", "Jahr"};
         int checkedItem = 4;
@@ -743,7 +743,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
                         // set main text (Drink name and its amount)
                         TextView tv = row.findViewById(R.id.drinklist_text);
-                        tv.setText(item.toString() + " dl");
+                        tv.setText(item.toString() + " " + getString(R.string.TEXT_DL));
 
                         // set info link according to category
                         ImageButton imgButton = row.findViewById(R.id.drinklist_icon);
@@ -783,12 +783,8 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     public LocalDateTime setLocalTime (Date dateLocal) {
         Calendar c = Calendar.getInstance();
         c.setTime(dateLocal);
-        int year = c.get(Calendar.YEAR);
-        int monthJava = c.get(Calendar.MONTH);
-        int month = monthJava + 1;
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        LocalDateTime localDate = LocalDateTime.of(year, month, day, 0, 0);
-        return  localDate;
+        return LocalDateTime.of(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,
+                c.get(Calendar.DAY_OF_MONTH), 0, 0);
     }
 
     /**
@@ -821,7 +817,7 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
 
         dbHelper.close();
 
-        textViewTotal.setText(total + getString(R.string.TEXT_DL));
+        textViewTotal.setText(total + " " + getString(R.string.TEXT_DL));
     }
 
     /**
