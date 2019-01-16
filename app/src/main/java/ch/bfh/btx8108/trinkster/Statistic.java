@@ -46,16 +46,10 @@ import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 public class Statistic extends Fragment implements OnChartValueSelectedListener {
     private static final String LOG_TAG = Statistic.class.getSimpleName();
 
-    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formatting according to my need
-    View rootView;
-    ListView list_drinks;
-    PieChart pieChart;
-    ImageView imageDetails;
-    PieDataSet dataSet;
+    //ArrayList
     ArrayList<String> xVals;
-    int different;
-    long between;
-
+    //Alert Dialog
+    private AlertDialog.Builder builder;
     //Date
     Date actualDayCalendar;
     Date dateCalendar;
@@ -63,20 +57,38 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     Date weekDateCalendar;
     Date yearDateCalendar;
     Date myCalendar;
-
+    //EditText
+    EditText txtDate;
+    //Entry
+    Entry entry;
+    //Highlight
+    Highlight highlight;
     //ImageButton
     ImageButton backRootView;
     ImageButton buttonAfter;
     ImageButton buttonBefore;
     ImageButton buttonCalendar;
     ImageButton buttonTimeline;
-
+    //ImageView
+    ImageView imageDetails;
+    //int
+    int different;
+    int index;
     //LinearLayout
     LinearLayout detailsLayoutLinear;
     LinearLayout detailsTotalLayout;
     LinearLayout greyBarDetailsLayout;
     LinearLayout pieChartLinearLayout;
-
+    //ListView
+    ListView list_drinks;
+    //long
+    long between;
+    //PieChart
+    PieChart pieChart;
+    //PieDataSet
+    PieDataSet dataSet;
+    //SimpleDateFormat
+    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); //formatting according to my need
     //String
     String actualDay;
     String date;
@@ -86,7 +98,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     String weekDate;
     String yearDate;
     String myDate;
-
     //TextView
     TextView drinkCategoryText;
     TextView errorMessage;
@@ -94,16 +105,16 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
     TextView textPieChart;
     TextView textViewDate;
     TextView textViewTotal;
+    //View
+    View rootView;
 
-    Entry entry;
-    int index;
-    Highlight highlight;
-
-    //Alert Dialog
-    private AlertDialog.Builder builder;
-
-    EditText txtDate;
-
+    /**
+     * creates the statistic view
+     * @param inflater - inflater for view
+     * @param container - container for view
+     * @param savedInstanceState - savedInstanceState for view
+     * @return the view
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -142,7 +153,6 @@ public class Statistic extends Fragment implements OnChartValueSelectedListener 
         //show only rootView without details or popup
         buttonAfter.setVisibility(View.INVISIBLE);
         checkPieChart();
-
         greyBarDetailsLayout.setVisibility(View.GONE);
         backRootView.setVisibility(View.GONE);
         textBack.setVisibility(View.GONE);

@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     super.onTabSelected(tab);
                 }
 
+                // if tab statistic is clicked, the pie chart with the actual day is shown
                 if((tab.getText().toString().equals("Statistik"))){
                     Log.d(LOG_TAG, "onTabSelected(): statistic");
                     fragment_statistic.dateCalendar = fragment_statistic.actualDayCalendar;

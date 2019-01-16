@@ -31,9 +31,9 @@ public class StatisticDAO {
 
     /**
      * returns each category and their quantaty to create the pie chart
-     * @param localDateTimeBegin - when the timeline starts
-     * @param localDateTimeEnd
-     * @return
+     * @param localDateTimeBegin - when the timeline starts, start of database query
+     * @param localDateTimeEnd - when the timeline ends, end of database query
+     * @return list of entries within the timeline
      */
     public List<StatisticEntry> totalQuantitiesPerCategoryAndDay(LocalDateTime localDateTimeBegin, LocalDateTime localDateTimeEnd) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -62,6 +62,14 @@ public class StatisticDAO {
         return statistic;
     }
 
+    /**
+     * returns the drinklist for one category and within a timeline, the same drinks, for example water,
+     * are counted together
+     * @param category - chosen drink category
+     * @param localDateTimeBegin - when the timeline starts, start of database query
+     * @param localDateTimeEnd - when the timeline ends, end of database query
+     * @return the drinklist for one category
+     */
     public List<Object> getDrinksOfCategoryAndDate(String category, LocalDateTime localDateTimeBegin, LocalDateTime localDateTimeEnd) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String begin = localDateTimeBegin.format(formatter) + " 00:00:00";
@@ -92,6 +100,11 @@ public class StatisticDAO {
 
     }
 
+    /**
+     * gets a drink name from the list and returns the name with the quantity
+     * @param cursor - the curser getting all drink names and quantities
+     * @return the drink name in a readable form
+     */
     private DrinkName cursorToDrink(Cursor cursor) {
         int idName = cursor.getColumnIndex(DrinkTable.COLUMN_NAME);
         int idQuantity = cursor.getColumnIndex(DrinkTable.COLUMN_QUANTITY);
@@ -101,6 +114,13 @@ public class StatisticDAO {
         return new DrinkName(name, quantity);
     }
 
+    /**
+     * gets the total quantity of one drink category
+     * @param category - chosen drink category
+     * @param localDateTimeBegin - when the timeline starts, start of database query
+     * @param localDateTimeEnd - when the timeline ends, end of database query
+     * @return total quantity for this drink category
+     */
     public double totalQuantityForACategoryAndDay(String category, LocalDateTime localDateTimeBegin, LocalDateTime localDateTimeEnd) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String begin = localDateTimeBegin.format(formatter) + " 00:00:00";
