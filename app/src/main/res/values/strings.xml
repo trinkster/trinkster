@@ -39,7 +39,7 @@
 
     <!-- Guess Your BAC-Strings -->
     <string name="TITLE_GUESS_BAC">Promille-Schätzer</string>
-    <string name="DESC_GUESS_BAC">Schätze deinen Promillewert und vergleiche deinen geschätzten mit deinem gemessenen Wert.</string>
+    <string name="DESC_GUESS_BAC">Schätze deinen Promille-Wert und vergleiche deinen geschätzten mit deinem gemessenen Wert.</string>
     <string name="EXPLAIN_TEXT_GUESS_BAC">Hier steht ein Beispieltext, welcher beschreibt welche Folgen der Promillewert hat.</string>
     <string name="BTN_COMPARE_BREATHALYZER">Breathalyzer-Vergleich</string>
     <string name="STR_BAC_IN_PROMILLE"> ‰</string>

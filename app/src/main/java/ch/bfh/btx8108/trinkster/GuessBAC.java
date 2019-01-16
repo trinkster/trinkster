@@ -30,26 +30,21 @@ import BACtrackAPI.Exceptions.BluetoothNotEnabledException;
 import BACtrackAPI.Exceptions.LocationServicesNotEnabledException;
 import BACtrackAPI.Mobile.Constants.Errors;
 
+/**
+ * Fragment zustaendig fuer den Promillenschaetzer
+ */
 public class GuessBAC extends Fragment {
     private static final String LOG_TAG = GuessBAC.class.getSimpleName();
     private static final byte PERMISSIONS_FOR_SCAN = 100;
 
     private TextView statusMessageTextView;
-    private TextView batteryLevelTextView;
 
+    private String apiKey = "08ee704da98a4865b0fbf46117c4be";
     private BACtrackAPI mAPI;
-    private String currentFirmware;
-
-    private Button serialNumberButton;
-    private Button useCountButton;
 
     private Context mContext;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
-
-    private String apiKey = "08ee704da98a4865b0fbf46117c4be";
-    private int MY_PERMISSIONS_REQUEST_BLUETOOTH;
-
 
     @Nullable
     @Override
@@ -57,17 +52,12 @@ public class GuessBAC extends Fragment {
         final View rootView = inflater.inflate(R.layout.activity_guess_bac, container, false);
 
         this.statusMessageTextView = (TextView) rootView.findViewById(R.id.status_message_text_view_id);
-//        this.batteryLevelTextView = (TextView) rootView.findViewById(R.id.battery_level_text_view_id);
-//        this.serialNumberButton = (Button) rootView.findViewById(R.id.get_serial_number_button_id);
-//        this.useCountButton = (Button) rootView.findViewById(R.id.get_use_count_button_id);
 
         SeekBar simpleSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar); // initiate the Seek bar
         final TextView seekBarValue = rootView.findViewById(R.id.guessbac_number);
         final TextView seekBarDescr = rootView.findViewById(R.id.guessbac_number_descr);
         seekBarValue.setText( "0.0 " + getString(R.string.STR_BAC_IN_PROMILLE));
         seekBarDescr.setText(getString(R.string.PROMILLE_AB_00));
-        //        this.setStatus(R.string.TEXT_DISCONNECTED);
-
 
         simpleSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener(){
@@ -123,6 +113,10 @@ public class GuessBAC extends Fragment {
         return rootView;
     }
 
+    /**
+     * Wird aufgerufen um einerseits zu pruefen ob die notwendigen Berechtigungen seitens des
+     * Android-Geraetes gegeben sind und um andererseits die BACTrack-API zu initialisieren.
+     */
     private void prepareBACTrack(){
         Log.v(LOG_TAG, "prepareBACTrack() enter");
 
@@ -143,6 +137,11 @@ public class GuessBAC extends Fragment {
         Log.v(LOG_TAG, "prepareBACTrack() leave");
     }
 
+    /**
+     * Wird aufgerufen wenn ein Breathalyzer-Vergleich gestartet wird.
+     * Erstellt zugleich auch eine Breathalyzer-Verbindung falls noch keine vorhanden ist.
+     * @param v
+     */
     public void startBreathalyzerComparison(View v){
         Log.v(LOG_TAG, "startBreathalyzerComparison() enter");
 
@@ -201,12 +200,6 @@ public class GuessBAC extends Fragment {
         }
     }
 
-    public void disconnectClicked(View v) {
-        if (mAPI != null) {
-            mAPI.disconnect();
-        }
-    }
-
     private void setStatus(int resourceId) {
         this.setStatus(this.getResources().getString(resourceId));
     }
@@ -216,7 +209,6 @@ public class GuessBAC extends Fragment {
         this.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Log.d(LOG_TAG, message);
                 statusMessageTextView.setText(String.format("Status:\n%s", message));
             }
         });
@@ -330,7 +322,6 @@ public class GuessBAC extends Fragment {
             }
         });
     }
-
 
     private class APIKeyVerificationAlert extends AsyncTask<String, Void, String> {
         @Override
@@ -472,7 +463,6 @@ public class GuessBAC extends Fragment {
 
         @Override
         public void BACtrackFirmwareVersion(String version) {
-            setCurrentFirmware(version);
             setStatus(getString(R.string.TEXT_FIRMWARE_VERSION) + " " + version);
         }
 
@@ -514,53 +504,5 @@ public class GuessBAC extends Fragment {
     };
 
 
-    // FIXME: DO I EVEN NEED THIS?
-    public void setCurrentFirmware(@Nullable String currentFirmware) {
-        this.currentFirmware = currentFirmware;
-
-        String[] firmwareSplit = new String[0];
-        if (currentFirmware != null) {
-            firmwareSplit = currentFirmware.split("\\s+");
-        }
-        if (firmwareSplit.length >= 1 && firmwareSplit[0].contains("_") || firmwareSplit.length >= 1 && firmwareSplit[0].contains("-")){
-            this.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (serialNumberButton != null) {
-                        serialNumberButton.setVisibility(View.VISIBLE);
-                    }
-                    if (useCountButton != null) {
-                        useCountButton.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-            return;
-        }
-        else if (firmwareSplit.length >= 1 && Long.valueOf(firmwareSplit[0]) >= Long.valueOf("201510150003")) {
-            this.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (serialNumberButton != null) {
-                        serialNumberButton.setVisibility(View.VISIBLE);
-                    }
-                    if (useCountButton != null) {
-                        useCountButton.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-        } else {
-            this.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (serialNumberButton != null) {
-                        serialNumberButton.setVisibility(View.GONE);
-                    }
-                    if (useCountButton != null) {
-                        useCountButton.setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
-    }
 
 }
